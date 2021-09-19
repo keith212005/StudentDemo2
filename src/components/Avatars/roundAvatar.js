@@ -10,16 +10,21 @@ import {
   responsiveWidth,
   commonStyles,
 } from '@resources';
+import {isEmpty} from '@utils';
 
 export default class RoundAvatar extends React.PureComponent {
   render() {
+    // let uri = this.props.uri && isEmpty(this.props.uri);
+
     return (
       <>
         <View style={styles.imageContainer}>
           <Image
             style={styles.imageStyle}
             source={{
-              uri: this.props.uri,
+              uri: isEmpty(this.props.uri)
+                ? images.user_placeholder
+                : this.props.uri,
               cache: 'force-cache',
             }}
           />

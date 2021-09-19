@@ -38,11 +38,28 @@ export default class ImagePicker extends React.Component {
     getImageFromMobile(fromCameraOrGallery)
       .then(imageData => this.props.image_path(imageData))
       .catch(err => {
-        console.log('cmmmmera>>>', err);
-        if (err == 'MISSING_CAMERA_PERMISSION') {
+        // console.log('cmmmmera>>>', err.code);
+
+        if (err.code == 'E_NO_CAMERA_PERMISSION') {
           Alert.alert(
             'Permission',
             "Please allow Camera permission from setting for this app, otherwise app can't access your Camera and photos.",
+            [
+              {text: 'Go To Setting', onPress: () => Linking.openSettings()},
+              {
+                text: 'Cancel',
+                onPress: () => {},
+                style: 'cancel',
+              },
+            ],
+            {
+              cancelable: true,
+            },
+          );
+        } else if (err.code == 'E_NO_LIBRARY_PERMISSION') {
+          Alert.alert(
+            'Permission',
+            "Please allow storage permission from setting for this app, otherwise app can't access your Camera and photos.",
             [
               {text: 'Go To Setting', onPress: () => Linking.openSettings()},
               {

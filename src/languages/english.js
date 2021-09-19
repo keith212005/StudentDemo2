@@ -17,4 +17,5 @@ export const english = {
   PLEASE_ENTER_LONG: 'Please enter longitude',
   CAMERA: 'Add image from camera',
   GALLERY: 'Choose Photo from Gallery',
+  MISSING_CAMERA_PERMISSION: '',
 };

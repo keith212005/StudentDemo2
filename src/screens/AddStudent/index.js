@@ -33,6 +33,8 @@ export default class AddStudent extends Component {
       dob: fieldObject,
       lat: fieldObject,
       long: fieldObject,
+      fileDetails: '',
+      profile_pic: fieldObject,
     };
 
     this.inputs = new Array(6);
@@ -203,6 +205,7 @@ export default class AddStudent extends Component {
           onCancel={() => this.setState({showDatePicker: !showDatePicker})}
           valueObject={this.state[key]}
           onConfirm={date => {
+            // console.log('date inside screen>>>>>>', date);
             var state_object = {
               dob: {
                 ...this.state['dob'],
@@ -228,7 +231,7 @@ export default class AddStudent extends Component {
       <View style={{margin: 10}}>
         <RoundAvatar
           showEditIcon={true}
-          uri={images.user_placeholder}
+          uri={this.state.profile_pic.value}
           onPress={() => this.toggleImagePicker()}
         />
       </View>
@@ -255,7 +258,14 @@ export default class AddStudent extends Component {
             show={this.state.image_picker}
             onChangeData={data => {}}
             image_path={imageData => {
-              this.setState({fileDetails: imageData});
+              console.log('imagedata>>>>>>', typeof imageData.path);
+              this.setState({
+                fileDetails: imageData,
+                profile_pic: {
+                  ...this.state['profile_pic'],
+                  value: imageData.path,
+                },
+              });
               this.onChangeText(imageData.path, 'profile_pic');
             }}
             onClose={() => this.setState({image_picker: false})}

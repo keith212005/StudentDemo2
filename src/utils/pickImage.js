@@ -23,43 +23,12 @@ export const getImageFromMobile = (type, extraProps = extraStyle) => {
         ...config,
         ...extraProps,
       })
-        .then(image => {
-          resolve(image);
-        })
-        .catch(e => {
-          console.log('eeee>>>', e);
-          handleExaptions(e, 'camera').then(error => reject(error));
-        });
+        .then(image => resolve(image))
+        .catch(e => reject(e));
     } else {
       ImagePicker.openPicker({...config, ...extraProps})
-        .then(image => {
-          resolve(image);
-        })
-        .catch(e => {
-          console.log('eeee>>>', e);
-          handleExaptions(e, type).then(error => reject(error));
-        });
+        .then(image => resolve(image))
+        .catch(e => reject(e));
     }
-  });
-};
-
-const handleExaptions = (e, type) => {
-  return new Promise((resolve, reject) => {
-    if (
-      isValueOneOfThem(e.code, [
-        'E_PERMISSION_MISSING',
-        'E_PICKER_NO_CAMERA_PERMISSION',
-      ])
-    ) {
-      if (type == 'camera') {
-        resolve('MISSING_CAMERA_PERMISSION');
-      } else {
-        resolve('MISSING_GALLERY_PERMISSION');
-      }
-    } else {
-      alert(localize('SOMETHING_WENT_WRONG'));
-    }
-
-    resolve(false);
   });
 };
