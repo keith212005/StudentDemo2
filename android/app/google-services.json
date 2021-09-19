@@ -1,0 +1,39 @@
+{
+  "project_info": {
+    "project_number": "800520901917",
+    "project_id": "studentdemo-44f08",
+    "storage_bucket": "studentdemo-44f08.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:800520901917:android:2fe8a8fc93e3b02b75fdf4",
+        "android_client_info": {
+          "package_name": "com.studentdemo"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "800520901917-l4gfgcasuccoc2ap8qfv93krrdap9ik7.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyAoChz3i3hhy7DZ5DSG2NAjgtSxnlSpdEg"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "800520901917-l4gfgcasuccoc2ap8qfv93krrdap9ik7.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

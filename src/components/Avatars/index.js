@@ -1,0 +1,1 @@
+export RoundAvatar from './roundAvatar';

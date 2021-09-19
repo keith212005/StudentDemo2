@@ -1,0 +1,117 @@
+import React, {Component} from 'react';
+import {
+  SafeAreaView,
+  View,
+  Text,
+  FlatList,
+  TouchableOpacity,
+  ActivityIndicator,
+} from 'react-native';
+
+// THIRD PARTY IMPORTS
+import {connect} from 'react-redux';
+import {bindActionCreators} from 'redux';
+import firestore from '@react-native-firebase/firestore';
+import moment from 'moment';
+
+// LOCAL IMPORTS
+import {SquareIconButton, StudentCard, CustomLoader} from '@components';
+import {styles} from './style';
+import {actionCreators} from '@actions';
+import {images, commonStyles, colors} from '@resources';
+import {FirebaseService} from '@services';
+
+class StudentList extends Component {
+  constructor(props) {
+    super(props);
+    this.state = {
+      loading: true,
+      studentList: [],
+    };
+    this.onResult = this.onResult.bind(this);
+    this.onError = this.onError.bind(this);
+  }
+
+  componentDidMount() {
+    this.props.networkListener();
+
+    const subscriber = firestore()
+      .collection('Users')
+      .onSnapshot(this.onResult, this.onError);
+  }
+
+  componentWillUnmount() {
+    // this.subscriber();
+  }
+
+  onResult(QuerySnapshot) {
+    QuerySnapshot.forEach(documentSnapshot => {
+      console.log('snap id>>>>>>>', documentSnapshot.id);
+    });
+
+    let response = QuerySnapshot.docs;
+    console.log(response);
+
+    // console.log('dob>>>>', response[0]._data.dob.toDate());
+    // console.log('lat>>>>', response[0]._data.location._latitude);
+    // console.log('long>>>>', response[0]._data.location._longitude);
+
+    var newList = [];
+    response.map((item, index) => {
+      var obj = {};
+      obj.firstname = item._data.firstname;
+      obj.lastname = item._data.lastname;
+      obj.dob = moment(item._data.dob.toDate())
+        .format('DD-MM-YYYY')
+        .toString();
+      obj.lat = item._data.location._latitude;
+      obj.long = item._data.location._longitude;
+      newList.push(obj);
+    });
+
+    this.setState({studentList: newList, loading: false});
+  }
+
+  onError(error) {
+    console.error(error);
+  }
+
+  _renderFlatlistItem = item => {
+    return (
+      <StudentCard
+        item={item}
+        onPress={() =>
+          this.props.navigation.navigate('AddStudent', {studentDetail: item})
+        }
+      />
+    );
+  };
+
+  _renderFlatlist = () => {
+    if (this.state.loading) {
+      return <CustomLoader />;
+    }
+
+    return (
+      <FlatList
+        data={this.state.studentList}
+        renderItem={item => this._renderFlatlistItem(item.item)}
+        keyExtractor={(item, index) => String(index)}
+      />
+    );
+  };
+
+  render() {
+    return <>{this._renderFlatlist()}</>;
+  }
+}
+
+function mapStateToProps(state) {
+  console.log('state>>>>>>>', state);
+  return {};
+}
+function mapDispatchToProps(dispatch) {
+  return bindActionCreators(actionCreators, dispatch);
+}
+//Connect everything
+export default connect(mapStateToProps, mapDispatchToProps)(StudentList);
