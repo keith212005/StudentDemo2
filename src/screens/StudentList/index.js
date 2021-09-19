@@ -45,30 +45,18 @@ class StudentList extends Component {
   }
 
   onResult(QuerySnapshot) {
-    QuerySnapshot.forEach(documentSnapshot => {
-      console.log('snap id>>>>>>>', documentSnapshot.id);
-    });
-
-    let response = QuerySnapshot.docs;
-    console.log(response);
-
-    // console.log('dob>>>>', response[0]._data.dob.toDate());
-    // console.log('lat>>>>', response[0]._data.location._latitude);
-    // console.log('long>>>>', response[0]._data.location._longitude);
-
     var newList = [];
-    response.map((item, index) => {
+    QuerySnapshot.forEach(item => {
+      console.log('snap id>>>>>>>', item);
       var obj = {};
+      obj.doc_id = item.id;
       obj.firstname = item._data.firstname;
       obj.lastname = item._data.lastname;
-      obj.dob = moment(item._data.dob.toDate())
-        .format('DD-MM-YYYY')
-        .toString();
+      obj.dob = moment(item._data.dob.toDate()).format('DD-MM-YYYY').toString();
       obj.lat = item._data.location._latitude;
       obj.long = item._data.location._longitude;
       newList.push(obj);
     });
-
     this.setState({studentList: newList, loading: false});
   }
 

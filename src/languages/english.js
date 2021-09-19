@@ -18,4 +18,6 @@ export const english = {
   CAMERA: 'Add image from camera',
   GALLERY: 'Choose Photo from Gallery',
   MISSING_CAMERA_PERMISSION: '',
+  ADD: 'Add',
+  UPDATE: 'Update',
 };

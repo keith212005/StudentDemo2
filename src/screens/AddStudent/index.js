@@ -1,10 +1,12 @@
 import React, {Component} from 'react';
-import {SafeAreaView, Text, View} from 'react-native';
+import {SafeAreaView, Text, View, Alert} from 'react-native';
 
 // THIRD PARTY IMPORTS
 import {KeyboardAwareScrollView} from '@codler/react-native-keyboard-aware-scroll-view';
-import Geolocation from '@react-native-community/geolocation';
+import Geolocation from 'react-native-geolocation-service';
 import moment from 'moment';
+import firestore from '@react-native-firebase/firestore';
+import storage from '@react-native-firebase/storage';
 
 // LOCAL IMPORTS
 import {styles} from './style';
@@ -28,6 +30,7 @@ export default class AddStudent extends Component {
       image_picker: false,
       showDatePicker: false,
       image: fieldObject,
+      doc_id: fieldObject,
       firstname: fieldObject,
       lastname: fieldObject,
       dob: fieldObject,
@@ -35,6 +38,8 @@ export default class AddStudent extends Component {
       long: fieldObject,
       fileDetails: '',
       profile_pic: fieldObject,
+      addUpdate: localize('ADD'),
+      hasLocationPermission: true,
     };
 
     this.inputs = new Array(6);
@@ -45,21 +50,43 @@ export default class AddStudent extends Component {
 
     if (this.props.route.params && this.props.route.params.studentDetail) {
       this.setDataFromParams();
+    } else {
+      if (this.state.hasLocationPermission) {
+        Geolocation.getCurrentPosition(
+          position => {
+            console.log(position.coords);
+            const {latitude, longitude} = position.coords;
+            var state_object = {
+              lat: {
+                ...this.state['lat'],
+                value: latitude.toString(),
+              },
+              long: {
+                ...this.state['long'],
+                value: longitude.toString(),
+              },
+            };
+            this.setState(state_object);
+          },
+          error => {
+            // See error code charts below.
+            console.log(error);
+            console.log(error.code, error.message);
+          },
+          {enableHighAccuracy: true, timeout: 15000},
+        );
+      }
     }
   }
 
   setDataFromParams() {
-    const {
-      firstname,
-      lastname,
-      dob,
-      lat,
-      long,
-    } = this.props.route.params.studentDetail;
-    console.log('dob>>>>>', dob);
-    this.setState({firstname, lastname, dob, lat, long});
+    const {doc_id, firstname, lastname, dob, lat, long} =
+      this.props.route.params.studentDetail;
+    console.log('dob>>>>>', this.props.route.params.studentDetail);
 
     var state_object = {
+      addUpdate: localize('UPDATE'),
+      doc_id: {...this.state['doc_id'], value: doc_id},
       firstname: {...this.state['firstname'], value: firstname},
       lastname: {...this.state['lastname'], value: lastname},
       dob: {...this.state['dob'], value: dob},
@@ -205,17 +232,11 @@ export default class AddStudent extends Component {
           onCancel={() => this.setState({showDatePicker: !showDatePicker})}
           valueObject={this.state[key]}
           onConfirm={date => {
-            // console.log('date inside screen>>>>>>', date);
-            var state_object = {
-              dob: {
-                ...this.state['dob'],
-                value: moment(date)
-                  .format('DD-MM-YYYY')
-                  .toString(),
-              },
-              showDatePicker: false,
-            };
-            this.setState(state_object);
+            this.onChangeText(
+              moment(date).format('DD-MM-YYYY').toString(),
+              'dob',
+            );
+            this.setState({showDatePicker: false});
           }}
         />
       </>
@@ -238,6 +259,132 @@ export default class AddStudent extends Component {
     );
   };
 
+  _onAddUpdateStudent(type) {
+    switch (type) {
+      case 'Add':
+        this.setState({loading: true}, () => {
+          this.addStudent().then(() => {
+            this.setState({loading: false});
+          });
+        });
+        break;
+      case 'Update':
+        this.setState({loading: true}, () => {
+          this.updateStudent().then(() => {
+            this.setState({loading: false});
+          });
+        });
+        break;
+      default:
+    }
+  }
+
+  addStudent() {
+    console.log('firebase add fucn');
+    const {firstname, lastname, dob, lat, long, profile_pic} = this.state;
+    let coordinates = new firestore.GeoPoint(
+      parseFloat(lat.value),
+      parseFloat(long.value),
+    );
+    return new Promise((resolve, reject) => {
+      firestore()
+        .collection('Users')
+        .add({
+          firstname: firstname.value,
+          lastname: lastname.value,
+          dob: firestore.Timestamp.fromDate(
+            moment(dob.value, 'DD-MM-YYYY').toDate(),
+          ),
+          location: coordinates,
+          uri: profile_pic.value,
+        })
+        .then(res => {
+          Alert.alert('Status', 'Record added.');
+          resolve();
+        })
+        .catch(err => reject(err));
+
+      let refName = 'profile_' + firstname.value;
+      console.log('refname', refName);
+
+      storage()
+        .ref(refName)
+        .putFile(profile_pic.value)
+        .then(snapshot => {
+          //You can check the image is now uploaded in the storage bucket
+          console.log(` has been successfully uploaded.`);
+          Alert.alert('Status', 'File Uploaded.');
+        })
+        .catch(e => console.log('uploading image error => ', e));
+    });
+  }
+
+  updateStudent() {
+    console.log('updating.....');
+    const {doc_id, firstname, lastname, dob, lat, long, profile_pic} =
+      this.state;
+    let coordinates = new firestore.GeoPoint(
+      parseInt(lat.value),
+      parseInt(long.value),
+    );
+    console.log('docid>>>>>>', doc_id);
+    return new Promise((resolve, reject) => {
+      var washingtonRef = firestore()
+        .collection('Users')
+        .doc(doc_id.value)
+        .set({
+          firstname: firstname.value,
+          lastname: lastname.value,
+          dob: firestore.Timestamp.fromDate(
+            moment(dob.value, 'DD-MM-YYYY').toDate(),
+          ),
+          location: coordinates,
+          uri: profile_pic.value,
+        })
+        .then(() => {
+          Alert.alert('Status', 'Record updated.');
+        });
+    });
+  }
+
+  _onAddUpdateStudent(type) {
+    console.log('add type>>>>');
+    switch (type) {
+      case localize('ADD'):
+        this.setState({loading: true}, () => {
+          this.addStudent().then(() => {
+            this.setState({loading: false});
+          });
+        });
+        break;
+      case localize('UPDATE'):
+        this.setState({loading: true}, () => {
+          this.updateStudent().then(() => {
+            this.setState({loading: false});
+          });
+        });
+        break;
+      default:
+    }
+  }
+
+  onSubmit() {
+    console.log('submit called....');
+
+    this.checkValidation(6, 'long', false).then(() => {
+      if (
+        !this.state.firstname.isError &&
+        !this.state.lastname.isError &&
+        !this.state.dob.isError &&
+        !this.state.lat.isError &&
+        !this.state.long.isError &&
+        !this.state.profile_pic.isError
+      ) {
+        this._onAddUpdateStudent(this.state.addUpdate);
+      }
+    });
+  }
+
   render() {
     return (
       <KeyboardAwareScrollView>
@@ -252,7 +399,10 @@ export default class AddStudent extends Component {
               keyboardType: 'numeric',
               blurOnSubmit: true,
             })}
-            <SubmitButton title="Save" />
+            <SubmitButton
+              title={this.state.addUpdate}
+              onPress={() => this.onSubmit()}
+            />
           </View>
           <ImagePicker
             show={this.state.image_picker}

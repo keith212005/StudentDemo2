@@ -22,11 +22,10 @@ export default class StudentCard extends Component {
               size="medium"
               rounded
               title="MT"
-              onPress={() => console.log('Works!')}
+              onPress={this.props.onPress}
               activeOpacity={0.7}
               source={{
-                uri:
-                  'https://s3.amazonaws.com/uifaces/faces/twitter/ladylexy/128.jpg',
+                uri: 'https://s3.amazonaws.com/uifaces/faces/twitter/ladylexy/128.jpg',
               }}
             />
 
@@ -64,6 +63,7 @@ const styles = StyleSheet.create({
     shadowOpacity: 0.25,
     shadowRadius: 3.84,
     elevation: 5,
+    marginBottom: 10,
   },
   container: {
     flex: 2,
