@@ -38,8 +38,6 @@ export default class ImagePicker extends React.Component {
     getImageFromMobile(fromCameraOrGallery)
       .then(imageData => this.props.image_path(imageData))
       .catch(err => {
-        // console.log('cmmmmera>>>', err.code);
-
         if (err.code == 'E_NO_CAMERA_PERMISSION') {
           Alert.alert(
             'Permission',

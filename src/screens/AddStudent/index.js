@@ -1,5 +1,5 @@
 import React, {Component} from 'react';
-import {SafeAreaView, Text, View, Alert} from 'react-native';
+import {SafeAreaView, Text, View, Alert, ActivityIndicator} from 'react-native';
 
 // THIRD PARTY IMPORTS
 import {KeyboardAwareScrollView} from '@codler/react-native-keyboard-aware-scroll-view';
@@ -7,6 +7,7 @@ import Geolocation from 'react-native-geolocation-service';
 import moment from 'moment';
 import firestore from '@react-native-firebase/firestore';
 import storage from '@react-native-firebase/storage';
+import {requestMultiple, PERMISSIONS} from 'react-native-permissions';
 
 // LOCAL IMPORTS
 import {styles} from './style';
@@ -16,8 +17,9 @@ import {
   SubmitButton,
   DateTimePicker,
   ImagePicker,
+  CustomLoader,
 } from '@components';
-import {images} from '@resources';
+import {images, colors} from '@resources';
 import {fieldObject} from '@constants';
 import {localize} from '@languages';
 import {isEmpty} from '@utils';
@@ -36,7 +38,6 @@ export default class AddStudent extends Component {
       dob: fieldObject,
       lat: fieldObject,
       long: fieldObject,
-      fileDetails: '',
       profile_pic: fieldObject,
       addUpdate: localize('ADD'),
       hasLocationPermission: true,
@@ -46,15 +47,12 @@ export default class AddStudent extends Component {
   }
 
   componentDidMount() {
-    // Geolocation.getCurrentPosition(info => console.log(info));
-
     if (this.props.route.params && this.props.route.params.studentDetail) {
       this.setDataFromParams();
     } else {
-      if (this.state.hasLocationPermission) {
+      this.requestPermissions().then(() => {
         Geolocation.getCurrentPosition(
           position => {
-            console.log(position.coords);
             const {latitude, longitude} = position.coords;
             var state_object = {
               lat: {
@@ -68,21 +66,53 @@ export default class AddStudent extends Component {
             };
             this.setState(state_object);
           },
-          error => {
-            // See error code charts below.
-            console.log(error);
-            console.log(error.code, error.message);
-          },
-          {enableHighAccuracy: true, timeout: 15000},
+          error => console.log(error),
+          {enableHighAccuracy: true, timeout: 15000, maximumAge: 10000},
         );
-      }
+      });
     }
   }
 
+  requestPermissions() {
+    return new Promise((resolve, reject) => {
+      var permissions = [];
+      if (Platform.OS == 'ios') {
+        permissions = [
+          PERMISSIONS.IOS.CAMERA,
+          PERMISSIONS.IOS.LOCATION_ALWAYS,
+          PERMISSIONS.IOS.WRITE_EXTERNAL_STORAGE,
+        ];
+      } else {
+        permissions = [
+          PERMISSIONS.ANDROID.CAMERA,
+          PERMISSIONS.ANDROID.WRITE_EXTERNAL_STORAGE,
+          PERMISSIONS.ANDROID.ACCESS_FINE_LOCATION,
+        ];
+      }
+
+      requestMultiple(permissions).then(statuses => {
+        const permissionStatus = [statuses[permissions[0]]];
+        if (this.oneOfThem(permissionStatus, 'granted')) {
+          resolve(permissionStatus);
+        }
+      });
+    });
+  }
+
+  oneOfThem(array, value) {
+    return array.includes(value);
+  }
+
   setDataFromParams() {
-    const {doc_id, firstname, lastname, dob, lat, long} =
-      this.props.route.params.studentDetail;
-    console.log('dob>>>>>', this.props.route.params.studentDetail);
+    const {
+      doc_id,
+      firstname,
+      lastname,
+      dob,
+      lat,
+      long,
+      download_url,
+    } = this.props.route.params.studentDetail;
 
     var state_object = {
       addUpdate: localize('UPDATE'),
@@ -92,6 +122,7 @@ export default class AddStudent extends Component {
       dob: {...this.state['dob'], value: dob},
       lat: {...this.state['lat'], value: lat.toString()},
       long: {...this.state['long'], value: long.toString()},
+      profile_pic: {...this.state['profile_pic'], value: download_url},
     };
     this.setState(state_object);
   }
@@ -100,6 +131,7 @@ export default class AddStudent extends Component {
   checkValidation(number, key, isFocus) {
     return new Promise(resolve => {
       var state_object = {};
+      const profile_pic = this.state.profile_pic.value;
       const firstname = this.state.firstname.value;
       const lastname = this.state.lastname.value;
       const dob = this.state.dob.value;
@@ -154,11 +186,20 @@ export default class AddStudent extends Component {
 
         case 2:
           if (isEmpty(firstname)) {
-            console.log('first name is empty');
             state_object['firstname'] = {
               value: firstname,
               isError: true,
               errorText: localize('PLEASE_ENTER_FIRST_NAME'),
+              isFocus: false,
+            };
+          }
+
+        case 1:
+          if (isEmpty(profile_pic)) {
+            state_object['profile_pic'] = {
+              value: profile_pic,
+              isError: true,
+              errorText: localize('PLEASE_SELECT_IMAGE'),
               isFocus: false,
             };
           }
@@ -184,7 +225,6 @@ export default class AddStudent extends Component {
 
   // hadnle onSubmitEditing method of input box
   onSubmitEditing(number) {
-    console.log(number);
     if (number == 2) {
       this.inputs[number + 2].focus();
     } else if (number < 5) {
@@ -218,7 +258,6 @@ export default class AddStudent extends Component {
   }
 
   _renderDatePicker(index, key, extraProps = {}) {
-    // console.log('render>>>> dt pi', this.state[key].value);
     const {showDatePicker} = this.state;
     return (
       <>
@@ -233,7 +272,9 @@ export default class AddStudent extends Component {
           valueObject={this.state[key]}
           onConfirm={date => {
             this.onChangeText(
-              moment(date).format('DD-MM-YYYY').toString(),
+              moment(date)
+                .format('DD-MM-YYYY')
+                .toString(),
               'dob',
             );
             this.setState({showDatePicker: false});
@@ -251,6 +292,7 @@ export default class AddStudent extends Component {
     return (
       <View style={{margin: 10}}>
         <RoundAvatar
+          valueObject={this.state.profile_pic}
           showEditIcon={true}
           uri={this.state.profile_pic.value}
           onPress={() => this.toggleImagePicker()}
@@ -280,54 +322,63 @@ export default class AddStudent extends Component {
   }
 
   addStudent() {
-    console.log('firebase add fucn');
     const {firstname, lastname, dob, lat, long, profile_pic} = this.state;
     let coordinates = new firestore.GeoPoint(
       parseFloat(lat.value),
       parseFloat(long.value),
     );
+
     return new Promise((resolve, reject) => {
-      firestore()
-        .collection('Users')
-        .add({
-          firstname: firstname.value,
-          lastname: lastname.value,
-          dob: firestore.Timestamp.fromDate(
-            moment(dob.value, 'DD-MM-YYYY').toDate(),
-          ),
-          location: coordinates,
-          uri: profile_pic.value,
-        })
-        .then(res => {
-          Alert.alert('Status', 'Record added.');
-          resolve();
-        })
-        .catch(err => reject(err));
-
-      let refName = 'profile_' + firstname.value;
-      console.log('refname', refName);
-
+      let fileName = 'profile_' + firstname.value + '.png';
       storage()
-        .ref(refName)
+        .ref(fileName)
         .putFile(profile_pic.value)
         .then(snapshot => {
-          //You can check the image is now uploaded in the storage bucket
-          console.log(` has been successfully uploaded.`);
-          Alert.alert('Status', 'File Uploaded.');
+          this.getImageUrl().then(url => {
+            firestore()
+              .collection('Users')
+              .add({
+                firstname: firstname.value,
+                lastname: lastname.value,
+                location: coordinates,
+                image_name: fileName,
+                download_url: url,
+                dob: firestore.Timestamp.fromDate(
+                  moment(dob.value, 'DD-MM-YYYY').toDate(),
+                ),
+              })
+              .then(res => resolve())
+              .catch(err => reject(err));
+          });
         })
         .catch(e => console.log('uploading image error => ', e));
     });
   }
 
+  getImageUrl() {
+    let fileName = 'profile_' + this.state.firstname.value + '.png';
+    return new Promise((resolve, reject) => {
+      storage()
+        .ref(fileName)
+        .getDownloadURL()
+        .then(url => resolve(url));
+    });
+  }
+
   updateStudent() {
-    console.log('updating.....');
-    const {doc_id, firstname, lastname, dob, lat, long, profile_pic} =
-      this.state;
+    const {
+      doc_id,
+      firstname,
+      lastname,
+      dob,
+      lat,
+      long,
+      profile_pic,
+    } = this.state;
     let coordinates = new firestore.GeoPoint(
       parseInt(lat.value),
       parseInt(long.value),
     );
-    console.log('docid>>>>>>', doc_id);
     return new Promise((resolve, reject) => {
       var washingtonRef = firestore()
         .collection('Users')
@@ -342,18 +393,30 @@ export default class AddStudent extends Component {
           uri: profile_pic.value,
         })
         .then(() => {
-          Alert.alert('Status', 'Record updated.');
+          this.setState({loading: false}, () => {
+            Alert.alert('Status', 'Record updated.');
+          });
         });
+      let fileName = 'profile_' + firstname.value + '.png';
+      storage()
+        .ref(fileName)
+        .putFile(profile_pic.value)
+        .then(snapshot => {
+          this.setState({loading: false}, () => {
+            Alert.alert('Status', 'Record updated.');
+          });
+        })
+        .catch(e => console.log('uploading image error => ', e));
     });
   }
 
   _onAddUpdateStudent(type) {
-    console.log('add type>>>>');
     switch (type) {
       case localize('ADD'):
         this.setState({loading: true}, () => {
           this.addStudent().then(() => {
             this.setState({loading: false});
+            Alert.alert('Status', 'Record added.');
           });
         });
         break;
@@ -369,8 +432,6 @@ export default class AddStudent extends Component {
   }
 
   onSubmit() {
-    console.log('submit called....');
-
     this.checkValidation(6, 'long', false).then(() => {
       if (
         !this.state.firstname.isError &&
@@ -389,6 +450,7 @@ export default class AddStudent extends Component {
     return (
       <KeyboardAwareScrollView>
         <SafeAreaView>
+          {this.state.loading && <CustomLoader />}
           <View style={styles.container}>
             {this._renderAvatar(0, 'image')}
             {this._renderInputs(1, 'firstname')}
@@ -406,18 +468,9 @@ export default class AddStudent extends Component {
           </View>
           <ImagePicker
             show={this.state.image_picker}
-            onChangeData={data => {}}
-            image_path={imageData => {
-              console.log('imagedata>>>>>>', typeof imageData.path);
-              this.setState({
-                fileDetails: imageData,
-                profile_pic: {
-                  ...this.state['profile_pic'],
-                  value: imageData.path,
-                },
-              });
-              this.onChangeText(imageData.path, 'profile_pic');
-            }}
+            image_path={imageData =>
+              this.onChangeText(imageData.path, 'profile_pic')
+            }
             onClose={() => this.setState({image_picker: false})}
           />
         </SafeAreaView>

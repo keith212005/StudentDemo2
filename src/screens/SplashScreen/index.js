@@ -10,6 +10,8 @@ import {bindActionCreators} from 'redux';
 import {styles} from './style';
 import {localize} from '@languages';
 import {actionCreators} from '@actions';
+import {renderIcon} from '@components';
+import {images, responsiveWidth} from '@resources';
 
 class SplashScreen extends Component {
   componentDidMount() {
@@ -26,7 +28,7 @@ class SplashScreen extends Component {
   render() {
     return (
       <View style={styles.container}>
-        <Text>I'm the SplashScreen component</Text>
+        {renderIcon(images.hat, responsiveWidth(40))}
       </View>
     );
   }

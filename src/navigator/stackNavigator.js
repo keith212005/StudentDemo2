@@ -1,5 +1,12 @@
 import React, {Component} from 'react';
-import {View, Text, StyleSheet, StatusBar, Button} from 'react-native';
+import {
+  View,
+  Text,
+  StyleSheet,
+  StatusBar,
+  TouchableOpacity,
+  Image,
+} from 'react-native';
 
 // THIRD PARTY IMPORT
 import {NavigationContainer, CommonActions} from '@react-navigation/native';
@@ -8,6 +15,8 @@ import {createStackNavigator} from '@react-navigation/stack';
 // LOCAL IMPORTS
 import * as Screen from '@screens';
 import {localize} from '@languages';
+import {renderIcon} from '@components';
+import {images, commonStyles, responsiveWidth} from '@resources';
 
 const Stack = createStackNavigator();
 
@@ -47,10 +56,16 @@ export default class StackNavigator extends Component {
                 headerShown: true,
                 title: 'Student List',
                 headerRight: () => (
-                  <Button
-                    title="Add student"
-                    onPress={() => navigation.navigate('AddStudent')}
-                  />
+                  <TouchableOpacity
+                    onPress={() => navigation.navigate('AddStudent')}>
+                    <Image
+                      source={{uri: images.plus}}
+                      style={[
+                        commonStyles.squareLayout(30),
+                        {marginRight: responsiveWidth(5)},
+                      ]}
+                    />
+                  </TouchableOpacity>
                 ),
               }),
             })}

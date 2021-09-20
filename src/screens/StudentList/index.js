@@ -13,6 +13,7 @@ import {connect} from 'react-redux';
 import {bindActionCreators} from 'redux';
 import firestore from '@react-native-firebase/firestore';
 import moment from 'moment';
+import storage from '@react-native-firebase/storage';
 
 // LOCAL IMPORTS
 import {SquareIconButton, StudentCard, CustomLoader} from '@components';
@@ -40,24 +41,39 @@ class StudentList extends Component {
       .onSnapshot(this.onResult, this.onError);
   }
 
-  componentWillUnmount() {
-    // this.subscriber();
-  }
-
-  onResult(QuerySnapshot) {
+  async onResult(QuerySnapshot) {
     var newList = [];
     QuerySnapshot.forEach(item => {
-      console.log('snap id>>>>>>>', item);
       var obj = {};
       obj.doc_id = item.id;
       obj.firstname = item._data.firstname;
       obj.lastname = item._data.lastname;
-      obj.dob = moment(item._data.dob.toDate()).format('DD-MM-YYYY').toString();
+      obj.dob = moment(item._data.dob.toDate())
+        .format('DD-MM-YYYY')
+        .toString();
       obj.lat = item._data.location._latitude;
       obj.long = item._data.location._longitude;
+      obj.profile_pic = item._data.image_name;
+      obj.download_url = item._data.download_url;
       newList.push(obj);
     });
+
+    this.state.studentList.map(item => {
+      this.getImage(item.profile_pic).then(url => {
+        new this.setState({studentList: newList, loading: false}, () => {});
+      });
+    });
     this.setState({studentList: newList, loading: false});
+  }
+
+  async getImage(imageName) {
+    await new Promise((resolve, reject) => {
+      storage()
+        .ref(imageName)
+        .getDownloadURL()
+        .then(url => resolve(url))
+        .catch(err => console.log('kj err>>>', err));
+    });
   }
 
   onError(error) {
@@ -95,7 +111,6 @@ class StudentList extends Component {
 }
 
 function mapStateToProps(state) {
-  console.log('state>>>>>>>', state);
   return {};
 }
 function mapDispatchToProps(dispatch) {

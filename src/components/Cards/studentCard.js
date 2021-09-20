@@ -5,14 +5,17 @@ import {
   StyleSheet,
   TouchableOpacity,
   Pressable,
+  Image,
 } from 'react-native';
+
+import storage from '@react-native-firebase/storage';
 
 import {Card, ListItem, Button, Icon, Avatar} from 'react-native-elements';
 import {commonStyles, images, responsiveWidth} from '@resources';
 
 export default class StudentCard extends Component {
   render() {
-    const {firstname, lastname} = this.props.item;
+    const {firstname, lastname, download_url} = this.props.item;
     return (
       <Pressable onPress={this.props.onPress}>
         <Card containerStyle={styles.cardContainerStyle}>
@@ -23,10 +26,7 @@ export default class StudentCard extends Component {
               rounded
               title="MT"
               onPress={this.props.onPress}
-              activeOpacity={0.7}
-              source={{
-                uri: 'https://s3.amazonaws.com/uifaces/faces/twitter/ladylexy/128.jpg',
-              }}
+              source={{uri: download_url ? download_url : images.error}}
             />
 
             <View
