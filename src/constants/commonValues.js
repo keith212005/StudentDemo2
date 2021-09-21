@@ -7,3 +7,10 @@ export const constant = {
 export var fieldObject = error => {
   return {value: '', isError: false, errorText: error, isFocus: false};
 };
+
+export var loginFields = {
+  loading: false,
+  username: fieldObject,
+  password: fieldObject,
+  secureTextEntry: true,
+};

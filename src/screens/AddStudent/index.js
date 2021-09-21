@@ -1,5 +1,7 @@
+/* eslint-disable react-native/no-inline-styles */
+/* eslint-disable no-fallthrough */
 import React, {Component} from 'react';
-import {SafeAreaView, Text, View, Alert, ActivityIndicator} from 'react-native';
+import {SafeAreaView, Text, View, Alert, Platform} from 'react-native';
 
 // THIRD PARTY IMPORTS
 import {KeyboardAwareScrollView} from '@codler/react-native-keyboard-aware-scroll-view';
@@ -19,7 +21,6 @@ import {
   ImagePicker,
   CustomLoader,
 } from '@components';
-import {images, colors} from '@resources';
 import {fieldObject} from '@constants';
 import {localize} from '@languages';
 import {isEmpty} from '@utils';
@@ -57,11 +58,11 @@ export default class AddStudent extends Component {
             const {latitude, longitude} = position.coords;
             var state_object = {
               lat: {
-                ...this.state['lat'],
+                ...this.state.lat,
                 value: latitude.toString(),
               },
               long: {
-                ...this.state['long'],
+                ...this.state.long,
                 value: longitude.toString(),
               },
             };
@@ -105,25 +106,18 @@ export default class AddStudent extends Component {
   }
 
   setDataFromParams() {
-    const {
-      doc_id,
-      firstname,
-      lastname,
-      dob,
-      lat,
-      long,
-      download_url,
-    } = this.props.route.params.studentDetail;
+    const {doc_id, firstname, lastname, dob, lat, long, download_url} =
+      this.props.route.params.studentDetail;
 
     var state_object = {
       addUpdate: localize('UPDATE'),
-      doc_id: {...this.state['doc_id'], value: doc_id},
-      firstname: {...this.state['firstname'], value: firstname},
-      lastname: {...this.state['lastname'], value: lastname},
-      dob: {...this.state['dob'], value: dob},
-      lat: {...this.state['lat'], value: lat.toString()},
-      long: {...this.state['long'], value: long.toString()},
-      profile_pic: {...this.state['profile_pic'], value: download_url},
+      doc_id: {...this.state.doc_id, value: doc_id},
+      firstname: {...this.state.firstname, value: firstname},
+      lastname: {...this.state.lastname, value: lastname},
+      dob: {...this.state.dob, value: dob},
+      lat: {...this.state.lat, value: lat.toString()},
+      long: {...this.state.long, value: long.toString()},
+      profile_pic: {...this.state.profile_pic, value: download_url},
     };
     this.setState(state_object);
   }
@@ -147,7 +141,7 @@ export default class AddStudent extends Component {
       switch (number) {
         case 6:
           if (isEmpty(long)) {
-            state_object['long'] = {
+            state_object.long = {
               value: long,
               isError: true,
               errorText: localize('PLEASE_ENTER_LONG'),
@@ -157,7 +151,7 @@ export default class AddStudent extends Component {
 
         case 5:
           if (isEmpty(lat)) {
-            state_object['lat'] = {
+            state_object.lat = {
               value: lat,
               isError: true,
               errorText: localize('PLEASE_ENTER_LAT'),
@@ -167,7 +161,7 @@ export default class AddStudent extends Component {
 
         case 4:
           if (isEmpty(dob)) {
-            state_object['dob'] = {
+            state_object.dob = {
               value: dob,
               isError: true,
               errorText: localize('PLEASE_ENTER_DOB'),
@@ -177,7 +171,7 @@ export default class AddStudent extends Component {
 
         case 3:
           if (isEmpty(lastname)) {
-            state_object['lastname'] = {
+            state_object.lastname = {
               value: lastname,
               isError: true,
               errorText: localize('PLEASE_ENTER_LAST_NAME'),
@@ -187,7 +181,7 @@ export default class AddStudent extends Component {
 
         case 2:
           if (isEmpty(firstname)) {
-            state_object['firstname'] = {
+            state_object.firstname = {
               value: firstname,
               isError: true,
               errorText: localize('PLEASE_ENTER_FIRST_NAME'),
@@ -197,7 +191,7 @@ export default class AddStudent extends Component {
 
         case 1:
           if (isEmpty(profile_pic)) {
-            state_object['profile_pic'] = {
+            state_object.profile_pic = {
               value: profile_pic,
               isError: true,
               errorText: localize('PLEASE_SELECT_IMAGE'),
@@ -242,14 +236,13 @@ export default class AddStudent extends Component {
       <>
         {this._renderTitle(key)}
         <CustomInput
-          refName={input => (this.inputs[number] = input)}
+          refName={input => (this.inputs[index] = input)}
           value={this.state[key].value}
           valueObject={this.state[key]}
           placeholder={localize(key)}
           onFocus={() => this.checkValidation(index, key, true)}
           onEndEditing={() => this.checkValidation(index + 1, key, false)}
           onSubmitEditing={() => this.onSubmitEditing(index)}
-          refName={input => (this.inputs[index] = input)}
           onChangeText={value => this.onChangeText(value, key)}
           returnKeyType="done"
           {...extraProps}
@@ -273,9 +266,7 @@ export default class AddStudent extends Component {
           valueObject={this.state[key]}
           onConfirm={date => {
             this.onChangeText(
-              moment(date)
-                .format('DD-MM-YYYY')
-                .toString(),
+              moment(date).format('DD-MM-YYYY').toString(),
               'dob',
             );
             this.setState({showDatePicker: false});
@@ -367,15 +358,8 @@ export default class AddStudent extends Component {
   }
 
   updateStudent() {
-    const {
-      doc_id,
-      firstname,
-      lastname,
-      dob,
-      lat,
-      long,
-      profile_pic,
-    } = this.state;
+    const {doc_id, firstname, lastname, dob, lat, long, profile_pic} =
+      this.state;
     let coordinates = new firestore.GeoPoint(
       parseInt(lat.value),
       parseInt(long.value),
@@ -411,6 +395,7 @@ export default class AddStudent extends Component {
     });
   }
 
+  // eslint-disable-next-line no-dupe-class-members
   _onAddUpdateStudent(type) {
     switch (type) {
       case localize('ADD'):

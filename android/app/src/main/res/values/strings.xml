@@ -1,3 +1,5 @@
 <resources>
     <string name="app_name">StudentDemo</string>
+    <string name="facebook_app_id">450118869616991</string>
+    <string name="fb_login_protocol_scheme">fb450118869616991</string>
 </resources>

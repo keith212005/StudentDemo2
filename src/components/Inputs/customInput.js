@@ -1,15 +1,10 @@
 import React from 'react';
-import {StyleSheet, TextInput, View, Image, Text} from 'react-native';
+import {StyleSheet, View, Text} from 'react-native';
 
-import {Input, Center, NativeBaseProvider} from 'native-base';
+import {Input} from 'native-base';
+import Icon from 'react-native-vector-icons/FontAwesome';
 
-import {
-  responsiveHeight,
-  responsiveWidth,
-  colors,
-  commonStyles,
-  images,
-} from '@resources';
+import {responsiveWidth, commonStyles, images} from '@resources';
 import {renderIcon} from '../commonViews';
 
 export default class CustomInput extends React.PureComponent {
@@ -20,7 +15,7 @@ export default class CustomInput extends React.PureComponent {
   };
 
   render() {
-    const {isFocus, refName, extraProps} = this.props;
+    const {refName, secureTextEntry, rightIcon} = this.props;
     const {isError, errorText} = this.props.valueObject;
 
     return (
@@ -32,6 +27,18 @@ export default class CustomInput extends React.PureComponent {
             placeholder={this.props.placeholder}
             _light={{placeholderTextColor: 'blueGray.400'}}
             _dark={{placeholderTextColor: 'blueGray.50'}}
+            InputRightElement={
+              rightIcon ? (
+                <Icon
+                  type="font-awesome"
+                  name={secureTextEntry ? 'eye-slash' : 'eye'}
+                  size={25}
+                  color="#787878"
+                  onPress={() => this.props.togglePassword()}
+                  style={{marginRight: 10}}
+                />
+              ) : null
+            }
             {...this.props}
           />
         </View>

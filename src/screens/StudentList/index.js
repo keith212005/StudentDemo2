@@ -48,9 +48,7 @@ class StudentList extends Component {
       obj.doc_id = item.id;
       obj.firstname = item._data.firstname;
       obj.lastname = item._data.lastname;
-      obj.dob = moment(item._data.dob.toDate())
-        .format('DD-MM-YYYY')
-        .toString();
+      obj.dob = moment(item._data.dob.toDate()).format('DD-MM-YYYY').toString();
       obj.lat = item._data.location._latitude;
       obj.long = item._data.location._longitude;
       obj.profile_pic = item._data.image_name;
@@ -111,6 +109,7 @@ class StudentList extends Component {
 }
 
 function mapStateToProps(state) {
+  console.log('Login state>>>>', state);
   return {};
 }
 function mapDispatchToProps(dispatch) {
