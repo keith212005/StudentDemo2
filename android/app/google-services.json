@@ -14,6 +14,14 @@
       },
       "oauth_client": [
         {
+          "client_id": "800520901917-hrvgpnf99ke2psa57oah53o5tc4eqtc4.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.studentdemo",
+            "certificate_hash": "5e8f16062ea3cd2c4a0d547876baa6f38cabf625"
+          }
+        },
+        {
           "client_id": "800520901917-l4gfgcasuccoc2ap8qfv93krrdap9ik7.apps.googleusercontent.com",
           "client_type": 3
         }
@@ -29,6 +37,13 @@
             {
               "client_id": "800520901917-l4gfgcasuccoc2ap8qfv93krrdap9ik7.apps.googleusercontent.com",
               "client_type": 3
+            },
+            {
+              "client_id": "800520901917-4ha0vhrs9b17pos8t5dbgb48iakv0p65.apps.googleusercontent.com",
+              "client_type": 2,
+              "ios_info": {
+                "bundle_id": "org.reactjs.native.example.StudentDemo"
+              }
             }
           ]
         }

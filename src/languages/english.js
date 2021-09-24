@@ -3,7 +3,10 @@ export const english = {
   LOGIN: 'Login',
   STUDENT_LIST: 'StudentList',
   ADD_STUDENT: 'AddStudent',
+  DRAWER_NAVIGATOR: 'DrawerNavigator',
   ENTER_STUDENT_DETAIL: 'Enter Student Detail',
+  SETTINGS: 'Settings',
+
   firstname: 'First name',
   lastname: 'Last name',
   dob: 'Date of birth',
@@ -25,4 +28,13 @@ export const english = {
   PLEASE_ENTER_USERNAME: 'Please enter username',
   PLEASE_ENTER_PASSWORD: 'Please enter password',
   PASSWORD_LENGTH_ERROR: 'Password length should be atleast 6 characters',
+
+  LOGOUT: 'Logout',
+  LOGOUT_MESSAGE: 'Are you sure you want to logout?',
+  CANCEL: 'Cancel',
+  OK: 'Ok',
+  LOCATION_PERMISSION:
+    'Student Demo need to access your location. Please allow location service from Settings -> Permissions -> Location.',
+  GO_TO_SETTINGS: 'GO TO SETTINGS',
+  DELETE_RECORD: 'Delete',
 };

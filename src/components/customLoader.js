@@ -1,3 +1,4 @@
+/* eslint-disable react-native/no-inline-styles */
 import React, {Component} from 'react';
 import {ActivityIndicator} from 'react-native';
 import {colors} from '@resources';

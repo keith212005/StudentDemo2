@@ -44,6 +44,7 @@ class StudentList extends Component {
   async onResult(QuerySnapshot) {
     var newList = [];
     QuerySnapshot.forEach(item => {
+      console.log(item.id.toString() + '.png');
       var obj = {};
       obj.doc_id = item.id;
       obj.firstname = item._data.firstname;
@@ -51,27 +52,11 @@ class StudentList extends Component {
       obj.dob = moment(item._data.dob.toDate()).format('DD-MM-YYYY').toString();
       obj.lat = item._data.location._latitude;
       obj.long = item._data.location._longitude;
-      obj.profile_pic = item._data.image_name;
-      obj.download_url = item._data.download_url;
+      obj.download_url = item._data.uri;
       newList.push(obj);
     });
 
-    this.state.studentList.map(item => {
-      this.getImage(item.profile_pic).then(url => {
-        new this.setState({studentList: newList, loading: false}, () => {});
-      });
-    });
     this.setState({studentList: newList, loading: false});
-  }
-
-  async getImage(imageName) {
-    await new Promise((resolve, reject) => {
-      storage()
-        .ref(imageName)
-        .getDownloadURL()
-        .then(url => resolve(url))
-        .catch(err => console.log('kj err>>>', err));
-    });
   }
 
   onError(error) {
@@ -109,7 +94,6 @@ class StudentList extends Component {
 }
 
 function mapStateToProps(state) {
-  console.log('Login state>>>>', state);
   return {};
 }
 function mapDispatchToProps(dispatch) {

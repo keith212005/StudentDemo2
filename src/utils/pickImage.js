@@ -1,6 +1,5 @@
 import ImagePicker from 'react-native-image-crop-picker';
 import {responsiveWidth} from '@resources';
-import {isValueOneOfThem} from './utilities';
 import {localize} from '@languages';
 
 var config = {
@@ -18,7 +17,7 @@ var extraStyle = {
 
 export const getImageFromMobile = (type, extraProps = extraStyle) => {
   return new Promise((resolve, reject) => {
-    if (type == 'camera') {
+    if (type === 'camera') {
       ImagePicker.openCamera({
         ...config,
         ...extraProps,

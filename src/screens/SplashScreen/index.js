@@ -19,7 +19,14 @@ class SplashScreen extends Component {
       this.props.navigation.dispatch(
         CommonActions.reset({
           index: 0,
-          routes: [{name: localize('LOGIN')}],
+          routes: [
+            {
+              name:
+                Object.keys(this.props.user_info).length === 0
+                  ? localize('LOGIN')
+                  : localize('DRAWER_NAVIGATOR'),
+            },
+          ],
         }),
       );
     }, 2000);
@@ -35,7 +42,7 @@ class SplashScreen extends Component {
 }
 
 function mapStateToProps(state) {
-  return {};
+  return {user_info: state.user_info};
 }
 function mapDispatchToProps(dispatch) {
   return bindActionCreators(actionCreators, dispatch);

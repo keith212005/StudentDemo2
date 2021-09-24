@@ -17,6 +17,7 @@ import * as Screen from '@screens';
 import {localize} from '@languages';
 import {renderIcon} from '@components';
 import {images, commonStyles, responsiveWidth} from '@resources';
+import DrawerNavigator from './drawerNavigator';
 
 const Stack = createStackNavigator();
 
@@ -31,7 +32,7 @@ export default class StackNavigator extends Component {
     return (
       <Stack.Screen
         name={routeName}
-        component={Screen[routeName]}
+        component={!isNavigator ? Screen[routeName] : extraProps}
         {...extraProps}
       />
     );
@@ -76,6 +77,9 @@ export default class StackNavigator extends Component {
               },
             })}
             {this.addScreen(localize('LOGIN'))}
+            {this.addScreen('DrawerNavigator', true, {
+              component: DrawerNavigator,
+            })}
           </Stack.Navigator>
         </NavigationContainer>
       </>

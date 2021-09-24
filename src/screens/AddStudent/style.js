@@ -1,11 +1,22 @@
 import {StyleSheet} from 'react-native';
-import {responsiveHeight, responsiveWidth} from '@resources';
+import {responsiveHeight, responsiveWidth, commonStyles} from '@resources';
 
 export const styles = StyleSheet.create({
   container: {
-    alignItems: 'center',
+    flex: 1,
     backgroundColor: 'white',
+    marginHorizontal: 20,
     height: responsiveHeight(100),
-    // padding: 10,
+  },
+  bottomButtonsContainer: {
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+  },
+  titleStyle: {
+    ...commonStyles.textStyle(
+      '_14',
+      'placeholderColor',
+      'PROXIMANOVA_SEMIBOLD',
+    ),
   },
 });

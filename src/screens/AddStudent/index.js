@@ -1,3 +1,4 @@
+/* eslint-disable radix */
 /* eslint-disable react-native/no-inline-styles */
 /* eslint-disable no-fallthrough */
 import React, {Component} from 'react';
@@ -5,11 +6,9 @@ import {SafeAreaView, Text, View, Alert, Platform} from 'react-native';
 
 // THIRD PARTY IMPORTS
 import {KeyboardAwareScrollView} from '@codler/react-native-keyboard-aware-scroll-view';
-import Geolocation from 'react-native-geolocation-service';
 import moment from 'moment';
-import firestore from '@react-native-firebase/firestore';
-import storage from '@react-native-firebase/storage';
 import {requestMultiple, PERMISSIONS} from 'react-native-permissions';
+import Geolocation from 'react-native-geolocation-service';
 
 // LOCAL IMPORTS
 import {styles} from './style';
@@ -24,27 +23,27 @@ import {
 import {fieldObject} from '@constants';
 import {localize} from '@languages';
 import {isEmpty} from '@utils';
-// import {GeoLocationServices} from '@services';
+import {FirebaseService, checkPermission} from '@services';
+import {responsiveWidth} from '../../resources';
 
+const initializeState = {
+  loading: false,
+  image_picker: false,
+  showDatePicker: false,
+  addUpdate: localize('ADD'),
+  doc_id: fieldObject,
+  firstname: fieldObject,
+  lastname: fieldObject,
+  dob: fieldObject,
+  lat: fieldObject,
+  long: fieldObject,
+  profile_pic: fieldObject,
+  isPofilePicChanged: false,
+};
 export default class AddStudent extends Component {
   constructor(props) {
     super(props);
-    this.state = {
-      loading: false,
-      image_picker: false,
-      showDatePicker: false,
-      image: fieldObject,
-      doc_id: fieldObject,
-      firstname: fieldObject,
-      lastname: fieldObject,
-      dob: fieldObject,
-      lat: fieldObject,
-      long: fieldObject,
-      profile_pic: fieldObject,
-      addUpdate: localize('ADD'),
-      hasLocationPermission: true,
-    };
-
+    this.state = initializeState;
     this.inputs = new Array(6);
   }
 
@@ -52,58 +51,33 @@ export default class AddStudent extends Component {
     if (this.props.route.params && this.props.route.params.studentDetail) {
       this.setDataFromParams();
     } else {
-      this.requestPermissions().then(() => {
-        Geolocation.getCurrentPosition(
-          position => {
-            const {latitude, longitude} = position.coords;
-            var state_object = {
-              lat: {
-                ...this.state.lat,
-                value: latitude.toString(),
+      var permission = [];
+      if (Platform.OS === 'ios') {
+        permission = PERMISSIONS.IOS.LOCATION_ALWAYS;
+      } else {
+        permission = PERMISSIONS.ANDROID.ACCESS_FINE_LOCATION;
+      }
+      setTimeout(async () => {
+        checkPermission(permission)
+          .then(result => {
+            this.setState({loading: true});
+            Geolocation.getCurrentPosition(
+              position => {
+                const {latitude, longitude} = position.coords;
+                this.onChangeText(latitude.toString(), 'lat');
+                this.onChangeText(longitude.toString(), 'long');
+                this.setState({loading: false});
               },
-              long: {
-                ...this.state.long,
-                value: longitude.toString(),
-              },
-            };
-            this.setState(state_object);
-          },
-          error => console.log(error),
-          {enableHighAccuracy: true, timeout: 15000, maximumAge: 10000},
-        );
-      });
+              error => console.log(error),
+              {enableHighAccuracy: true, timeout: 15000, maximumAge: 10000},
+            );
+          })
+          .catch(e => console.log(e));
+      }, 500);
     }
   }
 
-  requestPermissions() {
-    return new Promise((resolve, reject) => {
-      var permissions = [];
-      if (Platform.OS == 'ios') {
-        permissions = [
-          PERMISSIONS.IOS.CAMERA,
-          PERMISSIONS.IOS.LOCATION_ALWAYS,
-          PERMISSIONS.IOS.WRITE_EXTERNAL_STORAGE,
-        ];
-      } else {
-        permissions = [
-          PERMISSIONS.ANDROID.CAMERA,
-          PERMISSIONS.ANDROID.WRITE_EXTERNAL_STORAGE,
-          PERMISSIONS.ANDROID.ACCESS_FINE_LOCATION,
-        ];
-      }
-
-      requestMultiple(permissions).then(statuses => {
-        const permissionStatus = [statuses[permissions[0]]];
-        if (this.oneOfThem(permissionStatus, 'granted')) {
-          resolve(permissionStatus);
-        }
-      });
-    });
-  }
-
-  oneOfThem(array, value) {
-    return array.includes(value);
-  }
+  checker = arr => arr.every(v => v === 'granted');
 
   setDataFromParams() {
     const {doc_id, firstname, lastname, dob, lat, long, download_url} =
@@ -220,16 +194,16 @@ export default class AddStudent extends Component {
 
   // hadnle onSubmitEditing method of input box
   onSubmitEditing(number) {
-    if (number == 2) {
+    if (number === 2) {
       this.inputs[number + 2].focus();
     } else if (number < 5) {
       this.inputs[number + 1].focus();
     } else {
-      // this.onLogin();
+      // this.onSubmit();
     }
   }
 
-  _renderTitle = key => <Text style={{width: '92%'}}>{localize(key)}</Text>;
+  _renderTitle = key => <Text style={styles.titleStyle}>{localize(key)}</Text>;
 
   _renderInputs(index, key, extraProps = {}) {
     return (
@@ -294,140 +268,59 @@ export default class AddStudent extends Component {
   };
 
   _onAddUpdateStudent(type) {
+    var params = {};
+    params.doc_id = this.state.doc_id.value;
+    params.firstname = this.state.firstname.value;
+    params.lastname = this.state.lastname.value;
+    params.dob = this.state.dob.value;
+    params.lat = this.state.lat.value;
+    params.long = this.state.long.value;
+    params.profile_pic = this.state.profile_pic.value;
+    params.isPofilePicChanged = this.state.isPofilePicChanged.value;
+
     switch (type) {
       case 'Add':
-        this.setState({loading: true}, () => {
-          this.addStudent().then(() => {
-            this.setState({loading: false});
-          });
-        });
+        this.setState({loading: true});
+        FirebaseService.addStudent(params)
+          .then(() => this.setState(initializeState))
+          .catch(error => console.log(error));
         break;
       case 'Update':
-        this.setState({loading: true}, () => {
-          this.updateStudent().then(() => {
-            this.setState({loading: false});
-          });
-        });
+        this.setState({loading: true});
+        FirebaseService.updateStudent(params)
+          .then(() => this.setState(initializeState))
+          .catch(error => console.log(error));
+        break;
+      case 'Update':
+        this.setState({loading: true});
+        this.props.navigation.replace(localize('STUDENT_LIST'));
+        // FirebaseService.deleteStudent(params)
+        //   .then(() => {
+        //     this.props.navigation.replace(localize('STUDENT_LIST'));
+        //   })
+        //   .catch(error => console.log(error));
         break;
       default:
+        break;
     }
   }
 
-  addStudent() {
-    const {firstname, lastname, dob, lat, long, profile_pic} = this.state;
-    let coordinates = new firestore.GeoPoint(
-      parseFloat(lat.value),
-      parseFloat(long.value),
-    );
-
-    return new Promise((resolve, reject) => {
-      let fileName = 'profile_' + firstname.value + '.png';
-      storage()
-        .ref(fileName)
-        .putFile(profile_pic.value)
-        .then(snapshot => {
-          this.getImageUrl().then(url => {
-            firestore()
-              .collection('Users')
-              .add({
-                firstname: firstname.value,
-                lastname: lastname.value,
-                location: coordinates,
-                image_name: fileName,
-                download_url: url,
-                dob: firestore.Timestamp.fromDate(
-                  moment(dob.value, 'DD-MM-YYYY').toDate(),
-                ),
-              })
-              .then(res => resolve())
-              .catch(err => reject(err));
-          });
-        })
-        .catch(e => console.log('uploading image error => ', e));
-    });
-  }
-
-  getImageUrl() {
-    let fileName = 'profile_' + this.state.firstname.value + '.png';
-    return new Promise((resolve, reject) => {
-      storage()
-        .ref(fileName)
-        .getDownloadURL()
-        .then(url => resolve(url));
-    });
-  }
-
-  updateStudent() {
-    const {doc_id, firstname, lastname, dob, lat, long, profile_pic} =
-      this.state;
-    let coordinates = new firestore.GeoPoint(
-      parseInt(lat.value),
-      parseInt(long.value),
-    );
-    return new Promise((resolve, reject) => {
-      var washingtonRef = firestore()
-        .collection('Users')
-        .doc(doc_id.value)
-        .set({
-          firstname: firstname.value,
-          lastname: lastname.value,
-          dob: firestore.Timestamp.fromDate(
-            moment(dob.value, 'DD-MM-YYYY').toDate(),
-          ),
-          location: coordinates,
-          uri: profile_pic.value,
-        })
-        .then(() => {
-          this.setState({loading: false}, () => {
-            Alert.alert('Status', 'Record updated.');
-          });
-        });
-      let fileName = 'profile_' + firstname.value + '.png';
-      storage()
-        .ref(fileName)
-        .putFile(profile_pic.value)
-        .then(snapshot => {
-          this.setState({loading: false}, () => {
-            Alert.alert('Status', 'Record updated.');
-          });
-        })
-        .catch(e => console.log('uploading image error => ', e));
-    });
-  }
-
-  // eslint-disable-next-line no-dupe-class-members
-  _onAddUpdateStudent(type) {
-    switch (type) {
-      case localize('ADD'):
-        this.setState({loading: true}, () => {
-          this.addStudent().then(() => {
-            this.setState({loading: false});
-            Alert.alert('Status', 'Record added.');
-          });
-        });
-        break;
-      case localize('UPDATE'):
-        this.setState({loading: true}, () => {
-          this.updateStudent().then(() => {
-            this.setState({loading: false});
-          });
-        });
-        break;
-      default:
-    }
-  }
-
-  onSubmit() {
+  onSubmit(action) {
     this.checkValidation(6, 'long', false).then(() => {
+      const {firstname, lastname, dob, lat, long, profile_pic} = this.state;
       if (
-        !this.state.firstname.isError &&
-        !this.state.lastname.isError &&
-        !this.state.dob.isError &&
-        !this.state.lat.isError &&
-        !this.state.long.isError &&
-        !this.state.profile_pic.isError
+        !firstname.isError &&
+        !lastname.isError &&
+        !dob.isError &&
+        !lat.isError &&
+        !long.isError &&
+        !profile_pic.isError
       ) {
-        this._onAddUpdateStudent(this.state.addUpdate);
+        if (action === 'add') {
+          this._onAddUpdateStudent(this.state.addUpdate);
+        } else {
+          this._onAddUpdateStudent('delete');
+        }
       }
     });
   }
@@ -435,7 +328,7 @@ export default class AddStudent extends Component {
   render() {
     return (
       <KeyboardAwareScrollView>
-        <SafeAreaView>
+        <SafeAreaView style={{backgroundColor: 'white'}}>
           {this.state.loading && <CustomLoader />}
           <View style={styles.container}>
             {this._renderAvatar(0, 'image')}
@@ -447,16 +340,30 @@ export default class AddStudent extends Component {
               keyboardType: 'numeric',
               blurOnSubmit: true,
             })}
-            <SubmitButton
-              title={this.state.addUpdate}
-              onPress={() => this.onSubmit()}
-            />
+            <View style={styles.bottomButtonsContainer}>
+              <SubmitButton
+                extraStyles={{
+                  width:
+                    this.state.addUpdate === localize('ADD') ? '100%' : '40%',
+                }}
+                title={this.state.addUpdate}
+                onPress={() => this.onSubmit('add')}
+              />
+              {this.state.addUpdate === localize('UPDATE') && (
+                <SubmitButton
+                  extraStyles={{width: '40%'}}
+                  title={localize('DELETE_RECORD')}
+                  onPress={() => this.onSubmit('delete')}
+                />
+              )}
+            </View>
           </View>
           <ImagePicker
             show={this.state.image_picker}
-            image_path={imageData =>
-              this.onChangeText(imageData.path, 'profile_pic')
-            }
+            image_path={imageData => {
+              this.onChangeText(imageData.path, 'profile_pic');
+              this.onChangeText(true, 'isPofilePicChanged');
+            }}
             onClose={() => this.setState({image_picker: false})}
           />
         </SafeAreaView>

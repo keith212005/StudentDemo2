@@ -5,3 +5,4 @@ export * from './Inputs';
 export * from './Picker';
 export CustomLoader from './customLoader';
 export * from './commonViews';
+export * from './Drawer';

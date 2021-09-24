@@ -1,10 +1,19 @@
 import React from 'react';
 import {Button} from 'native-base';
 
-export const SubmitButton = props => {
-  return <Button onPress={props.onPress}>{props.title}</Button>;
+import {responsiveWidth} from '@resources';
+
+export const SubmitButton = ({styles, extraStyles, title, onPress}) => {
+  return (
+    <Button style={[styles, {...extraStyles}]} onPress={onPress}>
+      {title}
+    </Button>
+  );
 };
 
 SubmitButton.defaultProps = {
-  tintColor: 'red',
+  styles: {
+    // width: responsiveWidth(100),
+    backgroundColor: 'orange',
+  },
 };

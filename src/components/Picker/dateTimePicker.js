@@ -23,7 +23,9 @@ const DateTimePicker = props => {
   return (
     <View>
       <View style={styles.container}>
-        <Pressable onPress={onPress} style={{justifyContent: 'center'}}>
+        <Pressable
+          onPress={onPress}
+          style={{justifyContent: 'center', padding: 3}}>
           {renderIcon(images.calendar, 28, {
             tintColor: 'grey',
             alignSelf: 'flex-end',
@@ -49,7 +51,6 @@ const DateTimePicker = props => {
 const styles = StyleSheet.create({
   container: {
     borderWidth: 1,
-    width: responsiveWidth(95),
     borderColor: colors.grey,
     borderRadius: 5,
     padding: 8,
@@ -61,11 +62,9 @@ const styles = StyleSheet.create({
   },
   textStyle: {
     fontSize: 16,
-    // alignSelf: 'center',
     position: 'absolute',
-    // width: '100%',
-    // textAlign: 'center',
     color: colors.placeHolderColor,
+    marginLeft: 6,
   },
 });
 

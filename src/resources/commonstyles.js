@@ -11,7 +11,7 @@ export const commonStyles = StyleSheet.create({
   textStyle: (
     size = '_14',
     color = 'textPrimaryColor',
-    type = 'manroperExtraBold',
+    type = 'PROXIMANOVA_REGULAR',
     includeFontPadding,
   ) => {
     return {
