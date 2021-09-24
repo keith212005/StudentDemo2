@@ -66,6 +66,7 @@ class FirebaseServices {
     });
   }
 
+  // updates student details and image in firebase and storage
   updateStudent(params) {
     const {doc_id, dob, lat, long, profile_pic, isPofilePicChanged} = params;
     let coordinates = new firestore.GeoPoint(parseInt(lat), parseInt(long));
@@ -91,13 +92,7 @@ class FirebaseServices {
                   location: coordinates,
                   uri: url,
                 })
-                .then(() => {
-                  Alert.alert('Success', 'Record updated successfully.', [
-                    {text: 'Cancel', onPress: () => {}, style: 'cancel'},
-                    {text: 'OK', onPress: () => {}},
-                  ]);
-                  resolve();
-                })
+                .then(() => resolve())
                 .catch(e => reject(e));
             });
           })
@@ -114,15 +109,38 @@ class FirebaseServices {
               location: coordinates,
               uri: url,
             })
-            .then(() => {
-              Alert.alert('Success', 'Record updated successfully.', [
-                {text: 'Cancel', onPress: () => {}, style: 'cancel'},
-                {text: 'OK', onPress: () => {}},
-              ]);
-              resolve();
-            });
+            .then(() => resolve());
         });
       }
+    });
+  }
+
+  // Delete image and student record from firebase
+  deleteStudent(params) {
+    return new Promise((resolve, reject) => {
+      // Create a reference to the file to delete
+      let fileName = params.doc_id + '.png';
+
+      console.log('fileName>>>', fileName);
+
+      this.getImageUrl(fileName).then(url => {
+        storage()
+          .refFromURL(url)
+          .delete()
+          .then(() => {
+            console.log('Image Deleted');
+            firestore()
+              .collection('Users')
+              .doc(params.doc_id)
+              .delete()
+              .then(() => {
+                console.log('record deletee.');
+                resolve();
+              })
+              .catch(error => console.log('err in record delete', error));
+          })
+          .catch(err => console.log('err in image del', err));
+      });
     });
   }
 }

@@ -2,6 +2,7 @@ import {Alert} from 'react-native';
 import {
   check,
   RESULTS,
+  request,
   requestMultiple,
   openSettings,
   PERMISSIONS,
@@ -26,9 +27,8 @@ export function checkMultiplePermissions(permissions) {
 
 // In case you want to check a single permission
 export function checkPermission(permission) {
-  console.log('checkperm called....');
   return new Promise(async (resolve, reject) => {
-    const result = await check(permission);
+    const result = await request(permission);
     console.log(result);
     switch (result) {
       case RESULTS.GRANTED:
@@ -44,7 +44,13 @@ export function checkPermission(permission) {
         ) {
           Alert.alert(localize('SETTINGS'), localize('LOCATION_PERMISSION'), [
             {text: 'Cancel', onPress: () => {}, style: 'cancel'},
-            {text: 'OK', onPress: () => openSettings().catch(() => {})},
+            {
+              text: localize('GO_TO_SETTINGS'),
+              onPress: () => {
+                openSettings().catch(() => {});
+                resolve();
+              },
+            },
           ]);
         }
         reject(result);

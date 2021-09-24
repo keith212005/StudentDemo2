@@ -8,7 +8,7 @@ export default class CustomLoader extends React.PureComponent {
     return (
       <ActivityIndicator
         size="large"
-        color={colors.white}
+        color={colors.orange}
         style={{
           flex: 1,
           position: 'absolute',

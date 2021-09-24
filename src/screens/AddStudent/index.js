@@ -1,3 +1,4 @@
+/* eslint-disable no-sparse-arrays */
 /* eslint-disable radix */
 /* eslint-disable react-native/no-inline-styles */
 /* eslint-disable no-fallthrough */
@@ -9,6 +10,7 @@ import {KeyboardAwareScrollView} from '@codler/react-native-keyboard-aware-scrol
 import moment from 'moment';
 import {requestMultiple, PERMISSIONS} from 'react-native-permissions';
 import Geolocation from 'react-native-geolocation-service';
+import {CommonActions} from '@react-navigation/native';
 
 // LOCAL IMPORTS
 import {styles} from './style';
@@ -267,7 +269,32 @@ export default class AddStudent extends Component {
     );
   };
 
+  showAlert(title, message) {
+    return Alert.alert(title, message, [
+      {
+        text: 'OK',
+        onPress: () => {
+          this.setState({loading: false}, () => {
+            setTimeout(() => {
+              this.goToScreen('DRAWER_NAVIGATOR');
+            }, 100);
+          });
+        },
+      },
+      ,
+    ]);
+  }
+  goToScreen(screenName) {
+    this.props.navigation.dispatch(
+      CommonActions.reset({
+        index: 0,
+        routes: [{name: localize(screenName)}],
+      }),
+    );
+  }
+
   _onAddUpdateStudent(type) {
+    this.setState({loading: true});
     var params = {};
     params.doc_id = this.state.doc_id.value;
     params.firstname = this.state.firstname.value;
@@ -280,32 +307,29 @@ export default class AddStudent extends Component {
 
     switch (type) {
       case 'Add':
-        this.setState({loading: true});
         FirebaseService.addStudent(params)
-          .then(() => this.setState(initializeState))
+          .then(() => {
+            this.setState(initializeState);
+            this.showAlert('Success', 'Record added successfully');
+          })
           .catch(error => console.log(error));
         break;
       case 'Update':
-        this.setState({loading: true});
         FirebaseService.updateStudent(params)
-          .then(() => this.setState(initializeState))
+          .then(() => this.showAlert('Success', 'Record updated successfully'))
           .catch(error => console.log(error));
         break;
-      case 'Update':
-        this.setState({loading: true});
-        this.props.navigation.replace(localize('STUDENT_LIST'));
-        // FirebaseService.deleteStudent(params)
-        //   .then(() => {
-        //     this.props.navigation.replace(localize('STUDENT_LIST'));
-        //   })
-        //   .catch(error => console.log(error));
+      case 'Delete':
+        FirebaseService.deleteStudent(params)
+          .then(() => this.showAlert('Success', 'Record deleted !'))
+          .catch(error => console.log(error));
         break;
       default:
         break;
     }
   }
 
-  onSubmit(action) {
+  _onSubmit(action) {
     this.checkValidation(6, 'long', false).then(() => {
       const {firstname, lastname, dob, lat, long, profile_pic} = this.state;
       if (
@@ -319,7 +343,7 @@ export default class AddStudent extends Component {
         if (action === 'add') {
           this._onAddUpdateStudent(this.state.addUpdate);
         } else {
-          this._onAddUpdateStudent('delete');
+          this._onAddUpdateStudent('Delete');
         }
       }
     });
@@ -328,8 +352,8 @@ export default class AddStudent extends Component {
   render() {
     return (
       <KeyboardAwareScrollView>
+        {this.state.loading && <CustomLoader />}
         <SafeAreaView style={{backgroundColor: 'white'}}>
-          {this.state.loading && <CustomLoader />}
           <View style={styles.container}>
             {this._renderAvatar(0, 'image')}
             {this._renderInputs(1, 'firstname')}
@@ -347,13 +371,13 @@ export default class AddStudent extends Component {
                     this.state.addUpdate === localize('ADD') ? '100%' : '40%',
                 }}
                 title={this.state.addUpdate}
-                onPress={() => this.onSubmit('add')}
+                onPress={() => this._onSubmit('add')}
               />
               {this.state.addUpdate === localize('UPDATE') && (
                 <SubmitButton
                   extraStyles={{width: '40%'}}
                   title={localize('DELETE_RECORD')}
-                  onPress={() => this.onSubmit('delete')}
+                  onPress={() => this._onSubmit('delete')}
                 />
               )}
             </View>
