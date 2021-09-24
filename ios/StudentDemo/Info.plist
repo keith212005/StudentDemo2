@@ -20,8 +20,33 @@
 	<string>1.0</string>
 	<key>CFBundleSignature</key>
 	<string>????</string>
+	<key>CFBundleURLTypes</key>
+	<array>
+		<dict>
+			<key>CFBundleTypeRole</key>
+			<string>Editor</string>
+			<key>CFBundleURLSchemes</key>
+			<array>
+				<string>com.googleusercontent.apps.800520901917-4ha0vhrs9b17pos8t5dbgb48iakv0p65</string>
+			</array>
+		</dict>
+		<dict>
+			<key>CFBundleTypeRole</key>
+			<string>Editor</string>
+			<key>CFBundleURLSchemes</key>
+			<array>
+				<string>fb450118869616991</string>
+			</array>
+		</dict>
+	</array>
 	<key>CFBundleVersion</key>
 	<string>1</string>
+	<key>FacebookAppID</key>
+	<string>450118869616991</string>
+	<key>FacebookClientToken</key>
+	<string>CLIENT-TOKEN</string>
+	<key>FacebookDisplayName</key>
+	<string>Student Demo</string>
 	<key>LSRequiresIPhoneOS</key>
 	<true/>
 	<key>NSAppTransportSecurity</key>
@@ -35,27 +60,43 @@
 			</dict>
 		</dict>
 	</dict>
-	<key>NSLocationWhenInUseUsageDescription</key>
-	<string>Student Demo needs to access your current location.</string>
-	<key>NSLocationAlwaysAndWhenInUseUsageDescription</key>
-  <string>Student Demo needs to access your current location.</string>
-  <key>NSLocationAlwaysUsageDescription</key>
-  <string>Student Demo needs to access your current location.</string>
-  <key>NSLocationTemporaryUsageDescriptionDictionary</key>
-	<string>Student Demo needs to access your current location.</string>
-
-
-
-
-
 	<key>NSCameraUsageDescription</key>
 	<string>Student Demo needs to access camera for uploading profile pictures.</string>
+	<key>NSLocationAlwaysAndWhenInUseUsageDescription</key>
+	<string>Student Demo needs to access your current location.</string>
+	<key>NSLocationAlwaysUsageDescription</key>
+	<string>Student Demo needs to access your current location.</string>
+	<key>NSLocationTemporaryUsageDescriptionDictionary</key>
+	<string>Student Demo needs to access your current location.</string>
+	<key>NSLocationWhenInUseUsageDescription</key>
+	<string>Student Demo needs to access your current location.</string>
+	<key>NSPhotoLibraryAddUsageDescription</key>
+	<string>Student Demo needs to access Photo Library to upload pictures.</string>
 	<key>NSPhotoLibraryUsageDescription</key>
-  <string>Student Demo needs to access Photo Library to upload pictures.</string>
-  <key>NSPhotoLibraryAddUsageDescription</key>
-  <string>Student Demo needs to access Photo Library to upload pictures.</string>
-
-
+	<string>Student Demo needs to access Photo Library to upload pictures.</string>
+	<key>UIAppFonts</key>
+	<array>
+		<string>AntDesign.ttf</string>
+		<string>Entypo.ttf</string>
+		<string>EvilIcons.ttf</string>
+		<string>Feather.ttf</string>
+		<string>FontAwesome.ttf</string>
+		<string>FontAwesome5_Brands.ttf</string>
+		<string>FontAwesome5_Regular.ttf</string>
+		<string>FontAwesome5_Solid.ttf</string>
+		<string>Foundation.ttf</string>
+		<string>Ionicons.ttf</string>
+		<string>MaterialIcons.ttf</string>
+		<string>MaterialCommunityIcons.ttf</string>
+		<string>SimpleLineIcons.ttf</string>
+		<string>Octicons.ttf</string>
+		<string>Zocial.ttf</string>
+		<string>ProximaNova-Bold.otf</string>
+		<string>ProximaNova-Light.otf</string>
+		<string>ProximaNova-Regular.otf</string>
+		<string>ProximaNova-Semibold.otf</string>
+		<string>Roboto-Regular.ttf</string>
+	</array>
 	<key>UILaunchStoryboardName</key>
 	<string>LaunchScreen</string>
 	<key>UIRequiredDeviceCapabilities</key>
@@ -68,24 +109,5 @@
 	</array>
 	<key>UIViewControllerBasedStatusBarAppearance</key>
 	<false/>
-	<key>UIAppFonts</key>
-	<array>
-	  <string>AntDesign.ttf</string>
-	  <string>Entypo.ttf</string>
-	  <string>EvilIcons.ttf</string>
-	  <string>Feather.ttf</string>
-	  <string>FontAwesome.ttf</string>
-	  <string>FontAwesome5_Brands.ttf</string>
-	  <string>FontAwesome5_Regular.ttf</string>
-	  <string>FontAwesome5_Solid.ttf</string>
-	  <string>Foundation.ttf</string>
-	  <string>Ionicons.ttf</string>
-	  <string>MaterialIcons.ttf</string>
-	  <string>MaterialCommunityIcons.ttf</string>
-	  <string>SimpleLineIcons.ttf</string>
-	  <string>Octicons.ttf</string>
-	  <string>Zocial.ttf</string>
-	</array>
-
 </dict>
 </plist>

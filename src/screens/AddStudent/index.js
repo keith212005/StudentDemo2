@@ -21,12 +21,12 @@ import {
   DateTimePicker,
   ImagePicker,
   CustomLoader,
+  GoogleMap,
 } from '@components';
 import {fieldObject} from '@constants';
 import {localize} from '@languages';
 import {isEmpty} from '@utils';
 import {FirebaseService, checkPermission} from '@services';
-import {responsiveWidth} from '../../resources';
 
 const initializeState = {
   loading: false,
@@ -41,6 +41,12 @@ const initializeState = {
   long: fieldObject,
   profile_pic: fieldObject,
   isPofilePicChanged: false,
+  region: {
+    latitude: 37.78825,
+    longitude: -122.4324,
+    latitudeDelta: 0.0922,
+    longitudeDelta: 0.0421,
+  },
 };
 export default class AddStudent extends Component {
   constructor(props) {
@@ -66,9 +72,18 @@ export default class AddStudent extends Component {
             Geolocation.getCurrentPosition(
               position => {
                 const {latitude, longitude} = position.coords;
-                this.onChangeText(latitude.toString(), 'lat');
-                this.onChangeText(longitude.toString(), 'long');
-                this.setState({loading: false});
+
+                var state_object = {
+                  loading: false,
+                  lat: {...this.state.lat, value: latitude.toString()},
+                  long: {...this.state.long, value: longitude.toString()},
+                  region: {
+                    ...this.state.region,
+                    latitude: latitude,
+                    longitude: longitude,
+                  },
+                };
+                this.setState(state_object);
               },
               error => console.log(error),
               {enableHighAccuracy: true, timeout: 15000, maximumAge: 10000},
@@ -94,6 +109,11 @@ export default class AddStudent extends Component {
       lat: {...this.state.lat, value: lat.toString()},
       long: {...this.state.long, value: long.toString()},
       profile_pic: {...this.state.profile_pic, value: download_url},
+      region: {
+        ...this.state.region,
+        latitude: lat,
+        longitude: long,
+      },
     };
     this.setState(state_object);
   }
@@ -349,9 +369,32 @@ export default class AddStudent extends Component {
     });
   }
 
+  onRegionChange(region) {
+    console.log(region);
+    this.setState({region});
+    this.onChangeText(region.latitude.toString(), 'lat');
+    this.onChangeText(region.longitude.toString(), 'long');
+  }
+
+  _renderGoogleMap = () => {
+    return (
+      <GoogleMap
+        region={this.state.region}
+        onRegionChangeComplete={region => {
+          this.onRegionChange(region);
+        }}
+      />
+    );
+  };
+
   render() {
     return (
-      <KeyboardAwareScrollView>
+      <KeyboardAwareScrollView
+        enableOnAndroid={true}
+        contentContainerStyle={{paddingBottom: 130}}
+        enableAutomaticScroll={true}
+        extraHeight={10}
+        extraScrollHeight={10}>
         {this.state.loading && <CustomLoader />}
         <SafeAreaView style={{backgroundColor: 'white'}}>
           <View style={styles.container}>
@@ -364,6 +407,8 @@ export default class AddStudent extends Component {
               keyboardType: 'numeric',
               blurOnSubmit: true,
             })}
+
+            {this._renderGoogleMap()}
             <View style={styles.bottomButtonsContainer}>
               <SubmitButton
                 extraStyles={{

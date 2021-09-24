@@ -1,11 +1,15 @@
 import React from 'react';
 import {Text, Pressable, View} from 'react-native';
 
+// THIRD PARTY IMPORTS
+import MapView, {PROVIDER_GOOGLE} from 'react-native-maps';
 import {bindActionCreators} from 'redux';
 import {connect} from 'react-redux';
 
+// LOCAL IMPORTS
 import {localize} from '@languages';
 import {styles} from './style';
+import {GoogleMap} from '@components';
 
 export default class Settings extends React.Component {
   state = {
@@ -35,11 +39,24 @@ export default class Settings extends React.Component {
     );
   };
 
+  onRegionChange(region) {
+    console.log(region);
+    this.setState({region});
+  }
+
   render() {
     return (
-      <View>
-        <Text>Settings page</Text>
-      </View>
+      <GoogleMap
+        region={{
+          latitude: 37.78825,
+          longitude: -122.4324,
+          latitudeDelta: 0.015,
+          longitudeDelta: 0.0121,
+        }}
+        onRegionChangeComplete={region => {
+          this.onRegionChange(region);
+        }}
+      />
     );
   }
 }

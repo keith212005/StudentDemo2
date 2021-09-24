@@ -11,6 +11,7 @@ export const styles = StyleSheet.create({
   bottomButtonsContainer: {
     flexDirection: 'row',
     justifyContent: 'space-between',
+    marginTop: responsiveHeight(2),
   },
   titleStyle: {
     ...commonStyles.textStyle(

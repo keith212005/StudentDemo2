@@ -93,21 +93,21 @@ class Login extends Component {
 
       switch (number) {
         case 2:
-          if (isEmpty(username)) {
-            state_object.username = {
-              value: username,
+          if (isEmpty(password)) {
+            state_object.password = {
+              value: password,
               isError: true,
-              errorText: localize('PLEASE_ENTER_FIRST_NAME'),
+              errorText: localize('PLEASE_ENTER_PASSWORD'),
               isFocus: false,
             };
           }
 
         case 1:
-          if (isEmpty(password)) {
-            state_object.profile_pic = {
-              value: password,
+          if (isEmpty(username)) {
+            state_object.username = {
+              value: username,
               isError: true,
-              errorText: localize('PLEASE_SELECT_IMAGE'),
+              errorText: localize('PLEASE_ENTER_USERNAME'),
               isFocus: false,
             };
           }
@@ -133,9 +133,7 @@ class Login extends Component {
 
   // hadnle onSubmitEditing method of input box
   onSubmitEditing(number) {
-    if (number === 2) {
-      this.inputs[number + 2].focus();
-    } else if (number < 5) {
+    if (number < 1) {
       this.inputs[number + 1].focus();
     } else {
       // this.onLogin();
@@ -287,9 +285,13 @@ class Login extends Component {
 
           {this._renderInputs(0, 'username', {}, () => {})}
           {this._renderInputs(
-            0,
+            1,
             'password',
-            {secureTextEntry: this.state.secureTextEntry, rightIcon: true},
+            {
+              secureTextEntry: this.state.secureTextEntry,
+              rightIcon: true,
+              blurOnSubmit: true,
+            },
             () => {
               console.log('toggle passwordsssssss');
               this.setState({secureTextEntry: !this.state.secureTextEntry});

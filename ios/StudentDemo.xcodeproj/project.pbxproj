@@ -12,6 +12,11 @@
 		13B07FBC1A68108700A75B9A /* AppDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = 13B07FB01A68108700A75B9A /* AppDelegate.m */; };
 		13B07FBF1A68108700A75B9A /* Images.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 13B07FB51A68108700A75B9A /* Images.xcassets */; };
 		13B07FC11A68108700A75B9A /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = 13B07FB71A68108700A75B9A /* main.m */; };
+		7D7B45CF26FDE8AA002191FE /* ProximaNova-Light.otf in Resources */ = {isa = PBXBuildFile; fileRef = 7D7B45CA26FDE8AA002191FE /* ProximaNova-Light.otf */; };
+		7D7B45D026FDE8AA002191FE /* ProximaNova-Semibold.otf in Resources */ = {isa = PBXBuildFile; fileRef = 7D7B45CB26FDE8AA002191FE /* ProximaNova-Semibold.otf */; };
+		7D7B45D126FDE8AA002191FE /* ProximaNova-Bold.otf in Resources */ = {isa = PBXBuildFile; fileRef = 7D7B45CC26FDE8AA002191FE /* ProximaNova-Bold.otf */; };
+		7D7B45D226FDE8AA002191FE /* Roboto-Regular.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 7D7B45CD26FDE8AA002191FE /* Roboto-Regular.ttf */; };
+		7D7B45D326FDE8AA002191FE /* ProximaNova-Regular.otf in Resources */ = {isa = PBXBuildFile; fileRef = 7D7B45CE26FDE8AA002191FE /* ProximaNova-Regular.otf */; };
 		81AB9BB82411601600AC10FF /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 81AB9BB72411601600AC10FF /* LaunchScreen.storyboard */; };
 		8BFC89B5FC8D8B78DF963183 /* libPods-StudentDemo-StudentDemoTests.a in Frameworks */ = {isa = PBXBuildFile; fileRef = A171DBE688C8397E8790BF0F /* libPods-StudentDemo-StudentDemoTests.a */; };
 		CBDC029F26F6850000861E7A /* GoogleService-Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = CBDC029E26F6850000861E7A /* GoogleService-Info.plist */; };
@@ -39,6 +44,11 @@
 		13B07FB71A68108700A75B9A /* main.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = main.m; path = StudentDemo/main.m; sourceTree = "<group>"; };
 		1920863FA9D1C5AB2B19BF88 /* Pods-StudentDemo.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-StudentDemo.debug.xcconfig"; path = "Target Support Files/Pods-StudentDemo/Pods-StudentDemo.debug.xcconfig"; sourceTree = "<group>"; };
 		19C0F4F199CA77263543FB8C /* libPods-StudentDemo.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = "libPods-StudentDemo.a"; sourceTree = BUILT_PRODUCTS_DIR; };
+		7D7B45CA26FDE8AA002191FE /* ProximaNova-Light.otf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "ProximaNova-Light.otf"; sourceTree = "<group>"; };
+		7D7B45CB26FDE8AA002191FE /* ProximaNova-Semibold.otf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "ProximaNova-Semibold.otf"; sourceTree = "<group>"; };
+		7D7B45CC26FDE8AA002191FE /* ProximaNova-Bold.otf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "ProximaNova-Bold.otf"; sourceTree = "<group>"; };
+		7D7B45CD26FDE8AA002191FE /* Roboto-Regular.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "Roboto-Regular.ttf"; sourceTree = "<group>"; };
+		7D7B45CE26FDE8AA002191FE /* ProximaNova-Regular.otf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "ProximaNova-Regular.otf"; sourceTree = "<group>"; };
 		81AB9BB72411601600AC10FF /* LaunchScreen.storyboard */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.storyboard; name = LaunchScreen.storyboard; path = StudentDemo/LaunchScreen.storyboard; sourceTree = "<group>"; };
 		A171DBE688C8397E8790BF0F /* libPods-StudentDemo-StudentDemoTests.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = "libPods-StudentDemo-StudentDemoTests.a"; sourceTree = BUILT_PRODUCTS_DIR; };
 		BB22CE8AAEC2B7C6016E6654 /* Pods-StudentDemo-StudentDemoTests.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-StudentDemo-StudentDemoTests.release.xcconfig"; path = "Target Support Files/Pods-StudentDemo-StudentDemoTests/Pods-StudentDemo-StudentDemoTests.release.xcconfig"; sourceTree = "<group>"; };
@@ -127,6 +137,18 @@
 			path = Pods;
 			sourceTree = "<group>";
 		};
+		7D7B45C926FDE8AA002191FE /* fonts */ = {
+			isa = PBXGroup;
+			children = (
+				7D7B45CA26FDE8AA002191FE /* ProximaNova-Light.otf */,
+				7D7B45CB26FDE8AA002191FE /* ProximaNova-Semibold.otf */,
+				7D7B45CC26FDE8AA002191FE /* ProximaNova-Bold.otf */,
+				7D7B45CD26FDE8AA002191FE /* Roboto-Regular.ttf */,
+				7D7B45CE26FDE8AA002191FE /* ProximaNova-Regular.otf */,
+			);
+			path = fonts;
+			sourceTree = "<group>";
+		};
 		832341AE1AAA6A7D00B99B32 /* Libraries */ = {
 			isa = PBXGroup;
 			children = (
@@ -137,6 +159,7 @@
 		83CBB9F61A601CBA00E9B192 = {
 			isa = PBXGroup;
 			children = (
+				7D7B45C926FDE8AA002191FE /* fonts */,
 				13B07FAE1A68108700A75B9A /* StudentDemo */,
 				832341AE1AAA6A7D00B99B32 /* Libraries */,
 				00E356EF1AD99517003FC87E /* StudentDemoTests */,
@@ -255,6 +278,11 @@
 			buildActionMask = 2147483647;
 			files = (
 				81AB9BB82411601600AC10FF /* LaunchScreen.storyboard in Resources */,
+				7D7B45D326FDE8AA002191FE /* ProximaNova-Regular.otf in Resources */,
+				7D7B45D226FDE8AA002191FE /* Roboto-Regular.ttf in Resources */,
+				7D7B45CF26FDE8AA002191FE /* ProximaNova-Light.otf in Resources */,
+				7D7B45D026FDE8AA002191FE /* ProximaNova-Semibold.otf in Resources */,
+				7D7B45D126FDE8AA002191FE /* ProximaNova-Bold.otf in Resources */,
 				13B07FBF1A68108700A75B9A /* Images.xcassets in Resources */,
 				CBDC029F26F6850000861E7A /* GoogleService-Info.plist in Resources */,
 			);

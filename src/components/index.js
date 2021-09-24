@@ -6,3 +6,4 @@ export * from './Picker';
 export CustomLoader from './customLoader';
 export * from './commonViews';
 export * from './Drawer';
+export * from './Maps';

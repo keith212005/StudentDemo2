@@ -2,16 +2,13 @@ import {StyleSheet} from 'react-native';
 
 export const styles = StyleSheet.create({
   container: {
-    flex: 1,
+    ...StyleSheet.absoluteFillObject,
+    height: 400,
+    width: 400,
+    justifyContent: 'flex-end',
     alignItems: 'center',
   },
-  screenTitle: {
-    fontSize: 24,
-  },
-  listItem: {
-    fontSize: 18,
-  },
-  pressable: {
-    marginBottom: 10,
+  map: {
+    ...StyleSheet.absoluteFillObject,
   },
 });
