@@ -1,12 +1,13 @@
-export const english = {
-  SPLASH_SCREEN: 'SplashScreen',
+export const en = {
   LOGIN: 'Login',
-  STUDENT_LIST: 'StudentList',
-  ADD_STUDENT: 'AddStudent',
-  DRAWER_NAVIGATOR: 'DrawerNavigator',
-  ENTER_STUDENT_DETAIL: 'Enter Student Detail',
   SETTINGS: 'Settings',
-
+  LANGUAGE: 'Language',
+  CHANGE_LANGUAGE: 'Change language',
+  SELECT_LANGUAGE: 'Select language',
+  ENTER_STUDENT_DETAIL: 'Enter Student Detail',
+  STUDENTS_LIST: 'Students list',
+  ENTER_DETAILS: 'Enter details',
+  UPDATE_DETAILS: 'Update details',
   firstname: 'First name',
   lastname: 'Last name',
   dob: 'Date of birth',
@@ -27,8 +28,10 @@ export const english = {
   password: 'Password',
   PLEASE_ENTER_USERNAME: 'Please enter username',
   PLEASE_ENTER_PASSWORD: 'Please enter password',
+  FORGOT_PASSWORD: 'Forgot password?',
+  DONT_HAVE_ACCOUNT: "Don't have an account?",
+  SIGN_UP: 'Sign up',
   PASSWORD_LENGTH_ERROR: 'Password length should be atleast 6 characters',
-
   LOGOUT: 'Logout',
   LOGOUT_MESSAGE: 'Are you sure you want to logout?',
   CANCEL: 'Cancel',

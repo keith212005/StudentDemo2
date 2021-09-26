@@ -1,17 +1,9 @@
+/* eslint-disable react-native/no-inline-styles */
 import React, {Component} from 'react';
-import {
-  View,
-  Text,
-  StyleSheet,
-  TouchableOpacity,
-  Pressable,
-  Image,
-} from 'react-native';
+import {View, Text, StyleSheet, Pressable} from 'react-native';
 
-import storage from '@react-native-firebase/storage';
-
-import {Card, ListItem, Button, Icon, Avatar} from 'react-native-elements';
-import {commonStyles, images, responsiveWidth} from '@resources';
+import {Card, Icon, Avatar} from 'react-native-elements';
+import {commonStyles, images} from '@resources';
 
 export default class StudentCard extends Component {
   render() {

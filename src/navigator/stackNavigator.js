@@ -1,23 +1,15 @@
 import React, {Component} from 'react';
-import {
-  View,
-  Text,
-  StyleSheet,
-  StatusBar,
-  TouchableOpacity,
-  Image,
-} from 'react-native';
+import {StatusBar} from 'react-native';
 
 // THIRD PARTY IMPORT
-import {NavigationContainer, CommonActions} from '@react-navigation/native';
+import {NavigationContainer} from '@react-navigation/native';
 import {createStackNavigator} from '@react-navigation/stack';
 
 // LOCAL IMPORTS
 import * as Screen from '@screens';
-import {localize} from '@languages';
-import {renderIcon} from '@components';
-import {images, commonStyles, responsiveWidth} from '@resources';
 import DrawerNavigator from './drawerNavigator';
+import {navigationRef} from './RootNavigation';
+import {localize} from '../languages';
 
 const Stack = createStackNavigator();
 
@@ -28,6 +20,10 @@ const forFade = ({current}) => ({
 });
 
 export default class StackNavigator extends Component {
+  constructor(props) {
+    super(props);
+  }
+
   addScreen = (routeName, isNavigator = false, extraProps = {}) => {
     return (
       <Stack.Screen
@@ -42,7 +38,7 @@ export default class StackNavigator extends Component {
     return (
       <>
         <StatusBar />
-        <NavigationContainer>
+        <NavigationContainer ref={navigationRef}>
           <Stack.Navigator
             initialRouteName={'SplashScreen'}
             screenOptions={{
@@ -51,35 +47,18 @@ export default class StackNavigator extends Component {
               gestureEnabled: false,
               cardStyleInterpolator: forFade,
             }}>
-            {this.addScreen(localize('SPLASH_SCREEN'))}
-            {this.addScreen(localize('STUDENT_LIST'), false, {
-              options: ({route, navigation}) => ({
-                headerShown: true,
-                title: 'Student List',
-                headerRight: () => (
-                  <TouchableOpacity
-                    onPress={() => navigation.navigate('AddStudent')}>
-                    <Image
-                      source={{uri: images.plus}}
-                      style={[
-                        commonStyles.squareLayout(30),
-                        {marginRight: responsiveWidth(5)},
-                      ]}
-                    />
-                  </TouchableOpacity>
-                ),
-              }),
-            })}
-            {this.addScreen(localize('ADD_STUDENT'), false, {
+            {this.addScreen('SplashScreen')}
+            {this.addScreen('AddStudent', false, {
               options: {
                 headerShown: true,
-                title: localize('ENTER_STUDENT_DETAIL'),
+                title: localize('ENTER_DETAILS'),
               },
             })}
-            {this.addScreen(localize('LOGIN'))}
+            {this.addScreen('Login')}
             {this.addScreen('DrawerNavigator', true, {
               component: DrawerNavigator,
             })}
+            {this.addScreen('Language')}
           </Stack.Navigator>
         </NavigationContainer>
       </>

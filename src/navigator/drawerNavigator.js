@@ -1,15 +1,23 @@
 import React, {Component} from 'react';
-import {TouchableOpacity, Image} from 'react-native';
+import {TouchableOpacity} from 'react-native';
 
+// THIRD PARTY IMPORTS
 import {createDrawerNavigator} from '@react-navigation/drawer';
 
-import {images, commonStyles, responsiveWidth} from '@resources';
+// LOCAL IMPORTS
+import {images} from '@resources';
 import {renderIcon, DrawerContent} from '@components';
-import {localize} from '@languages';
+import {localize} from '../languages';
 
 import * as Screen from '@screens';
 
 const Drawer = createDrawerNavigator();
+
+const forFade = ({current}) => ({
+  cardStyle: {
+    opacity: current.progress,
+  },
+});
 
 export default class DrawerNavigator extends Component {
   _addScreen = (routeName, isNavigator = false, extraProps = {}) => {
@@ -23,31 +31,28 @@ export default class DrawerNavigator extends Component {
   };
 
   render() {
+    const {navigate} = this.props.navigation;
     return (
       <Drawer.Navigator
-        initialRouteName={localize('STUDENT_LIST')}
-        drawerContent={props => {
-          return <DrawerContent {...props} />;
-        }}
-        screenOptions={{
-          headerShown: false,
-        }}>
-        {this._addScreen(localize('STUDENT_LIST'), false, {
+        initialRouteName={'StudentList'}
+        drawerContent={props => <DrawerContent {...props} />}
+        screenOptions={{headerShown: false, cardStyleInterpolator: forFade}}>
+        {this._addScreen('StudentList', false, {
           options: {
             headerShown: true,
-            title: 'Student List',
+            title: localize('STUDENTS_LIST'),
             headerRight: () => (
-              <TouchableOpacity
-                onPress={() =>
-                  this.props.navigation.navigate(localize('ADD_STUDENT'))
-                }>
-                {renderIcon(images.plus, 30, {marginRight: 10})}
+              <TouchableOpacity onPress={() => navigate('AddStudent')}>
+                {renderIcon(images.plus, 30, {
+                  marginRight: 10,
+                  tintColor: 'grey',
+                })}
               </TouchableOpacity>
             ),
           },
         })}
-        {this._addScreen(localize('SETTINGS'), false, {
-          options: {headerShown: true, title: 'Change language'},
+        {this._addScreen('Language', false, {
+          options: {headerShown: true, title: localize('CHANGE_LANGUAGE')},
         })}
       </Drawer.Navigator>
     );

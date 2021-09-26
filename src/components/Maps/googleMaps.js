@@ -22,8 +22,10 @@ const styles = StyleSheet.create({
     // ...StyleSheet.absoluteFillObject,
     height: 200,
     width: '100%',
+    borderWidth: 1,
   },
   map: {
+    // borderWidth: 1,
     ...StyleSheet.absoluteFillObject,
   },
 });

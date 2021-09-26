@@ -8,45 +8,35 @@ import {Icon} from 'react-native-elements';
 import {connect} from 'react-redux';
 import {bindActionCreators} from 'redux';
 import {Avatar} from 'react-native-elements';
-import {CommonActions} from '@react-navigation/native';
 
 // LOCAL IMPORTS
 import {responsiveHeight, commonStyles} from '@resources';
 import {actionCreators} from '@actions';
 import {localize} from '@languages';
 import {isEmpty} from '@utils';
-import {images} from '../../resources';
+import {images} from '@resources';
+import {navigate} from '@navigator';
+import {resetNavigation} from '../../navigator';
 
 function DrawerContent(props) {
   function handleSelectedDrawerItem(label) {
     switch (label) {
-      case 'Students List':
-        console.log('student list pressed');
-        props.navigation.navigate('StudentList');
+      case localize('STUDENTS_LIST'):
+        navigate('StudentList');
         break;
-      case 'Change language':
-        props.navigation.navigate('Settings');
-        console.log('Language pressed');
-
+      case localize('CHANGE_LANGUAGE'):
+        navigate('Language');
         break;
-      case 'Logout':
+      case localize('LOGOUT'):
         props.navigation.closeDrawer();
         Alert.alert(localize('LOGOUT'), localize('LOGOUT_MESSAGE'), [
-          {
-            text: localize('CANCEL'),
-            onPress: () => console.log('Cancel Pressed'),
-            style: 'cancel',
-          },
+          {text: localize('CANCEL'), onPress: () => {}},
           {
             text: localize('OK'),
-            onPress: () => {
-              props.navigation.replace('Login', {reset_user: true});
-            },
+            onPress: () => resetNavigation('Login', {reset_user: true}),
           },
         ]);
-
         break;
-
       default:
         break;
     }
@@ -114,9 +104,11 @@ function DrawerContent(props) {
           </>
         ) : null}
       </View>
-      {_renderDrawerItem('th-list', 'Students List')}
-      {_renderDrawerItem('language', 'Change language', {type: 'entypo'})}
-      {_renderDrawerItem('sign-out', 'Logout')}
+      {_renderDrawerItem('th-list', localize('STUDENTS_LIST'))}
+      {_renderDrawerItem('language', localize('CHANGE_LANGUAGE'), {
+        type: 'entypo',
+      })}
+      {_renderDrawerItem('sign-out', localize('LOGOUT'))}
     </DrawerContentScrollView>
   );
 }

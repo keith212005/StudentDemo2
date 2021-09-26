@@ -15,7 +15,6 @@ export function checkMultiplePermissions(permissions) {
   return new Promise((resolve, reject) => {
     const statuses = requestMultiple(permissions);
     for (var index in permissions) {
-      console.log(statuses);
       if (statuses[permissions[index]] !== RESULTS.GRANTED) {
         reject(permissions[index]);
         break;
@@ -29,7 +28,6 @@ export function checkMultiplePermissions(permissions) {
 export function checkPermission(permission) {
   return new Promise(async (resolve, reject) => {
     const result = await request(permission);
-    console.log(result);
     switch (result) {
       case RESULTS.GRANTED:
         resolve(result);

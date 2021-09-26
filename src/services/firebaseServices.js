@@ -121,22 +121,16 @@ class FirebaseServices {
       // Create a reference to the file to delete
       let fileName = params.doc_id + '.png';
 
-      console.log('fileName>>>', fileName);
-
       this.getImageUrl(fileName).then(url => {
         storage()
           .refFromURL(url)
           .delete()
           .then(() => {
-            console.log('Image Deleted');
             firestore()
               .collection('Users')
               .doc(params.doc_id)
               .delete()
-              .then(() => {
-                console.log('record deletee.');
-                resolve();
-              })
+              .then(() => resolve())
               .catch(error => console.log('err in record delete', error));
           })
           .catch(err => console.log('err in image del', err));

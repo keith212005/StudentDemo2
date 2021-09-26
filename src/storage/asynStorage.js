@@ -3,7 +3,7 @@ import {storageKey} from '@constants';
 
 //store data in local storage
 export const setMultipleAsyncStorage = data => {
-  return new Promise((resolve, rejcet) => {
+  return new Promise((resolve, reject) => {
     AsyncStorage.multiSet(data)
       .then(() => {
         resolve(true);
@@ -14,7 +14,7 @@ export const setMultipleAsyncStorage = data => {
 
 //get data from local storage
 export const getMultipleAsyncStorage = data => {
-  return new Promise((resolve, rejcet) => {
+  return new Promise((resolve, reject) => {
     AsyncStorage.multiGet(data)
       .then(value => {
         resolve(value);

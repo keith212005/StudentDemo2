@@ -1,20 +1,18 @@
 import I18n from 'react-native-i18n';
-import {storageKey, constant} from '@constants';
-import {setMultipleAsyncStorage} from '@storage';
-import {english} from './index';
+import {constant} from '@constants';
+import {en, es} from './index';
 
-export const changeLanguage = (params) => {
+export const changeLanguage = params => {
   I18n.fallbacks = true;
 
   I18n.translations = {
-    en: english,
+    en,
+    es,
   };
 
-  if (params == constant.ENGLISH_LANG) {
+  if (params === constant.ENGLISH_LANG) {
     I18n.locale = 'en';
-  } else {
+  } else if (params === constant.SPANISH_LANG) {
+    I18n.locale = 'es';
   }
-
-  //set language
-  setMultipleAsyncStorage([[storageKey.LANGUAGE, params]]);
 };

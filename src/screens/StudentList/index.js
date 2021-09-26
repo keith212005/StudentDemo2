@@ -1,26 +1,19 @@
+/* eslint-disable no-undef-init */
 import React, {Component} from 'react';
-import {
-  SafeAreaView,
-  View,
-  Text,
-  FlatList,
-  TouchableOpacity,
-  ActivityIndicator,
-} from 'react-native';
+import {FlatList} from 'react-native';
 
 // THIRD PARTY IMPORTS
 import {connect} from 'react-redux';
 import {bindActionCreators} from 'redux';
 import firestore from '@react-native-firebase/firestore';
 import moment from 'moment';
-import storage from '@react-native-firebase/storage';
 
 // LOCAL IMPORTS
-import {SquareIconButton, StudentCard, CustomLoader} from '@components';
-import {styles} from './style';
+import {StudentCard, CustomLoader} from '@components';
 import {actionCreators} from '@actions';
-import {images, commonStyles, colors} from '@resources';
-import {FirebaseService} from '@services';
+import {navigate} from '@navigator';
+
+var subscribeSnapshot = undefined;
 
 class StudentList extends Component {
   constructor(props) {
@@ -35,16 +28,20 @@ class StudentList extends Component {
 
   componentDidMount() {
     this.props.networkListener();
+    this.props.navigation.addListener('focus', () => {
+      subscribeSnapshot = firestore()
+        .collection('Users')
+        .onSnapshot(this.onResult, this.onError);
+    });
 
-    const subscriber = firestore()
-      .collection('Users')
-      .onSnapshot(this.onResult, this.onError);
+    this.props.navigation.addListener('blur', () => {
+      subscribeSnapshot();
+    });
   }
 
   async onResult(QuerySnapshot) {
     var newList = [];
     QuerySnapshot.forEach(item => {
-      console.log(item.id.toString() + '.png');
       var obj = {};
       obj.doc_id = item.id;
       obj.firstname = item._data.firstname;
@@ -67,9 +64,7 @@ class StudentList extends Component {
     return (
       <StudentCard
         item={item}
-        onPress={() =>
-          this.props.navigation.navigate('AddStudent', {studentDetail: item})
-        }
+        onPress={() => navigate('AddStudent', {studentDetail: item})}
       />
     );
   };

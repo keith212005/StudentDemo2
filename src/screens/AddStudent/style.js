@@ -6,7 +6,6 @@ export const styles = StyleSheet.create({
     flex: 1,
     backgroundColor: 'white',
     marginHorizontal: 20,
-    height: responsiveHeight(100),
   },
   bottomButtonsContainer: {
     flexDirection: 'row',

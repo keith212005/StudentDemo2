@@ -17,9 +17,18 @@ export const isEmpty = text => {
   }
 };
 
+export const isEmptyObject = obj => {
+  try {
+    return Object.keys(obj).length === 0;
+  } catch (e) {
+    console.log('catch error at isEmptyObject in utility >>>>> ', e);
+  }
+};
+
 // check email is valid or not
 export const isInvalidEmail = email => {
-  const CHECK_EMAIL = /^(([^<>()\[\]\\.,;:\s@"]+(\.[^<>()\[\]\\.,;:\s@"]+)*)|(".+"))@(([0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3})|((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}]))|((([a-zA-Z\-0-9]+\.){1,2})[a-zA-Z]{2,}))$/;
+  const CHECK_EMAIL =
+    /^(([^<>()\[\]\\.,;:\s@"]+(\.[^<>()\[\]\\.,;:\s@"]+)*)|(".+"))@(([0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3})|((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}]))|((([a-zA-Z\-0-9]+\.){1,2})[a-zA-Z]{2,}))$/;
 
   if (CHECK_EMAIL.test(email.trim()) == 0) {
     return true;

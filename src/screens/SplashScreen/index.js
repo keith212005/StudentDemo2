@@ -1,34 +1,28 @@
 import React, {Component} from 'react';
-import {View, Text} from 'react-native';
+import {View} from 'react-native';
 
 // THIRD PARTY IMPORTS
-import {CommonActions} from '@react-navigation/native';
 import {connect} from 'react-redux';
 import {bindActionCreators} from 'redux';
 
 // LOCAL IMPORTS
 import {styles} from './style';
-import {localize} from '@languages';
 import {actionCreators} from '@actions';
 import {renderIcon} from '@components';
 import {images, responsiveWidth} from '@resources';
+import {resetNavigation, navigate} from '@navigator';
+import {isEmpty, isEmptyObject} from '@utils';
 
 class SplashScreen extends Component {
   componentDidMount() {
     setTimeout(() => {
-      this.props.navigation.dispatch(
-        CommonActions.reset({
-          index: 0,
-          routes: [
-            {
-              name:
-                Object.keys(this.props.user_info).length === 0
-                  ? localize('LOGIN')
-                  : localize('DRAWER_NAVIGATOR'),
-            },
-          ],
-        }),
-      );
+      if (isEmpty(this.props.language)) {
+        navigate('Language');
+      } else {
+        resetNavigation(
+          isEmptyObject(this.props.user_info) ? 'Login' : 'DrawerNavigator',
+        );
+      }
     }, 2000);
   }
 
@@ -42,7 +36,12 @@ class SplashScreen extends Component {
 }
 
 function mapStateToProps(state) {
-  return {user_info: state.user_info};
+  console.log('Splash Screen STATE: >>>', state);
+  return {
+    user_info: state.user_info,
+    language: state.app_lang.language,
+    isOpenedFirstTime: state.isOpenedFirstTime,
+  };
 }
 function mapDispatchToProps(dispatch) {
   return bindActionCreators(actionCreators, dispatch);

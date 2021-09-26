@@ -32,7 +32,6 @@ export async function onFacebookButtonPress() {
 }
 
 export function configureGoogleSignIn() {
-  console.log('confugure google sign in called..');
   GoogleSignin.configure();
 }
 

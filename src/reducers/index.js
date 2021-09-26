@@ -6,11 +6,13 @@ import {persistStore, persistReducer} from 'redux-persist';
 import {saveNetwork} from './networkReducer';
 import {isOpenFirstTime} from './isOpenFirstTime';
 import {saveUserInfo} from './saveUserInfo';
+import {setAppLanguage} from './setAppLanguage';
 
 const rootReducer = combineReducers({
   isOnline: saveNetwork,
   isOpenedFirstTime: isOpenFirstTime,
   user_info: saveUserInfo,
+  app_lang: setAppLanguage,
 });
 
 const persistConfig = {

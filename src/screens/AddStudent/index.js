@@ -3,14 +3,14 @@
 /* eslint-disable react-native/no-inline-styles */
 /* eslint-disable no-fallthrough */
 import React, {Component} from 'react';
-import {SafeAreaView, Text, View, Alert, Platform} from 'react-native';
+import {Text, View, Alert, Platform} from 'react-native';
 
 // THIRD PARTY IMPORTS
 import {KeyboardAwareScrollView} from '@codler/react-native-keyboard-aware-scroll-view';
 import moment from 'moment';
-import {requestMultiple, PERMISSIONS} from 'react-native-permissions';
+import {PERMISSIONS} from 'react-native-permissions';
 import Geolocation from 'react-native-geolocation-service';
-import {CommonActions} from '@react-navigation/native';
+import {resetNavigation, navigate} from '@navigator';
 
 // LOCAL IMPORTS
 import {styles} from './style';
@@ -32,7 +32,7 @@ const initializeState = {
   loading: false,
   image_picker: false,
   showDatePicker: false,
-  addUpdate: localize('ADD'),
+  addUpdate: 'ADD',
   doc_id: fieldObject,
   firstname: fieldObject,
   lastname: fieldObject,
@@ -53,6 +53,16 @@ export default class AddStudent extends Component {
     super(props);
     this.state = initializeState;
     this.inputs = new Array(6);
+
+    this.props.navigation.setOptions({
+      headerTitle:
+        this.props.route.params && this.props.route.params.studentDetail
+          ? localize('UPDATE_DETAILS')
+          : localize('ENTER_DETAILS'),
+    });
+
+    if (this.props.route.params && this.props.route.params.studentDetail) {
+    }
   }
 
   componentDidMount() {
@@ -85,7 +95,10 @@ export default class AddStudent extends Component {
                 };
                 this.setState(state_object);
               },
-              error => console.log(error),
+              error => {
+                console.log(error);
+                this.setState({loading: false});
+              },
               {enableHighAccuracy: true, timeout: 15000, maximumAge: 10000},
             );
           })
@@ -101,7 +114,7 @@ export default class AddStudent extends Component {
       this.props.route.params.studentDetail;
 
     var state_object = {
-      addUpdate: localize('UPDATE'),
+      addUpdate: 'UPDATE',
       doc_id: {...this.state.doc_id, value: doc_id},
       firstname: {...this.state.firstname, value: firstname},
       lastname: {...this.state.lastname, value: lastname},
@@ -295,22 +308,12 @@ export default class AddStudent extends Component {
         text: 'OK',
         onPress: () => {
           this.setState({loading: false}, () => {
-            setTimeout(() => {
-              this.goToScreen('DRAWER_NAVIGATOR');
-            }, 100);
+            setTimeout(() => this.props.navigation.goBack(), 100);
           });
         },
       },
       ,
     ]);
-  }
-  goToScreen(screenName) {
-    this.props.navigation.dispatch(
-      CommonActions.reset({
-        index: 0,
-        routes: [{name: localize(screenName)}],
-      }),
-    );
   }
 
   _onAddUpdateStudent(type) {
@@ -370,7 +373,6 @@ export default class AddStudent extends Component {
   }
 
   onRegionChange(region) {
-    console.log(region);
     this.setState({region});
     this.onChangeText(region.latitude.toString(), 'lat');
     this.onChangeText(region.longitude.toString(), 'long');
@@ -387,16 +389,29 @@ export default class AddStudent extends Component {
     );
   };
 
+  _renderSubmitButton = (title, onPress) => {
+    return (
+      <SubmitButton
+        extraStyles={{
+          width:
+            this.props.route.params && this.props.route.params.studentDetail
+              ? '40%'
+              : '100%',
+        }}
+        title={title}
+        onPress={onPress}
+      />
+    );
+  };
+
   render() {
     return (
-      <KeyboardAwareScrollView
-        enableOnAndroid={true}
-        contentContainerStyle={{paddingBottom: 130}}
-        enableAutomaticScroll={true}
-        extraHeight={10}
-        extraScrollHeight={10}>
+      <>
         {this.state.loading && <CustomLoader />}
-        <SafeAreaView style={{backgroundColor: 'white'}}>
+
+        <KeyboardAwareScrollView
+          contentContainerStyle={{paddingBottom: 10, backgroundColor: 'white'}}
+          extraScrollHeight={50}>
           <View style={styles.container}>
             {this._renderAvatar(0, 'image')}
             {this._renderInputs(1, 'firstname')}
@@ -410,20 +425,16 @@ export default class AddStudent extends Component {
 
             {this._renderGoogleMap()}
             <View style={styles.bottomButtonsContainer}>
-              <SubmitButton
-                extraStyles={{
-                  width:
-                    this.state.addUpdate === localize('ADD') ? '100%' : '40%',
-                }}
-                title={this.state.addUpdate}
-                onPress={() => this._onSubmit('add')}
-              />
-              {this.state.addUpdate === localize('UPDATE') && (
-                <SubmitButton
-                  extraStyles={{width: '40%'}}
-                  title={localize('DELETE_RECORD')}
-                  onPress={() => this._onSubmit('delete')}
-                />
+              {this._renderSubmitButton(this.state.addUpdate, () => {
+                this._onSubmit('add');
+              })}
+
+              {this.state.addUpdate === 'UPDATE' && (
+                <>
+                  {this._renderSubmitButton('DELETE_RECORD', () => {
+                    this._onSubmit('delete');
+                  })}
+                </>
               )}
             </View>
           </View>
@@ -435,8 +446,8 @@ export default class AddStudent extends Component {
             }}
             onClose={() => this.setState({image_picker: false})}
           />
-        </SafeAreaView>
-      </KeyboardAwareScrollView>
+        </KeyboardAwareScrollView>
+      </>
     );
   }
 }
