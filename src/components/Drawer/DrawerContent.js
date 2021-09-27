@@ -1,3 +1,4 @@
+/* eslint-disable no-fallthrough */
 /* eslint-disable react-native/no-inline-styles */
 import React from 'react';
 import {View, Text, StyleSheet, Alert} from 'react-native';
@@ -37,6 +38,9 @@ function DrawerContent(props) {
           },
         ]);
         break;
+      case 'Notifications':
+        navigate('Notifications');
+        break;
       default:
         break;
     }
@@ -50,7 +54,7 @@ function DrawerContent(props) {
             type={'font-awesome'}
             onPress={() => {}}
             color={color}
-            size={size}
+            size={20}
             name={iconName}
             {...extraProps}
           />
@@ -109,6 +113,10 @@ function DrawerContent(props) {
         type: 'entypo',
       })}
       {_renderDrawerItem('sign-out', localize('LOGOUT'))}
+
+      {_renderDrawerItem('bell', 'Notifications', {
+        type: 'entypo',
+      })}
     </DrawerContentScrollView>
   );
 }

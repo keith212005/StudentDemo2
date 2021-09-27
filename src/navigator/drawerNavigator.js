@@ -54,6 +54,10 @@ export default class DrawerNavigator extends Component {
         {this._addScreen('Language', false, {
           options: {headerShown: true, title: localize('CHANGE_LANGUAGE')},
         })}
+
+        {this._addScreen('Notifications', false, {
+          options: {headerShown: true, title: 'Notifications'},
+        })}
       </Drawer.Navigator>
     );
   }

@@ -26,7 +26,7 @@ import {
 import {fieldObject} from '@constants';
 import {localize} from '@languages';
 import {isEmpty} from '@utils';
-import {FirebaseService, checkPermission} from '@services';
+import {FirestoreDb, checkPermission} from '@services';
 
 const initializeState = {
   loading: false,
@@ -329,23 +329,23 @@ export default class AddStudent extends Component {
     params.isPofilePicChanged = this.state.isPofilePicChanged.value;
 
     switch (type) {
-      case 'Add':
-        FirebaseService.addStudent(params)
+      case localize('ADD'):
+        FirestoreDb.addStudent(params)
           .then(() => {
             this.setState(initializeState);
             this.showAlert('Success', 'Record added successfully');
           })
-          .catch(error => console.log(error));
+          .catch(error => console.log('adderror', error));
         break;
-      case 'Update':
-        FirebaseService.updateStudent(params)
+      case localize('UPDATE'):
+        FirestoreDb.updateStudent(params)
           .then(() => this.showAlert('Success', 'Record updated successfully'))
-          .catch(error => console.log(error));
+          .catch(error => console.log('updateerror', error));
         break;
-      case 'Delete':
-        FirebaseService.deleteStudent(params)
+      case localize('DELETE'):
+        FirestoreDb.deleteStudent(params)
           .then(() => this.showAlert('Success', 'Record deleted !'))
-          .catch(error => console.log(error));
+          .catch(error => console.log('delerror', error));
         break;
       default:
         break;
@@ -363,10 +363,12 @@ export default class AddStudent extends Component {
         !long.isError &&
         !profile_pic.isError
       ) {
-        if (action === 'add') {
-          this._onAddUpdateStudent(this.state.addUpdate);
+        if (action === localize('ADD')) {
+          this._onAddUpdateStudent(action);
+        } else if (action === localize('UPDATE')) {
+          this._onAddUpdateStudent(action);
         } else {
-          this._onAddUpdateStudent('Delete');
+          this._onAddUpdateStudent(action);
         }
       }
     });
@@ -426,13 +428,13 @@ export default class AddStudent extends Component {
             {this._renderGoogleMap()}
             <View style={styles.bottomButtonsContainer}>
               {this._renderSubmitButton(this.state.addUpdate, () => {
-                this._onSubmit('add');
+                this._onSubmit(localize(this.state.addUpdate));
               })}
 
               {this.state.addUpdate === 'UPDATE' && (
                 <>
-                  {this._renderSubmitButton('DELETE_RECORD', () => {
-                    this._onSubmit('delete');
+                  {this._renderSubmitButton('DELETE', () => {
+                    this._onSubmit(localize('DELETE'));
                   })}
                 </>
               )}

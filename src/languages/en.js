@@ -39,5 +39,5 @@ export const en = {
   LOCATION_PERMISSION:
     'Student Demo need to access your location. Please allow location service from Settings -> Permissions -> Location.',
   GO_TO_SETTINGS: 'GO TO SETTINGS',
-  DELETE_RECORD: 'Delete',
+  DELETE: 'Delete',
 };

@@ -3,3 +3,4 @@ export StudentList from './StudentList';
 export AddStudent from './AddStudent';
 export Login from './Login';
 export Language from './Language';
+export Notifications from './Notifications';

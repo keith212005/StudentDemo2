@@ -40,5 +40,5 @@ export const es = {
   LOCATION_PERMISSION:
     'Student Demo necesita acceder a su ubicación. Permita el servicio de ubicación desde Configuración -> Permisos -> Ubicación.',
   GO_TO_SETTINGS: 'IR A LA CONFIGURACIÓN',
-  DELETE_RECORD: 'Eliminar',
+  DELETE: 'Eliminar',
 };

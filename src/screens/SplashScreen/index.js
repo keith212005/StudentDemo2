@@ -19,6 +19,7 @@ class SplashScreen extends Component {
       if (isEmpty(this.props.language)) {
         navigate('Language');
       } else {
+        this.props.setAppLanguage(this.props.language);
         resetNavigation(
           isEmptyObject(this.props.user_info) ? 'Login' : 'DrawerNavigator',
         );

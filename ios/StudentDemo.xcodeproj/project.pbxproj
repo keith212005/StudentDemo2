@@ -49,6 +49,8 @@
 		7D7B45CC26FDE8AA002191FE /* ProximaNova-Bold.otf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "ProximaNova-Bold.otf"; sourceTree = "<group>"; };
 		7D7B45CD26FDE8AA002191FE /* Roboto-Regular.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "Roboto-Regular.ttf"; sourceTree = "<group>"; };
 		7D7B45CE26FDE8AA002191FE /* ProximaNova-Regular.otf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "ProximaNova-Regular.otf"; sourceTree = "<group>"; };
+		7D7E2FFC27019E7700E575B2 /* StudentDemo.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; name = StudentDemo.entitlements; path = StudentDemo/StudentDemo.entitlements; sourceTree = "<group>"; };
+		7D7E2FFD27019EBF00E575B2 /* StudentDemoDebug.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; name = StudentDemoDebug.entitlements; path = StudentDemo/StudentDemoDebug.entitlements; sourceTree = "<group>"; };
 		81AB9BB72411601600AC10FF /* LaunchScreen.storyboard */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.storyboard; name = LaunchScreen.storyboard; path = StudentDemo/LaunchScreen.storyboard; sourceTree = "<group>"; };
 		A171DBE688C8397E8790BF0F /* libPods-StudentDemo-StudentDemoTests.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = "libPods-StudentDemo-StudentDemoTests.a"; sourceTree = BUILT_PRODUCTS_DIR; };
 		BB22CE8AAEC2B7C6016E6654 /* Pods-StudentDemo-StudentDemoTests.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-StudentDemo-StudentDemoTests.release.xcconfig"; path = "Target Support Files/Pods-StudentDemo-StudentDemoTests/Pods-StudentDemo-StudentDemoTests.release.xcconfig"; sourceTree = "<group>"; };
@@ -98,6 +100,8 @@
 		13B07FAE1A68108700A75B9A /* StudentDemo */ = {
 			isa = PBXGroup;
 			children = (
+				7D7E2FFD27019EBF00E575B2 /* StudentDemoDebug.entitlements */,
+				7D7E2FFC27019E7700E575B2 /* StudentDemo.entitlements */,
 				CBDC029E26F6850000861E7A /* GoogleService-Info.plist */,
 				13B07FAF1A68108700A75B9A /* AppDelegate.h */,
 				13B07FB01A68108700A75B9A /* AppDelegate.m */,
@@ -219,6 +223,7 @@
 				980AE80C61B78A6F07EB86CB /* [CP] Embed Pods Frameworks */,
 				1D026CEC074D3F8287D4A9F8 /* [CP] Copy Pods Resources */,
 				5ECB96E54F0AF44D8A7997B9 /* [CP-User] [RNFB] Core Configuration */,
+				CBC6BE5E62DC32AC1264D367 /* [CP-User] [RNFB] Crashlytics Configuration */,
 			);
 			buildRules = (
 			);
@@ -430,6 +435,20 @@
 			shellScript = "\"${PODS_ROOT}/Target Support Files/Pods-StudentDemo/Pods-StudentDemo-frameworks.sh\"\n";
 			showEnvVarsInLog = 0;
 		};
+		CBC6BE5E62DC32AC1264D367 /* [CP-User] [RNFB] Crashlytics Configuration */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputPaths = (
+				"${DWARF_DSYM_FOLDER_PATH}/${DWARF_DSYM_FILE_NAME}/Contents/Resources/DWARF/${TARGET_NAME}",
+				"$(SRCROOT)/$(BUILT_PRODUCTS_DIR)/$(INFOPLIST_PATH)",
+			);
+			name = "[CP-User] [RNFB] Crashlytics Configuration";
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "#!/usr/bin/env bash\n#\n# Copyright (c) 2016-present Invertase Limited & Contributors\n#\n# Licensed under the Apache License, Version 2.0 (the \"License\");\n# you may not use this library except in compliance with the License.\n# You may obtain a copy of the License at\n#\n#   http://www.apache.org/licenses/LICENSE-2.0\n#\n# Unless required by applicable law or agreed to in writing, software\n# distributed under the License is distributed on an \"AS IS\" BASIS,\n# WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.\n# See the License for the specific language governing permissions and\n# limitations under the License.\n#\nset -e\n\nif [[ ${PODS_ROOT} ]]; then\n  echo \"info: Exec FirebaseCrashlytics Run from Pods\"\n  \"${PODS_ROOT}/FirebaseCrashlytics/run\"\nelse\n  echo \"info: Exec FirebaseCrashlytics Run from framework\"\n  \"${PROJECT_DIR}/FirebaseCrashlytics.framework/run\"\nfi\n";
+		};
 		FD10A7F022414F080027D42C /* Start Packager */ = {
 			isa = PBXShellScriptBuildPhase;
 			buildActionMask = 2147483647;
@@ -537,6 +556,7 @@
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CLANG_ENABLE_MODULES = YES;
+				CODE_SIGN_ENTITLEMENTS = StudentDemo/StudentDemoDebug.entitlements;
 				CURRENT_PROJECT_VERSION = 1;
 				ENABLE_BITCODE = NO;
 				INFOPLIST_FILE = StudentDemo/Info.plist;
@@ -563,6 +583,7 @@
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CLANG_ENABLE_MODULES = YES;
+				CODE_SIGN_ENTITLEMENTS = StudentDemo/StudentDemo.entitlements;
 				CURRENT_PROJECT_VERSION = 1;
 				INFOPLIST_FILE = StudentDemo/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = (

@@ -7,6 +7,7 @@ import {connect} from 'react-redux';
 import {bindActionCreators} from 'redux';
 import firestore from '@react-native-firebase/firestore';
 import moment from 'moment';
+import PushNotification, {Importance} from 'react-native-push-notification';
 
 // LOCAL IMPORTS
 import {StudentCard, CustomLoader} from '@components';
@@ -27,6 +28,7 @@ class StudentList extends Component {
   }
 
   componentDidMount() {
+    // =========================================================================
     this.props.networkListener();
     this.props.navigation.addListener('focus', () => {
       subscribeSnapshot = firestore()

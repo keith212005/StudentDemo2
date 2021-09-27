@@ -26,6 +26,7 @@ import {PERMISSIONS, requestMultiple} from 'react-native-permissions';
 import {Icon} from 'react-native-elements';
 import {connect} from 'react-redux';
 import {bindActionCreators} from 'redux';
+import crashlytics from '@react-native-firebase/crashlytics';
 
 class Login extends Component {
   constructor(props) {
@@ -35,6 +36,7 @@ class Login extends Component {
   }
 
   componentDidMount() {
+    crashlytics().log('Login screen mounted.');
     configureGoogleSignIn();
     // if app open first time ask required permissions
     if (this.props.isAppOpenFirstTime) {
@@ -172,10 +174,7 @@ class Login extends Component {
   }
 
   _renderSubmit = () => (
-    <SubmitButton
-      title={localize('LOGIN')}
-      onPress={() => this.handleSubmit()}
-    />
+    <SubmitButton title={'LOGIN'} onPress={() => this.handleSubmit()} />
   );
 
   confirmLoginAndNavigate(login_type) {
@@ -221,6 +220,8 @@ class Login extends Component {
         break;
       case 'google':
         this.confirmLoginAndNavigate('google').then(() => {
+          crashlytics().log('User signed in with Google Id');
+
           resetNavigation('DrawerNavigator');
         });
         break;

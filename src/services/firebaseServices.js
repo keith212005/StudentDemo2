@@ -1,141 +1,87 @@
-/* eslint-disable radix */
+import {Component} from 'react';
 
-import {Alert} from 'react-native';
+import messaging from '@react-native-firebase/messaging';
+import PushNotificationIOS from '@react-native-community/push-notification-ios';
+var PushNotification = require('react-native-push-notification');
 
-import firestore from '@react-native-firebase/firestore';
-import storage from '@react-native-firebase/storage';
-import moment from 'moment';
+class Firebase extends Component {
+  checkPermission = async () => {
+    return new Promise(async (resolve, reject) => {
+      const authStatus = await messaging().requestPermission();
+      const enabled =
+        authStatus === messaging.AuthorizationStatus.AUTHORIZED ||
+        authStatus === messaging.AuthorizationStatus.PROVISIONAL;
 
-class FirebaseServices {
-  // gets imageurl from server before adding new record to server
-  getImageUrl(fileName) {
-    return new Promise((resolve, reject) => {
-      storage()
-        .ref(fileName)
-        .getDownloadURL()
-        .then(url => resolve(url));
+      resolve(enabled);
     });
-  }
+  };
 
-  // add student details to firebase and adds image to storage
-  addStudent(params) {
-    const {firstname, lastname, dob, lat, long, profile_pic} = params;
-    let coordinates = new firestore.GeoPoint(parseFloat(lat), parseFloat(long));
-    let b_date = firestore.Timestamp.fromDate(
-      moment(dob, 'DD-MM-YYYY').toDate(),
-    );
-
-    return new Promise((resolve, reject) => {
-      firestore()
-        .collection('Users')
-        .add({
-          firstname: firstname,
-          lastname: lastname,
-          location: coordinates,
-          dob: b_date,
-        })
-        .then(docRef => {
-          let fileName = docRef.id + '.png';
-          storage()
-            .ref(fileName)
-            .putFile(profile_pic)
-            .then(snapshot => {
-              this.getImageUrl(fileName).then(url => {
-                firestore()
-                  .collection('Users')
-                  .doc(docRef.id)
-                  .set({
-                    firstname: firstname,
-                    lastname: lastname,
-                    dob: b_date,
-                    location: coordinates,
-                    uri: url,
-                  })
-                  .then(() => {
-                    Alert.alert('Success', 'Record added successfully.', [
-                      {text: 'Cancel', onPress: () => {}, style: 'cancel'},
-                      {text: 'OK', onPress: () => {}},
-                    ]);
-                    resolve();
-                  });
-              });
-            })
-            .catch(e => reject(e));
-        })
-        .catch(err => reject(err));
+  getFcmToken = async () => {
+    return new Promise(async (resolve, reject) => {
+      const fcmToken = await messaging().getToken();
+      console.log(fcmToken);
+      resolve(fcmToken);
     });
-  }
+  };
 
-  // updates student details and image in firebase and storage
-  updateStudent(params) {
-    const {doc_id, dob, lat, long, profile_pic, isPofilePicChanged} = params;
-    let coordinates = new firestore.GeoPoint(parseInt(lat), parseInt(long));
-    let b_date = firestore.Timestamp.fromDate(
-      moment(dob, 'DD-MM-YYYY').toDate(),
-    );
-    let fileName = doc_id + '.png';
+  requestPermission = async () => {
+    try {
+      await messaging().requestPermission();
+    } catch (error) {
+      console.log(error);
+    }
+  };
 
-    return new Promise((resolve, reject) => {
-      if (isPofilePicChanged) {
-        storage()
-          .ref(fileName)
-          .putFile(profile_pic)
-          .then(snapshot => {
-            this.getImageUrl(fileName).then(url => {
-              firestore()
-                .collection('Users')
-                .doc(doc_id)
-                .set({
-                  firstname: params.firstname,
-                  lastname: params.lastname,
-                  dob: b_date,
-                  location: coordinates,
-                  uri: url,
-                })
-                .then(() => resolve())
-                .catch(e => reject(e));
-            });
-          })
-          .catch(e => reject(e));
-      } else {
-        this.getImageUrl(fileName).then(url => {
-          firestore()
-            .collection('Users')
-            .doc(doc_id)
-            .set({
-              firstname: params.firstname,
-              lastname: params.lastname,
-              dob: b_date,
-              location: coordinates,
-              uri: url,
-            })
-            .then(() => resolve());
-        });
-      }
+  // called in Splash Screen
+  async addNotificationListener(props) {
+    this.checkPermission();
+
+    messaging().setBackgroundMessageHandler(function (message) {
+      console.log('Handling background message', message);
     });
-  }
 
-  // Delete image and student record from firebase
-  deleteStudent(params) {
-    return new Promise((resolve, reject) => {
-      // Create a reference to the file to delete
-      let fileName = params.doc_id + '.png';
+    // Called everytime when notification is recieved
+    messaging().onMessage(message => {
+      PushNotification.localNotification({
+        message: message.notification.body,
+        title: message.notification.title,
+        data: message.data,
+      });
 
-      this.getImageUrl(fileName).then(url => {
-        storage()
-          .refFromURL(url)
-          .delete()
-          .then(() => {
-            firestore()
-              .collection('Users')
-              .doc(params.doc_id)
-              .delete()
-              .then(() => resolve())
-              .catch(error => console.log('err in record delete', error));
-          })
-          .catch(err => console.log('err in image del', err));
+      PushNotification.configure({
+        onNotification: function (message2) {
+          message2.finish(PushNotificationIOS.FetchResult.NoData);
+          console.log('onNotification callback()...', JSON.stringify(message2));
+          message2.foreground
+            ? props.navigation.navigate(message2.data.Screen)
+            : null;
+        },
+        popInitialNotification: false,
+        requestPermissions: true,
       });
     });
+
+    // execute everytime we open the app from quite state.
+    messaging()
+      .getInitialNotification()
+      .then(message => {
+        console.log('App open from quite state', JSON.stringify(message));
+        message ? props.navigation.navigate(message.data.Screen) : null;
+      });
+
+    // When your app is opened in background and you get notification this
+    // gets tiggered
+    messaging().onNotificationOpenedApp(remoteMessage => {
+      console.log(
+        'Notification caused app to open from background state:',
+        remoteMessage,
+      );
+    });
+  }
+
+  render() {
+    return null;
   }
 }
-export const FirebaseService = new FirebaseServices();
+
+export const FB = new Firebase();
