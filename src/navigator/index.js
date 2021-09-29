@@ -1,2 +1,3 @@
-export StackNavigator from './stackNavigator';
+export * from './stackNavigator';
 export * from './RootNavigation';
+export * from './drawerNavigator';

@@ -1,7 +1,7 @@
 /* eslint-disable no-fallthrough */
 /* eslint-disable react-native/no-inline-styles */
-import React from 'react';
-import {View, Text, StyleSheet, Alert} from 'react-native';
+import React, {useState} from 'react';
+import {View, Text, StyleSheet, Alert, DevSettings} from 'react-native';
 
 // THIRD PARTY IMPORTS
 import {DrawerContentScrollView, DrawerItem} from '@react-navigation/drawer';
@@ -11,15 +11,19 @@ import {bindActionCreators} from 'redux';
 import {Avatar} from 'react-native-elements';
 
 // LOCAL IMPORTS
-import {responsiveHeight, commonStyles} from '@resources';
+import {responsiveHeight, useGlobalStyles} from '@resources';
 import {actionCreators} from '@actions';
 import {localize} from '@languages';
 import {isEmpty} from '@utils';
 import {images} from '@resources';
 import {navigate} from '@navigator';
 import {resetNavigation} from '../../navigator';
+import {Preferences} from './preferences';
+import {Divider} from 'native-base';
 
-function DrawerContent(props) {
+const DrawerContent = props => {
+  const globalStyles = useGlobalStyles();
+
   function handleSelectedDrawerItem(label) {
     switch (label) {
       case localize('STUDENTS_LIST'):
@@ -65,9 +69,25 @@ function DrawerContent(props) {
     );
   };
 
-  return (
-    <DrawerContentScrollView {...props}>
-      <View style={styles.headerContainer}>
+  const _renderPreferences = () => {
+    return (
+      <Preferences
+        isSwitchTrue={true}
+        onValueChange={value => {
+          console.log(value);
+          props.setDarkTheme(value);
+        }}
+      />
+    );
+  };
+
+  const _renderHeader = () => {
+    return (
+      <View
+        style={[
+          globalStyles.layoutDirection('row', 'flex-start', 'center'),
+          {...styles.headerContainer},
+        ]}>
         {props.user_info && props.user_info.displayName ? (
           <>
             <Avatar
@@ -82,12 +102,12 @@ function DrawerContent(props) {
             />
             <View
               style={[
-                commonStyles.layoutDirection('column', 'center', 'center'),
+                globalStyles.layoutDirection('column', 'center', 'center'),
                 {marginLeft: 10},
               ]}>
               <Text
                 style={[
-                  commonStyles.textStyle('_16', 'black', 'PROXIMANOVA_BOLD'),
+                  globalStyles.textStyle('_16', 'text', 'PROXIMANOVA_BOLD'),
                   {alignSelf: 'flex-start'},
                 ]}>
                 {props.user_info.displayName}
@@ -95,11 +115,7 @@ function DrawerContent(props) {
 
               <Text
                 style={[
-                  commonStyles.textStyle(
-                    '_12',
-                    'placeHolderColor',
-                    'PROXIMANOVA_SEMIBOLD',
-                  ),
+                  globalStyles.textStyle('_12', 'text', 'PROXIMANOVA_SEMIBOLD'),
                   {alignSelf: 'flex-start'},
                 ]}>
                 {props.user_info.email}
@@ -108,6 +124,12 @@ function DrawerContent(props) {
           </>
         ) : null}
       </View>
+    );
+  };
+
+  return (
+    <DrawerContentScrollView {...props}>
+      {_renderHeader()}
       {_renderDrawerItem('th-list', localize('STUDENTS_LIST'))}
       {_renderDrawerItem('language', localize('CHANGE_LANGUAGE'), {
         type: 'entypo',
@@ -117,21 +139,24 @@ function DrawerContent(props) {
       {_renderDrawerItem('bell', 'Notifications', {
         type: 'entypo',
       })}
+
+      <Divider />
+
+      {_renderPreferences()}
     </DrawerContentScrollView>
   );
-}
+};
 
 const styles = StyleSheet.create({
   headerContainer: {
     height: responsiveHeight(16),
     borderBottomWidth: 1,
     borderColor: 'gainsboro',
-    ...commonStyles.layoutDirection('row', 'flex-start', 'center'),
   },
 });
 
 function mapStateToProps(state) {
-  return {user_info: state.user_info};
+  return {user_info: state.user_info, isDarkTheme: state.isDarkTheme};
 }
 function mapDispatchToProps(dispatch) {
   return bindActionCreators(actionCreators, dispatch);

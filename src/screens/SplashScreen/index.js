@@ -37,7 +37,6 @@ class SplashScreen extends Component {
 }
 
 function mapStateToProps(state) {
-  console.log('Splash Screen STATE: >>>', state);
   return {
     user_info: state.user_info,
     language: state.app_lang.language,

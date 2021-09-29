@@ -2,6 +2,7 @@ import React from 'react';
 import {StyleSheet} from 'react-native';
 
 import * as Resource from '@resources';
+import {responsiveWidth} from '../../resources';
 
 const styles = StyleSheet.create({
   container: {
@@ -25,10 +26,8 @@ const styles = StyleSheet.create({
     fontSize: 18,
   },
   titleText: {
-    color: Resource.colors.gray,
-    fontSize: 24,
-    padding: 10,
     textAlign: 'center',
+    width: responsiveWidth(100),
   },
   itemSeparator: {
     height: 1,

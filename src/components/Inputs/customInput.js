@@ -26,7 +26,7 @@ export default class CustomInput extends React.PureComponent {
           _light={{placeholderTextColor: 'blueGray.400'}}
           _dark={{placeholderTextColor: 'blueGray.50'}}
           InputRightElement={
-            rightIcon ? (
+            rightIcon && (
               <Icon
                 type="font-awesome"
                 name={secureTextEntry ? 'eye-slash' : 'eye'}
@@ -35,7 +35,7 @@ export default class CustomInput extends React.PureComponent {
                 onPress={() => this.props.togglePassword()}
                 style={{marginRight: 10}}
               />
-            ) : null
+            )
           }
           {...this.props}
         />

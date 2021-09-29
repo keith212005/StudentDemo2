@@ -2,25 +2,31 @@ import React, {Component} from 'react';
 import {TouchableOpacity} from 'react-native';
 
 // THIRD PARTY IMPORTS
+import {useTheme, useNavigation, DrawerActions} from '@react-navigation/native';
 import {createDrawerNavigator} from '@react-navigation/drawer';
+import {connect} from 'react-redux';
+import {bindActionCreators} from 'redux';
+import {Icon} from 'react-native-elements';
 
 // LOCAL IMPORTS
+import * as Screen from '@screens';
 import {images} from '@resources';
 import {renderIcon, DrawerContent} from '@components';
 import {localize} from '../languages';
-
-import * as Screen from '@screens';
+import {actionCreators} from '../actions';
+import {navigate} from './RootNavigation';
+import {Colors} from 'react-native/Libraries/NewAppScreen';
 
 const Drawer = createDrawerNavigator();
 
-const forFade = ({current}) => ({
-  cardStyle: {
-    opacity: current.progress,
-  },
-});
+const DrawerNav = props => {
+  /* Define constants */
+  const {colors} = useTheme();
+  const navigation = useNavigation();
 
-export default class DrawerNavigator extends Component {
-  _addScreen = (routeName, isNavigator = false, extraProps = {}) => {
+  /* Define constants */
+
+  this._addScreen = (routeName, isNavigator = false, extraProps = {}) => {
     return (
       <Drawer.Screen
         name={routeName}
@@ -30,35 +36,54 @@ export default class DrawerNavigator extends Component {
     );
   };
 
-  render() {
-    const {navigate} = this.props.navigation;
-    return (
-      <Drawer.Navigator
-        initialRouteName={'StudentList'}
-        drawerContent={props => <DrawerContent {...props} />}
-        screenOptions={{headerShown: false, cardStyleInterpolator: forFade}}>
-        {this._addScreen('StudentList', false, {
-          options: {
-            headerShown: true,
-            title: localize('STUDENTS_LIST'),
-            headerRight: () => (
-              <TouchableOpacity onPress={() => navigate('AddStudent')}>
-                {renderIcon(images.plus, 30, {
-                  marginRight: 10,
-                  tintColor: 'grey',
-                })}
-              </TouchableOpacity>
-            ),
-          },
-        })}
-        {this._addScreen('Language', false, {
-          options: {headerShown: true, title: localize('CHANGE_LANGUAGE')},
-        })}
+  return (
+    <Drawer.Navigator
+      initialRouteName={'StudentList'}
+      drawerContent={props => <DrawerContent {...props} />}>
+      {this._addScreen('StudentList', false, {
+        options: {
+          headerShown: true,
+          title: localize('STUDENTS_LIST'),
+          headerRight: () => (
+            <TouchableOpacity onPress={() => navigate('AddStudent')}>
+              {renderIcon(images.plus, 30, {
+                marginRight: 10,
+                tintColor: colors.text,
+              })}
+            </TouchableOpacity>
+          ),
+          headerLeft: () => (
+            <Icon
+              containerStyle={{margin: 10, borderRadius: 100}}
+              name="menu"
+              type="feather"
+              color={colors.text}
+              onPress={() => navigation.dispatch(DrawerActions.toggleDrawer())}
+            />
+          ),
+        },
+      })}
+      {this._addScreen('Language', false, {
+        options: {headerShown: true},
+      })}
 
-        {this._addScreen('Notifications', false, {
-          options: {headerShown: true, title: 'Notifications'},
-        })}
-      </Drawer.Navigator>
-    );
-  }
+      {this._addScreen('Notifications', false, {
+        options: {headerShown: true, title: 'Notifications'},
+      })}
+    </Drawer.Navigator>
+  );
+};
+
+function mapStateToProps(state) {
+  return {};
 }
+
+function mapDispatchToProps(dispatch) {
+  return bindActionCreators(actionCreators, dispatch);
+}
+
+//Connect everything
+export const DrawerNavigator = connect(
+  mapStateToProps,
+  mapDispatchToProps,
+)(DrawerNav);

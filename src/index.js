@@ -18,13 +18,13 @@ export default class AppContainer extends React.Component {
 
     LogBox.ignoreLogs(['Reanimated 2']);
     return (
-      <NativeBaseProvider>
-        <Provider store={store}>
-          <PersistGate loading={null} persistor={persistor}>
+      <Provider store={store}>
+        <PersistGate loading={null} persistor={persistor}>
+          <NativeBaseProvider>
             <StackNavigator />
-          </PersistGate>
-        </Provider>
-      </NativeBaseProvider>
+          </NativeBaseProvider>
+        </PersistGate>
+      </Provider>
     );
   }
 }

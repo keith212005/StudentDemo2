@@ -1,5 +1,5 @@
 /* eslint-disable react-native/no-inline-styles */
-import React, {Component} from 'react';
+import React, {useState} from 'react';
 import {
   View,
   Text,
@@ -20,7 +20,8 @@ import {actionCreators} from '@actions';
 import {getLanguages} from '@constants';
 import {images, colors} from '@resources';
 import {isEmpty, isEmptyObject} from '@utils';
-import {resetNavigation, navigate} from '@navigator';
+import {resetNavigation} from '@navigator';
+import {useGlobalStyles} from '../../resources';
 
 const ItemSeparator = () => (
   <View
@@ -28,24 +29,23 @@ const ItemSeparator = () => (
   />
 );
 
-class Language extends Component {
-  state = {
-    selectedLanguage: isEmpty(this.props.language)
-      ? undefined
-      : this.props.language,
+const Language = props => {
+  const globalStyles = useGlobalStyles();
+
+  const [selectedLanguage, setSelectedLanguage] = useState(
+    isEmpty(props.language) ? undefined : props.language,
+  );
+
+  this.handleLanguageChange = newValue => {
+    setSelectedLanguage(newValue);
+    props.setAppLanguage(selectedLanguage);
+    changeLanguage(newValue);
+    resetNavigation(
+      isEmptyObject(props.user_info) ? 'Login' : 'DrawerNavigator',
+    );
   };
 
-  handleLanguageChange = newValue => {
-    this.setState({selectedLanguage: newValue}, () => {
-      this.props.setAppLanguage(this.state.selectedLanguage);
-      changeLanguage(newValue);
-      resetNavigation(
-        isEmptyObject(this.props.user_info) ? 'Login' : 'DrawerNavigator',
-      );
-    });
-  };
-
-  renderItem = ({item}) => {
+  this.renderItem = ({item}) => {
     return (
       <TouchableHighlight
         activeOpacity={0.6}
@@ -53,7 +53,7 @@ class Language extends Component {
         onPress={() => this.handleLanguageChange(item.code)}>
         <View style={styles.renderItemContainer}>
           <Text style={{fontSize: 18}}>{item.language}</Text>
-          {this.state.selectedLanguage === item.code
+          {selectedLanguage === item.code
             ? renderIcon(images.check, 30, {tintColor: 'green'})
             : null}
         </View>
@@ -61,22 +61,26 @@ class Language extends Component {
     );
   };
 
-  render() {
-    return (
-      <SafeAreaView style={styles.container}>
-        <View style={styles.titleBar}>
-          <Text style={styles.titleText}>Select Language</Text>
-        </View>
-        <FlatList
-          data={getLanguages}
-          renderItem={this.renderItem}
-          keyExtractor={(item, index) => item.code}
-          ItemSeparatorComponent={ItemSeparator}
-        />
-      </SafeAreaView>
-    );
-  }
-}
+  return (
+    <SafeAreaView style={[{backgroundColor: 'white'}]}>
+      <View style={styles.titleBar}>
+        <Text
+          style={[
+            globalStyles.textStyle('_24', 'text', 'PROXIMANOVA_BOLD'),
+            {...styles.titleText},
+          ]}>
+          Select Language
+        </Text>
+      </View>
+      <FlatList
+        data={getLanguages}
+        renderItem={this.renderItem}
+        keyExtractor={(item, index) => item.code}
+        ItemSeparatorComponent={ItemSeparator}
+      />
+    </SafeAreaView>
+  );
+};
 
 const matchStateToProps = state => {
   return {
