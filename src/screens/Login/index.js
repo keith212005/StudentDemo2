@@ -18,7 +18,12 @@ import {actionCreators} from '@actions';
 import {CustomInput, renderIcon, SubmitButton, CustomLoader} from '@components';
 import {loginFields} from '@constants';
 import {localize} from '@languages';
-import {images, responsiveWidth, commonStyles} from '@resources';
+import {
+  images,
+  responsiveWidth,
+  commonStyles,
+  useGlobalStyles,
+} from '@resources';
 import {resetNavigation, navigate} from '@navigator';
 
 // THIRD PARTY IMPORTS

@@ -1,4 +1,4 @@
-import React, {Component} from 'react';
+import React from 'react';
 import {StatusBar, TouchableOpacity} from 'react-native';
 
 // THIRD PARTY IMPORT
@@ -97,20 +97,6 @@ const StackNav = props => {
             },
           })}
           {this.addScreen('Language')}
-          {this.addScreen('StudentList', false, {
-            options: {
-              headerShown: true,
-              title: localize('STUDENTS_LIST'),
-              headerRight: () => (
-                <TouchableOpacity onPress={() => navigate('AddStudent')}>
-                  {renderIcon(images.plus, 30, {
-                    marginRight: 10,
-                    tintColor: colors.text,
-                  })}
-                </TouchableOpacity>
-              ),
-            },
-          })}
         </Stack.Navigator>
       </NavigationContainer>
     </>

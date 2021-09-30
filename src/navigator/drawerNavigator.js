@@ -11,7 +11,12 @@ import {Icon} from 'react-native-elements';
 // LOCAL IMPORTS
 import * as Screen from '@screens';
 import {images} from '@resources';
-import {renderIcon, DrawerContent} from '@components';
+import {
+  renderIcon,
+  DrawerContent,
+  HeaderLeftIcon,
+  HeaderRightIcon,
+} from '@components';
 import {localize} from '../languages';
 import {actionCreators} from '../actions';
 import {navigate} from './RootNavigation';
@@ -44,31 +49,25 @@ const DrawerNav = props => {
         options: {
           headerShown: true,
           title: localize('STUDENTS_LIST'),
-          headerRight: () => (
-            <TouchableOpacity onPress={() => navigate('AddStudent')}>
-              {renderIcon(images.plus, 30, {
-                marginRight: 10,
-                tintColor: colors.text,
-              })}
-            </TouchableOpacity>
-          ),
-          headerLeft: () => (
-            <Icon
-              containerStyle={{margin: 10, borderRadius: 100}}
-              name="menu"
-              type="feather"
-              color={colors.text}
-              onPress={() => navigation.dispatch(DrawerActions.toggleDrawer())}
-            />
-          ),
+          headerRight: () => <HeaderRightIcon />,
+          headerLeft: () => <HeaderLeftIcon />,
         },
       })}
+
       {this._addScreen('Language', false, {
         options: {headerShown: true},
       })}
 
       {this._addScreen('Notifications', false, {
         options: {headerShown: true, title: 'Notifications'},
+      })}
+
+      {this._addScreen('VideoScreen', false, {
+        options: {headerShown: true},
+      })}
+
+      {this._addScreen('AudioList', false, {
+        options: {headerShown: true},
       })}
     </Drawer.Navigator>
   );

@@ -12,6 +12,24 @@ export const getLanguages = [
   {language: 'Spanish', code: 'es'},
 ];
 
+export const getVideoLinks = [
+  {
+    id: 1,
+    name: 'Big Buck Bunny',
+    link: 'http://commondatastorage.googleapis.com/gtv-videos-bucket/sample/BigBuckBunny.mp4',
+  },
+  {
+    id: 2,
+    name: 'Big Buck Bunny',
+    link: 'http://commondatastorage.googleapis.com/gtv-videos-bucket/sample/BigBuckBunny.mp4',
+  },
+  {
+    id: 3,
+    name: 'Big Buck Bunny',
+    link: 'http://commondatastorage.googleapis.com/gtv-videos-bucket/sample/BigBuckBunny.mp4',
+  },
+];
+
 export var fieldObject = error => {
   return {value: '', isError: false, errorText: error, isFocus: false};
 };

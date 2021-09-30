@@ -1,5 +1,3 @@
-import NotifService from './notifService';
-
 export * from './firebaseServices';
 export * from './authProvider';
 export * from './permissionServices';

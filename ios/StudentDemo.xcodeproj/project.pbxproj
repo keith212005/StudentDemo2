@@ -12,6 +12,7 @@
 		13B07FBC1A68108700A75B9A /* AppDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = 13B07FB01A68108700A75B9A /* AppDelegate.m */; };
 		13B07FBF1A68108700A75B9A /* Images.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 13B07FB51A68108700A75B9A /* Images.xcassets */; };
 		13B07FC11A68108700A75B9A /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = 13B07FB71A68108700A75B9A /* main.m */; };
+		7D5C0A262705BE64008437E0 /* dummy.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7D5C0A252705BE64008437E0 /* dummy.swift */; };
 		7D7B45CF26FDE8AA002191FE /* ProximaNova-Light.otf in Resources */ = {isa = PBXBuildFile; fileRef = 7D7B45CA26FDE8AA002191FE /* ProximaNova-Light.otf */; };
 		7D7B45D026FDE8AA002191FE /* ProximaNova-Semibold.otf in Resources */ = {isa = PBXBuildFile; fileRef = 7D7B45CB26FDE8AA002191FE /* ProximaNova-Semibold.otf */; };
 		7D7B45D126FDE8AA002191FE /* ProximaNova-Bold.otf in Resources */ = {isa = PBXBuildFile; fileRef = 7D7B45CC26FDE8AA002191FE /* ProximaNova-Bold.otf */; };
@@ -44,6 +45,8 @@
 		13B07FB71A68108700A75B9A /* main.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = main.m; path = StudentDemo/main.m; sourceTree = "<group>"; };
 		1920863FA9D1C5AB2B19BF88 /* Pods-StudentDemo.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-StudentDemo.debug.xcconfig"; path = "Target Support Files/Pods-StudentDemo/Pods-StudentDemo.debug.xcconfig"; sourceTree = "<group>"; };
 		19C0F4F199CA77263543FB8C /* libPods-StudentDemo.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = "libPods-StudentDemo.a"; sourceTree = BUILT_PRODUCTS_DIR; };
+		7D5C0A242705BE64008437E0 /* StudentDemo-Bridging-Header.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "StudentDemo-Bridging-Header.h"; sourceTree = "<group>"; };
+		7D5C0A252705BE64008437E0 /* dummy.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = dummy.swift; path = StudentDemo/dummy.swift; sourceTree = "<group>"; };
 		7D7B45CA26FDE8AA002191FE /* ProximaNova-Light.otf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "ProximaNova-Light.otf"; sourceTree = "<group>"; };
 		7D7B45CB26FDE8AA002191FE /* ProximaNova-Semibold.otf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "ProximaNova-Semibold.otf"; sourceTree = "<group>"; };
 		7D7B45CC26FDE8AA002191FE /* ProximaNova-Bold.otf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "ProximaNova-Bold.otf"; sourceTree = "<group>"; };
@@ -109,6 +112,8 @@
 				13B07FB61A68108700A75B9A /* Info.plist */,
 				81AB9BB72411601600AC10FF /* LaunchScreen.storyboard */,
 				13B07FB71A68108700A75B9A /* main.m */,
+				7D5C0A252705BE64008437E0 /* dummy.swift */,
+				7D5C0A242705BE64008437E0 /* StudentDemo-Bridging-Header.h */,
 			);
 			name = StudentDemo;
 			sourceTree = "<group>";
@@ -247,7 +252,7 @@
 						TestTargetID = 13B07F861A680F5B00A75B9A;
 					};
 					13B07F861A680F5B00A75B9A = {
-						LastSwiftMigration = 1120;
+						LastSwiftMigration = 1300;
 					};
 				};
 			};
@@ -484,6 +489,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				13B07FBC1A68108700A75B9A /* AppDelegate.m in Sources */,
+				7D5C0A262705BE64008437E0 /* dummy.swift in Sources */,
 				13B07FC11A68108700A75B9A /* main.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -503,6 +509,7 @@
 			isa = XCBuildConfiguration;
 			baseConfigurationReference = EF015EC4619419C718E15F7C /* Pods-StudentDemo-StudentDemoTests.debug.xcconfig */;
 			buildSettings = {
+				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES;
 				BUNDLE_LOADER = "$(TEST_HOST)";
 				GCC_PREPROCESSOR_DEFINITIONS = (
 					"DEBUG=1",
@@ -530,6 +537,7 @@
 			isa = XCBuildConfiguration;
 			baseConfigurationReference = BB22CE8AAEC2B7C6016E6654 /* Pods-StudentDemo-StudentDemoTests.release.xcconfig */;
 			buildSettings = {
+				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES;
 				BUNDLE_LOADER = "$(TEST_HOST)";
 				COPY_PHASE_STRIP = NO;
 				INFOPLIST_FILE = StudentDemoTests/Info.plist;
@@ -571,6 +579,7 @@
 				);
 				PRODUCT_BUNDLE_IDENTIFIER = "org.reactjs.native.example.$(PRODUCT_NAME:rfc1034identifier)";
 				PRODUCT_NAME = StudentDemo;
+				SWIFT_OBJC_BRIDGING_HEADER = "StudentDemo-Bridging-Header.h";
 				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
 				SWIFT_VERSION = 5.0;
 				VERSIONING_SYSTEM = "apple-generic";
@@ -597,6 +606,7 @@
 				);
 				PRODUCT_BUNDLE_IDENTIFIER = "org.reactjs.native.example.$(PRODUCT_NAME:rfc1034identifier)";
 				PRODUCT_NAME = StudentDemo;
+				SWIFT_OBJC_BRIDGING_HEADER = "StudentDemo-Bridging-Header.h";
 				SWIFT_VERSION = 5.0;
 				VERSIONING_SYSTEM = "apple-generic";
 			};

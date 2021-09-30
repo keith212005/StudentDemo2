@@ -1,3 +1,4 @@
+/* eslint-disable react-native/no-inline-styles */
 import React, {useState} from 'react';
 import {Text, View} from 'react-native';
 
@@ -8,7 +9,7 @@ import {Switch, Icon} from 'react-native-elements';
 import {useGlobalStyles} from '../../resources';
 
 export const Preferences = props => {
-  const [checked, setChecked] = useState(props.isSwitchTrue);
+  const [checked, setChecked] = useState(props.isDarkModeOn);
   const globalStyles = useGlobalStyles();
 
   return (

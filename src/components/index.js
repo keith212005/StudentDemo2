@@ -7,3 +7,6 @@ export CustomLoader from './customLoader';
 export * from './commonViews';
 export * from './Drawer';
 export * from './Maps';
+export * from './Video';
+export * from './Audio';
+export * from './NavigationHeaderIcons';

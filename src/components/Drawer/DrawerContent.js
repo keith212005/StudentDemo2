@@ -45,6 +45,14 @@ const DrawerContent = props => {
       case 'Notifications':
         navigate('Notifications');
         break;
+
+      case 'VideoScreen':
+        navigate('VideoScreen');
+        break;
+
+      case 'AudioList':
+        navigate('AudioList');
+        break;
       default:
         break;
     }
@@ -72,7 +80,7 @@ const DrawerContent = props => {
   const _renderPreferences = () => {
     return (
       <Preferences
-        isSwitchTrue={true}
+        isDarkModeOn={props.isDarkTheme}
         onValueChange={value => {
           console.log(value);
           props.setDarkTheme(value);
@@ -129,19 +137,22 @@ const DrawerContent = props => {
 
   return (
     <DrawerContentScrollView {...props}>
+      {/* Render Header */}
       {_renderHeader()}
+      {/* Render Student List screen*/}
       {_renderDrawerItem('th-list', localize('STUDENTS_LIST'))}
-      {_renderDrawerItem('language', localize('CHANGE_LANGUAGE'), {
-        type: 'entypo',
-      })}
+      {/* Render Change Language screen */}
+      {_renderDrawerItem('language', localize('CHANGE_LANGUAGE'))}
+      {/* Render Notificaiton screen */}
+      {_renderDrawerItem('bell', 'Notifications')}
+      {/* Render Video screen */}
+      {_renderDrawerItem('video-camera', 'VideoScreen')}
+      {/* Render Video screen */}
+      {_renderDrawerItem('audio-description', 'AudioList')}
+      {/* Render Sign out */}
       {_renderDrawerItem('sign-out', localize('LOGOUT'))}
-
-      {_renderDrawerItem('bell', 'Notifications', {
-        type: 'entypo',
-      })}
-
       <Divider />
-
+      {/* Render Preferences */}
       {_renderPreferences()}
     </DrawerContentScrollView>
   );

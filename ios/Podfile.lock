@@ -878,6 +878,16 @@ PODS:
     - React-Core
   - react-native-safe-area-context (3.3.2):
     - React-Core
+  - react-native-slider (4.1.7):
+    - React-Core
+  - react-native-track-player (2.1.1):
+    - React-Core
+    - SwiftAudioEx (= 0.14.2)
+  - react-native-video (5.1.1):
+    - React-Core
+    - react-native-video/Video (= 5.1.1)
+  - react-native-video/Video (5.1.1):
+    - React-Core
   - React-perflogger (0.65.1)
   - React-RCTActionSheet (0.65.1):
     - React-Core/RCTActionSheetHeaders (= 0.65.1)
@@ -1031,6 +1041,7 @@ PODS:
     - React
   - RNVectorIcons (8.1.0):
     - React-Core
+  - SwiftAudioEx (0.14.2)
   - TOCropViewController (2.6.0)
   - Yoga (1.14.0)
   - YogaKit (1.18.1):
@@ -1092,6 +1103,9 @@ DEPENDENCIES:
   - react-native-maps (from `../node_modules/react-native-maps`)
   - "react-native-netinfo (from `../node_modules/@react-native-community/netinfo`)"
   - react-native-safe-area-context (from `../node_modules/react-native-safe-area-context`)
+  - "react-native-slider (from `../node_modules/@react-native-community/slider`)"
+  - react-native-track-player (from `../node_modules/react-native-track-player`)
+  - react-native-video (from `../node_modules/react-native-video`)
   - React-perflogger (from `../node_modules/react-native/ReactCommon/reactperflogger`)
   - React-RCTActionSheet (from `../node_modules/react-native/Libraries/ActionSheetIOS`)
   - React-RCTAnimation (from `../node_modules/react-native/Libraries/NativeAnimation`)
@@ -1172,6 +1186,7 @@ SPEC REPOS:
     - nanopb
     - OpenSSL-Universal
     - PromisesObjC
+    - SwiftAudioEx
     - TOCropViewController
     - YogaKit
 
@@ -1234,6 +1249,12 @@ EXTERNAL SOURCES:
     :path: "../node_modules/@react-native-community/netinfo"
   react-native-safe-area-context:
     :path: "../node_modules/react-native-safe-area-context"
+  react-native-slider:
+    :path: "../node_modules/@react-native-community/slider"
+  react-native-track-player:
+    :path: "../node_modules/react-native-track-player"
+  react-native-video:
+    :path: "../node_modules/react-native-video"
   React-perflogger:
     :path: "../node_modules/react-native/ReactCommon/reactperflogger"
   React-RCTActionSheet:
@@ -1375,6 +1396,9 @@ SPEC CHECKSUMS:
   react-native-maps: 41d01d8e0afcebe32bec9eea3bd945adc1b18f7a
   react-native-netinfo: 92e6e4476eb8bf6fc2d7c0a6ca0a1406f663d73a
   react-native-safe-area-context: 584dc04881deb49474363f3be89e4ca0e854c057
+  react-native-slider: 269d81247e2a87358ee03241da55b00c919e4d7a
+  react-native-track-player: 8a3e5dd0ac608dd3ba9888dac93901b7691c69c4
+  react-native-video: 0bb76b6d6b77da3009611586c7dbf817b947f30e
   React-perflogger: fd28ee1f2b5b150b00043f0301d96bd417fdc339
   React-RCTActionSheet: 7f3fa0855c346aa5d7c60f9ced16e067db6d29fa
   React-RCTAnimation: 2119a18ee26159004b001bc56404ca5dbaae6077
@@ -1407,10 +1431,11 @@ SPEC CHECKSUMS:
   RNScreens: 0591543e343c7444ea1756b6265d81a4295922c9
   RNSVG: 551acb6562324b1d52a4e0758f7ca0ec234e278f
   RNVectorIcons: 31cebfcf94e8cf8686eb5303ae0357da64d7a5a4
+  SwiftAudioEx: df9d62dcae6c2eca358bc36eb972ebac440cd943
   TOCropViewController: 3105367e808b7d3d886a74ff59bf4804e7d3ab38
   Yoga: aa0cb45287ebe1004c02a13f279c55a95f1572f4
   YogaKit: f782866e155069a2cca2517aafea43200b01fd5a
 
-PODFILE CHECKSUM: a6ae1b29975afd2c3e7f0e53f09c7ff5ff9faed1
+PODFILE CHECKSUM: 5c624e1199b303b0bc0f2e0a27b9cf2f496238fd
 
 COCOAPODS: 1.11.2
