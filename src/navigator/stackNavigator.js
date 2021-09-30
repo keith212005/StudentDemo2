@@ -63,7 +63,6 @@ const StackNav = props => {
 
   return (
     <>
-      <StatusBar />
       <NavigationContainer
         ref={navigationRef}
         theme={props.isDarkTheme ? MyDarkTheme : LightTheme}>

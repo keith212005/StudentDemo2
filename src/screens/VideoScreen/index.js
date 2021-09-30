@@ -1,13 +1,13 @@
 /* eslint-disable no-undef */
 /* eslint-disable react-native/no-inline-styles */
 import React, {useState} from 'react';
+import {StatusBar} from 'react-native';
 import {View, FlatList, Pressable, Text} from 'react-native';
 import {useTheme} from '@react-navigation/native';
 
 // LOCAL IMPORTS
-import {resetNavigation} from '../../navigator';
 import {MyVideoPlayer} from '../../components';
-import {responsiveHeight, useGlobalStyles} from '../../resources';
+import {useGlobalStyles} from '../../resources';
 import {getVideoLinks} from '../../constants';
 import {styles} from './style';
 
@@ -47,7 +47,7 @@ export const VideoScreen = props => {
       <FlatList
         data={getVideoLinks}
         renderItem={renderItem}
-        keyExtractor={(item, index) => item.code}
+        keyExtractor={(item, index) => index}
         ItemSeparatorComponent={ItemSeparator}
       />
       <MyVideoPlayer

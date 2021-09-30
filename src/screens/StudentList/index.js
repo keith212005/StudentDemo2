@@ -71,7 +71,7 @@ class StudentList extends Component {
     );
   };
 
-  _renderFlatlist = () => {
+  render() {
     if (this.state.loading) {
       return <CustomLoader />;
     }
@@ -83,10 +83,6 @@ class StudentList extends Component {
         keyExtractor={(item, index) => String(index)}
       />
     );
-  };
-
-  render() {
-    return <>{this._renderFlatlist()}</>;
   }
 }
 

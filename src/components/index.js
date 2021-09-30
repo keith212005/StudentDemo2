@@ -8,5 +8,6 @@ export * from './commonViews';
 export * from './Drawer';
 export * from './Maps';
 export * from './Video';
-export * from './Audio';
+export * from './Sliders';
 export * from './NavigationHeaderIcons';
+export * from './focusAwareStatusBar';

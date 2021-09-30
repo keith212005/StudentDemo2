@@ -44,6 +44,7 @@ const DrawerNav = props => {
   return (
     <Drawer.Navigator
       initialRouteName={'StudentList'}
+      screenOptions={{drawerType: 'slide'}}
       drawerContent={props => <DrawerContent {...props} />}>
       {this._addScreen('StudentList', false, {
         options: {
@@ -55,19 +56,23 @@ const DrawerNav = props => {
       })}
 
       {this._addScreen('Language', false, {
-        options: {headerShown: true},
+        options: {headerShown: true, headerLeft: () => <HeaderLeftIcon />},
       })}
 
       {this._addScreen('Notifications', false, {
-        options: {headerShown: true, title: 'Notifications'},
+        options: {
+          headerShown: true,
+          title: 'Notifications',
+          headerLeft: () => <HeaderLeftIcon />,
+        },
       })}
 
       {this._addScreen('VideoScreen', false, {
-        options: {headerShown: true},
+        options: {headerShown: true, headerLeft: () => <HeaderLeftIcon />},
       })}
 
       {this._addScreen('AudioList', false, {
-        options: {headerShown: true},
+        options: {headerShown: true, headerLeft: () => <HeaderLeftIcon />},
       })}
     </Drawer.Navigator>
   );
