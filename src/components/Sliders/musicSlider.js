@@ -1,26 +1,38 @@
-import React from 'react';
-import {Slider} from 'react-native-elements';
-import {responsiveHeight, responsiveWidth} from '../../resources';
+/* eslint-disable react-native/no-inline-styles */
+import React, {useState, useEffect} from 'react';
+// import {Slider} from 'react-native-elements';
+import Slider from '@react-native-community/slider';
+import {responsiveHeight} from '../../resources';
 import {useTheme} from '@react-navigation/native';
 import {Icon} from 'react-native-elements';
+import TrackPlayer, {useProgress} from 'react-native-track-player';
 
 export const MusicSlider = props => {
   const {colors} = useTheme();
+  const [isSeeking, setIsSeeking] = useState(false);
+  const [seek, setSeek] = useState(0);
+  const {duration, position} = useProgress();
+  useEffect(() => {
+    console.log('useeffect in slider called');
+  }, [duration]);
+
   return (
     <Slider
-      animateTransitions
-      animationType="timing"
-      maximumTrackTintColor="#ccc"
-      maximumValue={100}
-      minimumTrackTintColor="#222"
-      minimumValue={0}
-      onSlidingComplete={() => console.log('onSlidingComplete()')}
-      onSlidingStart={() => console.log('onSlidingStart()')}
-      onValueChange={value => console.log('onValueChange()', value)}
       orientation="horizontal"
-      step={1}
-      style={{width: responsiveWidth(100), height: responsiveHeight(10)}}
-      thumbStyle={{height: 20, width: 20}}
+      style={{width: '100%', height: responsiveHeight(2)}}
+      minimumValue={0}
+      maximumValue={duration}
+      maximumTrackTintColor="#ccc"
+      minimumTrackTintColor="#222"
+      value={isSeeking ? seek : position}
+      onValueChange={value => TrackPlayer.pause()}
+      onSlidingComplete={value => {
+        TrackPlayer.seekTo(value);
+        TrackPlayer.play();
+        setIsSeeking(false);
+        setSeek(value);
+      }}
+      thumbStyle={{height: 10, width: 5}}
       thumbProps={{
         children: (
           <Icon
@@ -28,13 +40,13 @@ export const MusicSlider = props => {
             type="font-awesome-5"
             size={10}
             reverse
-            containerStyle={{bottom: 10, right: 10}}
+            containerStyle={{bottom: 15, right: 8}}
             color={colors.orange}
           />
         ),
       }}
       thumbTintColor="#0c0"
-      thumbTouchSize={{width: 40, height: 40}}
+      thumbTouchSize={{width: 20, height: 20}}
       trackStyle={{height: 5, borderRadius: 20}}
       {...props}
     />

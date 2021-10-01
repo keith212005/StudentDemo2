@@ -58,8 +58,8 @@ const StackNav = props => {
   };
 
   const {colors} = useTheme();
-  console.log('DarkTheme colore>>>>>', MyDarkTheme);
-  console.log('DefaultTheme colore>>>>>', LightTheme);
+  // console.log('DarkTheme colore>>>>>', MyDarkTheme);
+  // console.log('DefaultTheme colore>>>>>', LightTheme);
 
   return (
     <>
@@ -103,7 +103,6 @@ const StackNav = props => {
 };
 
 function mapStateToProps(state) {
-  console.log('state in stackNav>>>>', state);
   return {
     isDarkTheme: state.isDarkTheme,
   };
