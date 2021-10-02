@@ -13,7 +13,7 @@ export const MusicSlider = props => {
   const [seek, setSeek] = useState(0);
   const {duration, position} = useProgress();
   useEffect(() => {
-    console.log('useeffect in slider called');
+    // console.log('useeffect in slider called');
   }, [duration]);
 
   return (

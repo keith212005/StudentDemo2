@@ -11,3 +11,4 @@ export * from './Video';
 export * from './Sliders';
 export * from './NavigationHeaderIcons';
 export * from './focusAwareStatusBar';
+export * from './MusicPlayer';

@@ -1,17 +1,8 @@
+/* eslint-disable react-native/no-inline-styles */
 import React from 'react';
-import {
-  View,
-  TouchableOpacity,
-  StyleSheet,
-  Text,
-  Linking,
-  Platform,
-  Alert,
-  Pressable,
-} from 'react-native';
+import {View, StyleSheet, Text, Linking, Alert, Pressable} from 'react-native';
 
 // THIRD PARTY IMPORTS
-import {Button} from 'react-native-elements';
 import Modal from 'react-native-modal';
 
 // LOCAL IMPORTS
@@ -23,7 +14,7 @@ import {
   images,
   colors,
 } from '@resources';
-import {getImageFromMobile, isSameVariable} from '@utils';
+import {getImageFromMobile} from '@utils';
 import {renderIcon} from '../commonViews';
 
 export default class ImagePicker extends React.Component {
@@ -74,26 +65,18 @@ export default class ImagePicker extends React.Component {
       });
   }
 
-  // componentDidUpdate(nextProps, nextState) {
-  //   if (!isSameVariable(nextProps.show, this.props.show)) {
-  //     this.setState({show: nextProps.show});
-  //   }
-  //   if (!isSameVariable(nextState.show, this.state.show)) {
-  //     this.props.onChangeData(nextState.show);
-  //   }
-  // }
-
   render() {
-    const {show, outsidePress, onClose, onPressPositive, height, width} =
-      this.props;
-
     return (
       <>
         <Modal
+          useNativeDriver={true}
           style={{margin: 0}}
           isVisible={this.props.show}
           animationIn="slideInUp"
           backdropTransitionOutTiming={0}
+          onBackdropPress={() => {
+            console.log('backdrop press....');
+          }}
           statusBarTranslucent>
           <Pressable
             onPress={() => this.props.onClose()}
