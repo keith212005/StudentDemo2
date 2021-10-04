@@ -38,6 +38,14 @@ class SQLiteDemo extends Component {
     });
   };
 
+  deleteTodo = id => {
+    return new Promise((resolve, reject) => {
+      this.ExecuteQuery('delete from todos where id=?', [id]).then(result => {
+        resolve(result);
+      });
+    });
+  };
+
   ExecuteQuery = (sql, params = []) => {
     return new Promise((resolve, reject) => {
       console.log('inside ExecurtqQuery');
@@ -69,14 +77,14 @@ class SQLiteDemo extends Component {
     });
   };
 
-  insertIntoTodos() {
-    this.ExecuteQuery(
-      'INSERT INTO Todos (title,isCompleted) VALUES ("Messageing ",true)',
-    );
-    this.ExecuteQuery(
-      'INSERT INTO Todos (title,isCompleted) VALUES (" Services",false)',
-    );
-  }
+  // insertIntoTodos() {
+  //   this.ExecuteQuery(
+  //     'INSERT INTO Todos (title,isCompleted) VALUES ("Messageing ",true)',
+  //   );
+  //   this.ExecuteQuery(
+  //     'INSERT INTO Todos (title,isCompleted) VALUES (" Services",false)',
+  //   );
+  // }
 
   closeDatabase = () => {
     if (db) {

@@ -30,6 +30,13 @@ export const SqliteDemo = props => {
       .catch(e => console.log(e));
   };
 
+  const deleteTodo = id => {
+    console.log('delete id>>>>', id);
+    DB.deleteTodo(id).then(() => {
+      setAddTodo(!addTodo);
+    });
+  };
+
   const _renderFlatlistItem = item => {
     return (
       <View
@@ -45,7 +52,9 @@ export const SqliteDemo = props => {
         <Text>{item.title}</Text>
         <Icon
           type={'font-awesome'}
-          onPress={() => {}}
+          onPress={() => {
+            deleteTodo(item.id);
+          }}
           size={20}
           name={'minus'}
         />
