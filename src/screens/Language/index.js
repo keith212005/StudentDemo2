@@ -1,16 +1,14 @@
+/* eslint-disable no-sparse-arrays */
 /* eslint-disable react-native/no-inline-styles */
 import React, {useState} from 'react';
-import {
-  View,
-  Text,
-  FlatList,
-  TouchableHighlight,
-  SafeAreaView,
-} from 'react-native';
+import {View, Text, FlatList, Pressable, SafeAreaView} from 'react-native';
 
 // THIRD PARTY IMPORTS
+import _ from 'lodash';
 import {connect} from 'react-redux';
 import {bindActionCreators} from 'redux';
+import {useTheme} from '@react-navigation/native';
+import {Divider} from 'native-base';
 
 // LOCAL IMPORTS
 import {styles} from './style';
@@ -18,19 +16,14 @@ import {renderIcon} from '@components';
 import {changeLanguage} from '@languages';
 import {actionCreators} from '@actions';
 import {getLanguages} from '@constants';
-import {images, colors} from '@resources';
+import {images} from '@resources';
 import {isEmpty, isEmptyObject} from '@utils';
 import {resetNavigation} from '@navigator';
 import {useGlobalStyles} from '../../resources';
 
-const ItemSeparator = () => (
-  <View
-    style={{borderWidth: 1, borderColor: colors.unfocusBorder_opacity_low}}
-  />
-);
-
 const Language = props => {
   const globalStyles = useGlobalStyles();
+  const {colors} = useTheme();
 
   const [selectedLanguage, setSelectedLanguage] = useState(
     isEmpty(props.language) ? undefined : props.language,
@@ -38,7 +31,7 @@ const Language = props => {
 
   this.handleLanguageChange = newValue => {
     setSelectedLanguage(newValue);
-    props.setAppLanguage(selectedLanguage);
+    props.setAppLanguage(newValue);
     changeLanguage(newValue);
     resetNavigation(
       isEmptyObject(props.user_info) ? 'Login' : 'DrawerNavigator',
@@ -47,31 +40,44 @@ const Language = props => {
 
   this.renderItem = ({item}) => {
     return (
-      <TouchableHighlight
-        activeOpacity={0.6}
-        underlayColor="#DDDDDD"
+      <Pressable
+        // activeOpacity={0.6}
+        style={[
+          globalStyles.layoutDirection('row', 'space-between', 'center'),
+          {padding: 20},
+          ,
+        ]}
         onPress={() => this.handleLanguageChange(item.code)}>
-        <View style={styles.renderItemContainer}>
-          <Text style={{fontSize: 18}}>{item.language}</Text>
-          {selectedLanguage === item.code
-            ? renderIcon(images.check, 30, {tintColor: 'green'})
-            : null}
-        </View>
-      </TouchableHighlight>
+        <Text
+          style={[
+            globalStyles.textStyle('_18', 'text', 'PROXIMANOVA_REGULAR'),
+          ]}>
+          {item.language}
+        </Text>
+        {selectedLanguage === item.code &&
+          renderIcon(images.check, 25, {tintColor: 'green'})}
+      </Pressable>
     );
   };
 
+  const ItemSeparator = () => <Divider />;
+
   return (
-    <SafeAreaView style={[{backgroundColor: 'white'}]}>
-      <View style={styles.titleBar}>
-        <Text
-          style={[
-            globalStyles.textStyle('_24', 'text', 'PROXIMANOVA_BOLD'),
-            {...styles.titleText},
-          ]}>
-          Select Language
-        </Text>
-      </View>
+    <SafeAreaView>
+      {_.isEmpty(props.language) && (
+        <>
+          <Divider />
+          <View style={styles.titleBar}>
+            <Text
+              style={[
+                globalStyles.textStyle('_24', 'text', 'PROXIMANOVA_BOLD'),
+                {...styles.titleText},
+              ]}>
+              Select Language
+            </Text>
+          </View>
+        </>
+      )}
       <FlatList
         data={getLanguages}
         renderItem={this.renderItem}
@@ -83,6 +89,7 @@ const Language = props => {
 };
 
 const matchStateToProps = state => {
+  console.log('state in langusge', state);
   return {
     language: state.app_lang.language,
     user_info: state.user_info,

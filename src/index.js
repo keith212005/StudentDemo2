@@ -9,8 +9,15 @@ import {PersistGate} from 'redux-persist/integration/react';
 
 // LOCAL IMPORTS
 import {store, persistor} from './reducers';
+import {DB} from './services/database';
 
 export default class AppContainer extends React.Component {
+  constructor(props) {
+    super(props);
+    DB.initTables();
+    // DB.deleteDatabase();
+  }
+
   render() {
     LogBox.ignoreLogs(['Warning: ...']);
 

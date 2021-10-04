@@ -33,7 +33,7 @@ const setupTrackPlayer = async () => {
   }
 };
 
-export const AudioList = () => {
+export const Musicplayer = () => {
   const [showMusicPlayer, setShowMusicPlayer] = useState(false);
   const [trackDetails, setTrackDetails] = useState('');
 

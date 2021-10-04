@@ -42,16 +42,20 @@ const DrawerContent = props => {
           },
         ]);
         break;
-      case 'Notifications':
+      case localize('NOTIFICATION_DEMO'):
         navigate('Notifications');
         break;
 
-      case 'VideoScreen':
+      case localize('VIDEO_PLAYER'):
         navigate('VideoScreen');
         break;
 
-      case 'AudioList':
-        navigate('AudioList');
+      case localize('MUSIC_PLAYER'):
+        navigate('Musicplayer');
+        break;
+
+      case 'SqliteDemo':
+        navigate('SqliteDemo');
         break;
       default:
         break;
@@ -144,11 +148,14 @@ const DrawerContent = props => {
       {/* Render Change Language screen */}
       {_renderDrawerItem('language', localize('CHANGE_LANGUAGE'))}
       {/* Render Notificaiton screen */}
-      {_renderDrawerItem('bell', 'Notifications')}
+      {_renderDrawerItem('bell', localize('NOTIFICATION_DEMO'))}
       {/* Render Video screen */}
-      {_renderDrawerItem('video-camera', 'VideoScreen')}
+      {_renderDrawerItem('video-camera', localize('VIDEO_PLAYER'))}
       {/* Render Video screen */}
-      {_renderDrawerItem('audio-description', 'AudioList')}
+      {_renderDrawerItem('audio-description', localize('MUSIC_PLAYER'))}
+
+      {/* Render SQlite Demo */}
+      {_renderDrawerItem('database', 'SqliteDemo')}
       {/* Render Sign out */}
       {_renderDrawerItem('sign-out', localize('LOGOUT'))}
       <Divider />

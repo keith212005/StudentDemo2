@@ -4,7 +4,7 @@ import {StyleSheet} from 'react-native';
 import * as Resource from '@resources';
 import {responsiveWidth} from '../../resources';
 
-const styles = StyleSheet.create({
+export const styles = StyleSheet.create({
   container: {
     flex: 1,
     justifyContent: 'center',
@@ -15,8 +15,8 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     alignItems: 'center',
     justifyContent: 'space-between',
-    padding: 15,
-    width: Resource.responsiveWidth(90),
+    padding: 10,
+    width: responsiveWidth(90),
   },
   titleBar: {
     flexDirection: 'row',
@@ -32,8 +32,6 @@ const styles = StyleSheet.create({
   itemSeparator: {
     height: 1,
     width: '100%',
-    backgroundColor: Resource.colors.gray,
+    // backgroundColor: colors.gray,
   },
 });
-
-export {styles};

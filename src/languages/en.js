@@ -40,4 +40,8 @@ export const en = {
     'Student Demo need to access your location. Please allow location service from Settings -> Permissions -> Location.',
   GO_TO_SETTINGS: 'GO TO SETTINGS',
   DELETE: 'Delete',
+  NOTIFICATION_DEMO: 'Noification Demo',
+  MUSIC_PLAYER: 'Music Player',
+  VIDEO_PLAYER: 'Video Player',
+  ADD_TASK: 'Add Task',
 };

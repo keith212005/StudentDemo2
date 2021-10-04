@@ -1,26 +1,16 @@
-import React, {Component} from 'react';
-import {TouchableOpacity} from 'react-native';
+import React from 'react';
 
 // THIRD PARTY IMPORTS
-import {useTheme, useNavigation, DrawerActions} from '@react-navigation/native';
+import {useTheme, useNavigation} from '@react-navigation/native';
 import {createDrawerNavigator} from '@react-navigation/drawer';
 import {connect} from 'react-redux';
 import {bindActionCreators} from 'redux';
-import {Icon} from 'react-native-elements';
 
 // LOCAL IMPORTS
 import * as Screen from '@screens';
-import {images} from '@resources';
-import {
-  renderIcon,
-  DrawerContent,
-  HeaderLeftIcon,
-  HeaderRightIcon,
-} from '@components';
+import {DrawerContent, HeaderLeftIcon, HeaderRightIcon} from '@components';
 import {localize} from '../languages';
 import {actionCreators} from '../actions';
-import {navigate} from './RootNavigation';
-import {Colors} from 'react-native/Libraries/NewAppScreen';
 
 const Drawer = createDrawerNavigator();
 
@@ -28,8 +18,6 @@ const DrawerNav = props => {
   /* Define constants */
   const {colors} = useTheme();
   const navigation = useNavigation();
-
-  /* Define constants */
 
   this._addScreen = (routeName, isNavigator = false, extraProps = {}) => {
     return (
@@ -56,23 +44,43 @@ const DrawerNav = props => {
       })}
 
       {this._addScreen('Language', false, {
-        options: {headerShown: true, headerLeft: () => <HeaderLeftIcon />},
+        options: {
+          headerShown: true,
+          title: localize('CHANGE_LANGUAGE'),
+          headerLeft: () => <HeaderLeftIcon />,
+        },
       })}
 
       {this._addScreen('Notifications', false, {
         options: {
           headerShown: true,
-          title: 'Notifications',
+          title: localize('NOTIFICATION_DEMO'),
           headerLeft: () => <HeaderLeftIcon />,
         },
       })}
 
       {this._addScreen('VideoScreen', false, {
-        options: {headerShown: true, headerLeft: () => <HeaderLeftIcon />},
+        options: {
+          headerShown: true,
+          title: localize('VIDEO_PLAYER'),
+          headerLeft: () => <HeaderLeftIcon />,
+        },
       })}
 
-      {this._addScreen('AudioList', false, {
-        options: {headerShown: true, headerLeft: () => <HeaderLeftIcon />},
+      {this._addScreen('Musicplayer', false, {
+        options: {
+          headerShown: true,
+          title: localize('MUSIC_PLAYER'),
+          headerLeft: () => <HeaderLeftIcon />,
+        },
+      })}
+
+      {this._addScreen('SqliteDemo', false, {
+        options: {
+          headerShown: true,
+          title: 'Sqlite Example',
+          headerLeft: () => <HeaderLeftIcon />,
+        },
       })}
     </Drawer.Navigator>
   );

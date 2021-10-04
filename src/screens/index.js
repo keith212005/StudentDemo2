@@ -5,4 +5,5 @@ export Login from './Login';
 export Language from './Language';
 export Notifications from './Notifications';
 export * from './VideoScreen';
-export * from './AudioList';
+export * from './Musicplayer';
+export * from './SqliteDemo';

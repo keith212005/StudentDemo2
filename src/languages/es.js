@@ -41,4 +41,8 @@ export const es = {
     'Student Demo necesita acceder a su ubicación. Permita el servicio de ubicación desde Configuración -> Permisos -> Ubicación.',
   GO_TO_SETTINGS: 'IR A LA CONFIGURACIÓN',
   DELETE: 'Eliminar',
+  NOTIFICATION_DEMO: 'Demostración de noificación',
+  MUSIC_PLAYER: 'Reproductor de música',
+  VIDEO_PLAYER: 'Reproductor de video',
+  ADD_TASK: 'Agregar tarea',
 };
