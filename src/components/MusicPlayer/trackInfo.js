@@ -7,7 +7,7 @@ import TrackPlayer, {
   useTrackPlayerEvents,
 } from 'react-native-track-player';
 import {responsiveWidth, useGlobalStyles} from '../../resources';
-import {renderIcon} from '../commonViews';
+import {renderImage} from '../commonViews';
 
 const TrackInfo = props => {
   const globalStyles = useGlobalStyles();
@@ -25,7 +25,7 @@ const TrackInfo = props => {
 
   return (
     <View>
-      {renderIcon(trackDetails.artwork, responsiveWidth(30), {
+      {renderImage(trackDetails.artwork, responsiveWidth(30), {
         alignSelf: 'center',
         marginTop: 30,
         borderRadius: 20,

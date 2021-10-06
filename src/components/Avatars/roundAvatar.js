@@ -2,7 +2,7 @@ import React, {Component} from 'react';
 import {Text, StyleSheet, Image, TouchableOpacity} from 'react-native';
 
 import {Avatar, View} from 'native-base';
-import {renderIcon} from '../commonViews';
+import {renderImage} from '../commonViews';
 
 import {
   responsiveHeight,
@@ -42,7 +42,7 @@ export default class RoundAvatar extends React.PureComponent {
 
         <View
           style={[commonStyles.layoutDirection('row', 'flex-start', 'center')]}>
-          {isError && <>{renderIcon(images.error, 20, {marginRight: 5})}</>}
+          {isError && <>{renderImage(images.error, 20, {marginRight: 5})}</>}
           <Text>{errorText}</Text>
         </View>
       </View>

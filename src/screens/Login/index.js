@@ -15,7 +15,12 @@ import {
 import {isEmpty} from '@utils';
 import {styles} from './style';
 import {actionCreators} from '@actions';
-import {CustomInput, renderIcon, SubmitButton, CustomLoader} from '@components';
+import {
+  CustomInput,
+  renderImage,
+  SubmitButton,
+  CustomLoader,
+} from '@components';
 import {loginFields} from '@constants';
 import {localize} from '@languages';
 import {
@@ -148,7 +153,7 @@ class Login extends Component {
   }
 
   _renderLogo = () => {
-    return renderIcon(images.hat, responsiveWidth(40), {alignSelf: 'center'});
+    return renderImage(images.hat, responsiveWidth(40), {alignSelf: 'center'});
   };
 
   _renderInputs(index, key, extraProps = {}, callback) {

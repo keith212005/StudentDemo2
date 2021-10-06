@@ -44,4 +44,5 @@ export const en = {
   MUSIC_PLAYER: 'Music Player',
   VIDEO_PLAYER: 'Video Player',
   ADD_TASK: 'Add Task',
+  TODO_LIST: 'Todo List',
 };

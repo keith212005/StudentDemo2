@@ -15,7 +15,7 @@ import {
   colors,
 } from '@resources';
 import {getImageFromMobile} from '@utils';
-import {renderIcon} from '../commonViews';
+import {renderImage} from '../commonViews';
 
 export default class ImagePicker extends React.Component {
   constructor(props) {
@@ -88,7 +88,7 @@ export default class ImagePicker extends React.Component {
                   this.props.onClose();
                   setTimeout(() => this.onPress('camera'), 1000);
                 }}>
-                {renderIcon(images.camera, 30, {
+                {renderImage(images.camera, 30, {
                   marginHorizontal: responsiveWidth(5),
                 })}
                 <Text style={styles.buttonTextStyle}>{localize('CAMERA')}</Text>
@@ -100,7 +100,7 @@ export default class ImagePicker extends React.Component {
                   this.props.onClose();
                   setTimeout(() => this.onPress('gallery'), 1000);
                 }}>
-                {renderIcon(images.gallery, 30, {
+                {renderImage(images.gallery, 30, {
                   marginHorizontal: responsiveWidth(5),
                   tintColor: colors.darkGray,
                 })}

@@ -12,7 +12,7 @@ import {Divider} from 'native-base';
 
 // LOCAL IMPORTS
 import {styles} from './style';
-import {renderIcon} from '@components';
+import {renderImage} from '@components';
 import {changeLanguage} from '@languages';
 import {actionCreators} from '@actions';
 import {getLanguages} from '@constants';
@@ -55,7 +55,7 @@ const Language = props => {
           {item.language}
         </Text>
         {selectedLanguage === item.code &&
-          renderIcon(images.check, 25, {tintColor: 'green'})}
+          renderImage(images.check, 25, {tintColor: 'green'})}
       </Pressable>
     );
   };

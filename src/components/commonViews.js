@@ -1,11 +1,16 @@
+/* eslint-disable react-native/no-inline-styles */
 import React from 'react';
 import {Image} from 'react-native';
 
-import {Avatar} from 'react-native-elements';
+import {Icon, Avatar} from 'react-native-elements';
 
 import {commonStyles} from '@resources';
 
-export const renderIcon = (uri, size, extraStyle) => {
+export const renderIcon = (name, size, type, extraProps = {}) => {
+  return <Icon name={name} size={size} type={type} {...extraProps} />;
+};
+
+export const renderImage = (uri, size, extraStyle) => {
   return (
     <Image
       source={{uri: uri}}

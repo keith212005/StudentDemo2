@@ -11,6 +11,7 @@ import * as Screen from '@screens';
 import {DrawerContent, HeaderLeftIcon, HeaderRightIcon} from '@components';
 import {localize} from '../languages';
 import {actionCreators} from '../actions';
+import {ShowChart} from '../components';
 
 const Drawer = createDrawerNavigator();
 
@@ -31,7 +32,7 @@ const DrawerNav = props => {
 
   return (
     <Drawer.Navigator
-      initialRouteName={'StudentList'}
+      initialRouteName={'SqliteDemo'}
       screenOptions={{drawerType: 'slide'}}
       drawerContent={props => <DrawerContent {...props} />}>
       {this._addScreen('StudentList', false, {
@@ -75,11 +76,12 @@ const DrawerNav = props => {
         },
       })}
 
-      {this._addScreen('SqliteDemo', false, {
+      {this._addScreen('Todo', false, {
         options: {
           headerShown: true,
-          title: 'Sqlite Example',
+          title: localize('TODO_LIST'),
           headerLeft: () => <HeaderLeftIcon />,
+          headerRight: () => <ShowChart />,
         },
       })}
     </Drawer.Navigator>

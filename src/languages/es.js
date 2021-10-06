@@ -45,4 +45,5 @@ export const es = {
   MUSIC_PLAYER: 'Reproductor de música',
   VIDEO_PLAYER: 'Reproductor de video',
   ADD_TASK: 'Agregar tarea',
+  TODO_LIST: 'Todo List',
 };

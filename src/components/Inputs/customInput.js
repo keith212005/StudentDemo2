@@ -1,11 +1,13 @@
 import React from 'react';
 import {StyleSheet, View, Text} from 'react-native';
 
+// THIRD PARTY IMPORTS
 import {Input} from 'native-base';
 import Icon from 'react-native-vector-icons/FontAwesome';
 
+// LOCAL IMPORTS
 import {responsiveWidth, commonStyles, images} from '@resources';
-import {renderIcon} from '../commonViews';
+import {renderImage} from '../commonViews';
 
 export default class CustomInput extends React.PureComponent {
   static defaultProps = {
@@ -42,7 +44,7 @@ export default class CustomInput extends React.PureComponent {
 
         <View
           style={[commonStyles.layoutDirection('row', 'flex-start', 'center')]}>
-          {isError && <>{renderIcon(images.error, 20, {marginRight: 5})}</>}
+          {isError && <>{renderImage(images.error, 20, {marginRight: 5})}</>}
           <Text>{errorText}</Text>
         </View>
       </View>

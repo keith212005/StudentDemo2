@@ -8,7 +8,7 @@ import {bindActionCreators} from 'redux';
 // LOCAL IMPORTS
 import {styles} from './style';
 import {actionCreators} from '@actions';
-import {renderIcon} from '@components';
+import {renderImage} from '@components';
 import {images, responsiveWidth} from '@resources';
 import {resetNavigation, navigate} from '@navigator';
 import {isEmpty, isEmptyObject} from '@utils';
@@ -30,7 +30,7 @@ class SplashScreen extends Component {
   render() {
     return (
       <View style={styles.container}>
-        {renderIcon(images.hat, responsiveWidth(40))}
+        {renderImage(images.hat, responsiveWidth(40))}
       </View>
     );
   }

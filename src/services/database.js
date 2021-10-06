@@ -1,13 +1,12 @@
 import {Component} from 'react';
 import SQLite from 'react-native-sqlite-storage';
-SQLite.DEBUG(true);
+// SQLite.DEBUG(true);
 
 var database_name = 'StudentDemo.db';
 
 var db = SQLite.openDatabase(
   {
     name: database_name,
-    createFromLocation: 1,
     location: 'default',
   },
   () => console.log('Database open success'),
@@ -15,24 +14,69 @@ var db = SQLite.openDatabase(
 );
 
 class SQLiteDemo extends Component {
-  queryTodos = () => {
+  getTotalTodoCounts = () => {
     return new Promise((resolve, reject) => {
-      this.ExecuteQuery('select * from todos', []).then(result => {
-        console.log(typeof result.rows);
-        console.log(result.rows.length);
-        var resultObject = [];
-        for (let i = 0; i < result.rows.length; i++) {
-          resultObject.push(result.rows.item(i));
-          console.log('item>>>>>', result.rows.item(i));
-        }
-        resolve(resultObject);
+      this.ExecuteQuery('select count(1) from todos', []).then(results => {
+        resolve(results.rows.item(0)['count(1)']);
       });
     });
   };
 
-  addTodo = (sql, arrValues) => {
+  getCompletedTodos = () => {
     return new Promise((resolve, reject) => {
-      this.ExecuteQuery(sql, arrValues).then(result => {
+      this.ExecuteQuery(
+        'select count(*) from todos where isCompleted=1',
+        [],
+      ).then(results => resolve(results.rows.item(0)['count(*)']));
+    });
+  };
+
+  getPendingTodos = () => {
+    return new Promise((resolve, reject) => {
+      this.ExecuteQuery(
+        'select count(*) from todos where isCompleted=0',
+        [],
+      ).then(results => resolve(results.rows.item(0)['count(*)']));
+    });
+  };
+
+  queryTodos = () => {
+    return new Promise((resolve, reject) => {
+      this.ExecuteQuery('select * from todos', []).then(results => {
+        console.log('KKKKKKKKKKKKKKKKKKKKKKKK>>>>>>>', results.rows);
+        console.log(typeof results.rows.item(0));
+        // console.log(result.rows.length);
+        var resultObject = [];
+        if (results.rows && results.rows.length > 0) {
+          for (let i = 0; i < results.rows.length; i++) {
+            resultObject.push(results.rows.item(i));
+          }
+          resolve(resultObject);
+        } else {
+          reject('No rows found....');
+        }
+      });
+    });
+  };
+
+  addTodo = arrValues => {
+    return new Promise((resolve, reject) => {
+      console.log('firing insert query');
+      this.ExecuteQuery(
+        'INSERT INTO TODOS (title,isCompleted) VALUES (?,?)',
+        arrValues,
+      ).then(result => {
+        console.log('result of insert query', result);
+        resolve(result);
+      });
+    });
+  };
+
+  updateTodo = id => {
+    return new Promise((resolve, reject) => {
+      this.ExecuteQuery("UPDATE TODOS SET isCompleted='1' WHERE id=?", [
+        id,
+      ]).then(result => {
         resolve(result);
       });
     });
@@ -40,7 +84,8 @@ class SQLiteDemo extends Component {
 
   deleteTodo = id => {
     return new Promise((resolve, reject) => {
-      this.ExecuteQuery('delete from todos where id=?', [id]).then(result => {
+      this.ExecuteQuery('DELETE FROM TODOS WHERE id=?', [id]).then(result => {
+        console.log('deleted id:', id);
         resolve(result);
       });
     });
@@ -48,12 +93,11 @@ class SQLiteDemo extends Component {
 
   ExecuteQuery = (sql, params = []) => {
     return new Promise((resolve, reject) => {
-      console.log('inside ExecurtqQuery');
       db.transaction(trans => {
         trans.executeSql(
           sql,
           params,
-          (trans, results) => resolve(results),
+          (tx, results) => resolve(results),
           error => reject(error),
         );
       });
@@ -68,23 +112,11 @@ class SQLiteDemo extends Component {
           'title VARCHAR(300), ' +
           'isCompleted BOOLEAN ); ',
       ).then(
-        result => {
-          // this.insertIntoTodos();
-          resolve();
-        },
+        result => resolve(),
         error => reject(),
       );
     });
   };
-
-  // insertIntoTodos() {
-  //   this.ExecuteQuery(
-  //     'INSERT INTO Todos (title,isCompleted) VALUES ("Messageing ",true)',
-  //   );
-  //   this.ExecuteQuery(
-  //     'INSERT INTO Todos (title,isCompleted) VALUES (" Services",false)',
-  //   );
-  // }
 
   closeDatabase = () => {
     if (db) {
@@ -97,10 +129,7 @@ class SQLiteDemo extends Component {
     }
   };
 
-  deleteDatabase = () => {
-    console.log('Deleting database');
-    SQLite.deleteDatabase(database_name);
-  };
+  deleteDatabase = () => SQLite.deleteDatabase(database_name);
 }
 
 export const DB = new SQLiteDemo();

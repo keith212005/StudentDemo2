@@ -20,7 +20,7 @@ import {localize} from '../languages';
 import {actionCreators} from '../actions';
 import {colors, images} from '@resources';
 import {navigate} from './RootNavigation';
-import {renderIcon} from '../components';
+import {renderImage} from '../components';
 
 const Stack = createStackNavigator();
 
@@ -87,7 +87,7 @@ const StackNav = props => {
             options: {
               headerRight: () => (
                 <TouchableOpacity onPress={() => navigate('AddStudent')}>
-                  {renderIcon(images.calendar, 30, {
+                  {renderImage(images.calendar, 30, {
                     marginRight: 10,
                     tintColor: colors.text,
                   })}

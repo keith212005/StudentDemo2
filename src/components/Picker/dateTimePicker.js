@@ -4,7 +4,7 @@ import DateTimePickerModal from 'react-native-modal-datetime-picker';
 import {Icon} from 'react-native-elements';
 import moment from 'moment';
 
-import {renderIcon} from '../commonViews';
+import {renderImage} from '../commonViews';
 
 import {
   responsiveHeight,
@@ -26,7 +26,7 @@ const DateTimePicker = props => {
         <Pressable
           onPress={onPress}
           style={{justifyContent: 'center', padding: 3}}>
-          {renderIcon(images.calendar, 28, {
+          {renderImage(images.calendar, 28, {
             tintColor: 'grey',
             alignSelf: 'flex-end',
           })}
@@ -40,7 +40,7 @@ const DateTimePicker = props => {
       <View
         style={[commonStyles.layoutDirection('row', 'flex-start', 'center')]}>
         {valueObject.isError && (
-          <>{renderIcon(images.error, 20, {marginRight: 5})}</>
+          <>{renderImage(images.error, 20, {marginRight: 5})}</>
         )}
         <Text>{valueObject.errorText}</Text>
       </View>

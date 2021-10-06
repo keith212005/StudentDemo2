@@ -54,8 +54,8 @@ const DrawerContent = props => {
         navigate('Musicplayer');
         break;
 
-      case 'SqliteDemo':
-        navigate('SqliteDemo');
+      case localize('TODO_LIST'):
+        navigate('Todo');
         break;
       default:
         break;
@@ -155,7 +155,7 @@ const DrawerContent = props => {
       {_renderDrawerItem('audio-description', localize('MUSIC_PLAYER'))}
 
       {/* Render SQlite Demo */}
-      {_renderDrawerItem('database', 'SqliteDemo')}
+      {_renderDrawerItem('database', localize('TODO_LIST'))}
       {/* Render Sign out */}
       {_renderDrawerItem('sign-out', localize('LOGOUT'))}
       <Divider />
