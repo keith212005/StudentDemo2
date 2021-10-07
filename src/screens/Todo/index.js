@@ -1,5 +1,5 @@
 /* eslint-disable react-native/no-inline-styles */
-import React, {useEffect} from 'react';
+import React, {useEffect, useState} from 'react';
 import {
   View,
   FlatList,
@@ -12,15 +12,19 @@ import {
 // THIRD PARTY IMPORTS
 import {Input} from 'native-base';
 import _ from 'lodash';
+import {useTheme} from '@react-navigation/native';
 
 // LOCAL IMPORTS
 import {localize} from '../../languages';
 import {DB} from '../../services/database';
 import {TodoCard} from '../../components/Cards/todoCard';
-import {renderIcon} from '../../components';
+import {renderIcon, CustomLoader} from '../../components';
 import {styles} from './style';
+import {SafeAreaView} from 'react-native-safe-area-context';
 
 export const Todo = props => {
+  const {colors} = useTheme();
+  const [loading, setLoading] = useState(true);
   const [list, setList] = React.useState([]);
   const [inputValue, setInputValue] = React.useState('');
   const [addTodo, setAddTodo] = React.useState(false);
@@ -31,8 +35,14 @@ export const Todo = props => {
 
   const getAllTodos = () => {
     DB.queryTodos()
-      .then(res => setList(res))
-      .catch(e => setList([]));
+      .then(res => {
+        setList(res);
+        setLoading(false);
+      })
+      .catch(e => {
+        setList([]);
+        setLoading(false);
+      });
   };
 
   const addTodoTask = () => {
@@ -75,29 +85,37 @@ export const Todo = props => {
     );
   };
 
+  if (loading) {
+    return <CustomLoader />;
+  }
+
   return (
-    <KeyboardAvoidingView
-      behavior={Platform.OS === 'ios' ? 'padding' : 'height'}
-      style={styles.container}>
-      <TouchableWithoutFeedback onPress={Keyboard.dismiss}>
-        <View style={styles.inner}>
-          {_renderList()}
-          <View style={styles.btnContainer}>
-            <Input
-              flex={1}
-              _light={{placeholderTextColor: 'blueGray.700'}}
-              _dark={{placeholderTextColor: 'white'}}
-              onChangeText={v => setInputValue(v)}
-              value={inputValue}
-              placeholder={localize('ADD_TASK')}
-            />
-            {renderIcon('plus-circle', 30, 'feather', {
-              containerStyle: {marginLeft: 10},
-              onPress: () => addTodoTask(),
-            })}
+    <SafeAreaView style={styles.container}>
+      <KeyboardAvoidingView
+        keyboardVerticalOffset={Platform.OS === 'ios' ? 95 : 85}
+        behavior={Platform.OS === 'ios' ? 'padding' : 'height'}
+        style={styles.container}>
+        <TouchableWithoutFeedback onPress={Keyboard.dismiss}>
+          <View style={styles.inner}>
+            {_renderList()}
+            <View style={styles.btnContainer}>
+              <Input
+                flex={1}
+                _light={{placeholderTextColor: colors.text}}
+                _dark={{placeholderTextColor: colors.text}}
+                onChangeText={v => setInputValue(v)}
+                value={inputValue}
+                placeholder={localize('ADD_TASK')}
+              />
+              {renderIcon('plus-circle', 30, 'feather', {
+                containerStyle: {marginLeft: 10},
+                color: colors.text,
+                onPress: () => addTodoTask(),
+              })}
+            </View>
           </View>
-        </View>
-      </TouchableWithoutFeedback>
-    </KeyboardAvoidingView>
+        </TouchableWithoutFeedback>
+      </KeyboardAvoidingView>
+    </SafeAreaView>
   );
 };

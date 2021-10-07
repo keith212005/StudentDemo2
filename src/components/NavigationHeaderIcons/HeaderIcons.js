@@ -27,7 +27,7 @@ export const HeaderRightIcon = props => {
     <Icon
       containerStyle={{marginRight: 20, borderRadius: 100}}
       name={'plus-circle'}
-      type="font-awesome"
+      type="feather"
       color={colors.text}
       onPress={() => navigate('AddStudent')}
     />

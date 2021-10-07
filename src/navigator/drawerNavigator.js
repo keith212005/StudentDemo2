@@ -8,7 +8,7 @@ import {bindActionCreators} from 'redux';
 
 // LOCAL IMPORTS
 import * as Screen from '@screens';
-import {DrawerContent, HeaderLeftIcon, HeaderRightIcon} from '@components';
+import {DrawerContent, HeaderLeftIcon, HeaderRightIcon} from '../components';
 import {localize} from '../languages';
 import {actionCreators} from '../actions';
 import {ShowChart} from '../components';

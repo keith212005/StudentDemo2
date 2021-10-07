@@ -1,5 +1,5 @@
 import React from 'react';
-import {StatusBar, TouchableOpacity} from 'react-native';
+import {StatusBar, TouchableOpacity, Platform} from 'react-native';
 
 // THIRD PARTY IMPORT
 import {
@@ -11,6 +11,7 @@ import {
 import {createStackNavigator} from '@react-navigation/stack';
 import {connect} from 'react-redux';
 import {bindActionCreators} from 'redux';
+import {SafeAreaProvider} from 'react-native-safe-area-context';
 
 // LOCAL IMPORTS
 import * as Screen from '@screens';
@@ -73,6 +74,7 @@ const StackNav = props => {
             headerMode: 'screen',
             gestureEnabled: false,
             cardStyleInterpolator: forFade,
+            // headerStatusBarHeight: 0,
           }}>
           {this.addScreen('SplashScreen')}
           {this.addScreen('AddStudent', false, {

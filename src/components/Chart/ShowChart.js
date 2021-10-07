@@ -1,6 +1,6 @@
 /* eslint-disable react-native/no-inline-styles */
 import React, {useState, useEffect} from 'react';
-import {View} from 'react-native';
+import {View, Platform} from 'react-native';
 import {responsiveHeight} from '../../resources';
 
 // THIRD PARTY IMPORTS
@@ -38,15 +38,22 @@ const ShowChartModal = ({show, onClose}) => {
 };
 
 export const ShowChart = props => {
+  const {colors} = useTheme();
   const [isModalVisible, setModalVisible] = useState(false);
   useEffect(() => {}, [isModalVisible]);
   const toggleModal = () => setModalVisible(!isModalVisible);
   return (
     <>
-      {renderIcon('pie-chart', 20, 'font-awesome', {
-        onPress: () => toggleModal(),
-        containerStyle: {padding: 12},
-      })}
+      {renderIcon(
+        'pie-chart',
+        Platform.OS === 'ios' ? 18 : 22,
+        'font-awesome',
+        {
+          onPress: () => toggleModal(),
+          containerStyle: {padding: Platform.OS === 'ios' ? 12 : 14},
+          color: colors.text,
+        },
+      )}
       <ShowChartModal show={isModalVisible} onClose={toggleModal} />
     </>
   );
