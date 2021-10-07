@@ -19,7 +19,6 @@ const ShowChartModal = ({show, onClose}) => {
         animationOut="slideOutDown"
         animationOutTiming={500}
         coverScreen={true}
-        // backdropTransitionOutTiming={0}
         statusBarTranslucent
         useNativeDriver={true}
         onBackdropPress={onClose}

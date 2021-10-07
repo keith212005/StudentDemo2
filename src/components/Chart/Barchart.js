@@ -8,16 +8,11 @@ import {useFocusEffect} from '@react-navigation/native';
 import {DB} from '../../services';
 
 export const Barchart = props => {
-  const [totalCount, setTotalCount] = useState(0);
   const [completed, setCompleted] = useState(0);
   const [pending, setPending] = useState(0);
 
   useFocusEffect(
     React.useCallback(() => {
-      DB.getTotalTodoCounts()
-        .then(count => setTotalCount(count))
-        .catch(e => console.log(e));
-
       DB.getCompletedTodos()
         .then(count => setCompleted(count))
         .catch(e => console.log(e));
@@ -32,30 +27,30 @@ export const Barchart = props => {
   const data = [
     {
       value: pending,
+      label: 'Pending',
+      svg: {fill: 'orange'},
     },
 
     {
       value: completed,
-      svg: {
-        fill: 'green',
-      },
+      label: 'Completed',
+      svg: {fill: 'green'},
     },
   ];
   return (
     <>
-      {totalCount > 0 && (
-        <View style={{flex: 1}}>
-          <BarChart
-            style={{height: 200}}
-            data={data}
-            svg={{fill: 'rgba(134, 65, 244, 0.8)'}}
-            yAccessor={({item}) => item.value}
-            gridMin={0}
-            contentInset={{top: 20, bottom: 0}}>
-            <Grid />
-          </BarChart>
-        </View>
-      )}
+      <View style={{flex: 1}}>
+        <BarChart
+          style={{height: 300}}
+          data={data}
+          yAccessor={({item}) => item.value}
+          contentInset={{top: 10, bottom: 10}}
+          spacing={0.2}
+          gridMin={0}
+          {...props}>
+          <Grid />
+        </BarChart>
+      </View>
     </>
   );
 };

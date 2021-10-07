@@ -19,7 +19,6 @@ export const PieChartData = props => {
   const [completed, setCompleted] = useState(0);
   const [pending, setPending] = useState(0);
 
-  const fill = 'rgb(134, 65, 244)';
   const data = [pending, completed];
 
   useFocusEffect(
@@ -45,7 +44,7 @@ export const PieChartData = props => {
         globalStyles.textStyle('_23', 'black', 'PROXIMANOVA_BOLD'),
         {padding: 10, textAlign: 'center'},
       ]}>
-      Statistics
+      Report
     </Text>
   );
 
@@ -60,13 +59,20 @@ export const PieChartData = props => {
   return (
     <View style={{padding: 10}}>
       {_renderTitle()}
-      {_renderLabelConatiner()}
-      <View style={{flexDirection: 'row'}}>
-        <Yaxis />
-        <Barchart />
-      </View>
 
-      <Xaxis />
+      {totalCount > 0 && (
+        <View>
+          {_renderLabelConatiner()}
+          <View style={{flexDirection: 'row'}}>
+            <Yaxis
+              data={data}
+              max={pending > completed ? pending : completed}
+            />
+            <Barchart />
+          </View>
+          <Xaxis />
+        </View>
+      )}
     </View>
   );
 };
