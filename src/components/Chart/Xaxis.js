@@ -1,10 +1,10 @@
-import React, {useState} from 'react';
-import {Text, View} from 'react-native';
+import React from 'react';
 
 // THIRD PARTY IMPORTS
 import {XAxis} from 'react-native-svg-charts';
-import {useFocusEffect} from '@react-navigation/native';
 import * as scale from 'd3-scale';
+import {localize} from '../../languages';
+localize;
 
 export const Xaxis = props => {
   const fill = 'rgb(134, 65, 244)';
@@ -16,9 +16,8 @@ export const Xaxis = props => {
       style={{marginLeft: 0, paddingTop: 5}}
       data={data}
       formatLabel={(value, index) => {
-        return index === 0 ? 'Pending' : 'Completed';
+        return index === 0 ? localize('PENDING') : localize('COMPLETED');
       }}
-      // contentInset={{left: 100, right: 100}}
       svg={{fontSize: 10, fill: 'black'}}
     />
   );

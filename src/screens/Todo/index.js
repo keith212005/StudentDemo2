@@ -7,6 +7,7 @@ import {
   Platform,
   Keyboard,
   TouchableWithoutFeedback,
+  ScrollView,
 } from 'react-native';
 
 // THIRD PARTY IMPORTS
@@ -96,8 +97,11 @@ export const Todo = props => {
         behavior={Platform.OS === 'ios' ? 'padding' : 'height'}
         style={styles.container}>
         <TouchableWithoutFeedback onPress={Keyboard.dismiss}>
-          <View style={styles.inner}>
-            {_renderList()}
+          <>
+            <ScrollView>
+              <View style={styles.inner}>{_renderList()}</View>
+            </ScrollView>
+
             <View style={styles.btnContainer}>
               <Input
                 flex={1}
@@ -113,7 +117,7 @@ export const Todo = props => {
                 onPress: () => addTodoTask(),
               })}
             </View>
-          </View>
+          </>
         </TouchableWithoutFeedback>
       </KeyboardAvoidingView>
     </SafeAreaView>

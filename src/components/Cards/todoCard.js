@@ -23,7 +23,6 @@ export const TodoCard = ({item, onDelete, onUpdate}) => {
           checked={item.isCompleted}
           title={item.title}
           onIconPress={() => onUpdate(item.id)}
-          onPress={() => console.log('onpress...', item.id)}
           containerStyle={{
             flex: 1,
             backgroundColor: 'white',

@@ -85,10 +85,7 @@ const DrawerContent = props => {
     return (
       <Preferences
         isDarkModeOn={props.isDarkTheme}
-        onValueChange={value => {
-          console.log(value);
-          props.setDarkTheme(value);
-        }}
+        onValueChange={value => props.setDarkTheme(value)}
       />
     );
   };

@@ -7,12 +7,10 @@ export const styles = StyleSheet.create({
   },
   inner: {
     flex: 1,
-    // padding: 10,
-    // justifyContent: 'space-evenly',
   },
   btnContainer: {
     flexDirection: 'row',
-    // marginBottom: 100,
     alignItems: 'center',
+    padding: 10,
   },
 });

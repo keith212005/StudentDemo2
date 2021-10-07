@@ -45,4 +45,10 @@ export const en = {
   VIDEO_PLAYER: 'Video Player',
   ADD_TASK: 'Add Task',
   TODO_LIST: 'Todo List',
+  PREFERENCES: 'Preferences',
+  DARK_THEME: 'Dark Theme',
+  TOTAL: 'Total',
+  COMPLETED: 'Completed',
+  PENDING: 'Pending',
+  REPORT: 'Report',
 };

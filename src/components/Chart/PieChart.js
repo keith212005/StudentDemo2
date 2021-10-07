@@ -12,6 +12,7 @@ import {DB} from '../../services';
 import {Yaxis} from './Yaxis';
 import {Xaxis} from './Xaxis';
 import {Barchart} from './Barchart';
+import {localize} from '../../languages';
 
 export const PieChartData = props => {
   const globalStyles = useGlobalStyles();
@@ -44,15 +45,21 @@ export const PieChartData = props => {
         globalStyles.textStyle('_23', 'black', 'PROXIMANOVA_BOLD'),
         {padding: 10, textAlign: 'center'},
       ]}>
-      Report
+      {localize('REPORT')}
     </Text>
   );
 
   const _renderLabelConatiner = () => (
     <View style={styles.labelContainer}>
-      <Text>Total: {totalCount}</Text>
-      <Text>Completed: {completed}</Text>
-      <Text>Pending: {pending}</Text>
+      <Text>
+        {localize('TOTAL')} : {totalCount}
+      </Text>
+      <Text>
+        {localize('COMPLETED')}: {completed}
+      </Text>
+      <Text>
+        {localize('PENDING')}: {pending}
+      </Text>
     </View>
   );
 

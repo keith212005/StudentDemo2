@@ -33,7 +33,12 @@ const DrawerNav = props => {
   return (
     <Drawer.Navigator
       initialRouteName={'SqliteDemo'}
-      screenOptions={{drawerType: 'slide'}}
+      screenOptions={{
+        drawerType: 'slide',
+        headerStyle: {
+          borderBottomWidth: 1,
+        },
+      }}
       drawerContent={props => <DrawerContent {...props} />}>
       {this._addScreen('StudentList', false, {
         options: {

@@ -41,7 +41,7 @@ export const Barchart = props => {
     <>
       <View style={{flex: 1}}>
         <BarChart
-          style={{height: 300}}
+          style={{height: 250}}
           data={data}
           yAccessor={({item}) => item.value}
           contentInset={{top: 10, bottom: 10}}

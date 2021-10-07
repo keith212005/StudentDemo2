@@ -12,10 +12,10 @@ export function callApi(api_inputs) {
         axios.all(api_container).then(
           axios.spread((...response) => {
             handleApiResponse(response)
-              .then((value) => {
+              .then(value => {
                 resolve(value);
               })
-              .catch((error) => {
+              .catch(error => {
                 reject(error);
               });
           }),
@@ -37,7 +37,7 @@ function handleApiResponse(response) {
         console.log('response of api >>>>>> ', data);
 
         if (
-          data['status'] != 200 ||
+          data.status != 200 ||
           (Object.keys(data).length === 0 && data.constructor === Object)
         ) {
           if (data.status == 403 || data.status == 501) {
@@ -52,7 +52,7 @@ function handleApiResponse(response) {
               storageKey.USER_PROFILE,
               storageKey.GENDER,
             ];
-            removeData(keys).then((data) => {
+            removeData(keys).then(data => {
               setMultipleAsyncStorage([
                 [storageKey.INITIAL_SCREEN_NAME, 'Login'],
               ]);
@@ -72,7 +72,7 @@ function handleApiResponse(response) {
         }
       } else {
         console.log('val >>>> ', val);
-        if (typeof val == 'Object') {
+        if (typeof val === 'Object') {
           if (!val.hasOwnProperty('message')) {
             val.message = '';
           }

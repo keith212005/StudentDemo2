@@ -11,7 +11,7 @@ const TrackDuration = () => {
 
   return (
     <Text
-      style={[globalStyles.textStyle('14', 'text', 'PROXIMANAOVA_REGULAR')]}>
+      style={[globalStyles.textStyle('14', 'black', 'PROXIMANAOVA_REGULAR')]}>
       {getTrackDuation(duration)}
     </Text>
   );
