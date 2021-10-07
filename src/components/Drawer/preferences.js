@@ -7,6 +7,7 @@ import {Switch, Icon} from 'react-native-elements';
 
 // LOCAL IMPORTS
 import {useGlobalStyles} from '../../resources';
+import {localize} from '../../languages';
 
 export const Preferences = props => {
   const [checked, setChecked] = useState(props.isDarkModeOn);
@@ -19,13 +20,13 @@ export const Preferences = props => {
           globalStyles.textStyle('_16', 'text', 'PROXIMANOVA_SEMIBOLD'),
           {margin: 10},
         ]}>
-        Preferences
+        {localize('PREFERENCES')}
       </Text>
       <View
         style={[globalStyles.layoutDirection('row', 'space-evenly', 'center')]}>
         <Text
           style={[globalStyles.textStyle('_14', 'text', 'PROXIMANOVA_BOLD')]}>
-          Dark Theme
+          {localize('DARK_THEME')}
         </Text>
         <Switch
           value={checked}
