@@ -5,13 +5,13 @@ import {
 
 export const navigationRef = createNavigationContainerRef();
 
-export function navigate(name, params) {
+export function navigate(name: string, params: object) {
   if (navigationRef.isReady()) {
-    navigationRef.navigate(name, params);
+    navigationRef.navigate(name as never, params as never);
   }
 }
 
-export function resetNavigation(name, params) {
+export function resetNavigation(name: any, params: any) {
   navigationRef.dispatch(
     CommonActions.reset({
       index: 0,

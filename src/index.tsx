@@ -12,7 +12,7 @@ import {store, persistor} from './reducers';
 import {DB} from './services/database';
 
 export default class AppContainer extends React.Component {
-  constructor(props) {
+  constructor(props:any ) {
     super(props);
     DB.initTables();
     // DB.deleteDatabase();
